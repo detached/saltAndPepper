@@ -1,0 +1,52 @@
+#parse("views/components/head.html")
+<body>
+<div id="layout">
+    #parse("views/components/menu.html")
+    <div id="main">
+        <div class="header">
+            <h1>$translations.get("editRecipe.title")</h1>
+        </div>
+        <div class="content centered">
+
+            <form class="pure-form pure-form-aligned" method="post">
+
+                <div class="pure-control-group">
+                    <fieldset>
+                        <label for="title">$translations.get("newRecipe.name"):</label>
+                        <input type="text" id="title" name="title" placeholder='$translations.get("newRecipe.name")' value="$recipe.title" />
+                    </fieldset>
+                    <fieldset>
+                        <label for="category">$translations.get("recipe.category"):</label>
+                        <input type="text" id="category" name="category" placeholder='$translations.get("recipe.category")' value="$recipe.category" />
+                    </fieldset>
+                    <fieldset>
+                        <label for="cuisine">$translations.get("recipe.cuisine"):</label>
+                        <input type="text" id="cuisine" name="cuisine" placeholder='$translations.get("recipe.cuisine")' value="$recipe.cuisine" />
+                    </fieldset>
+                    <fieldset>
+                        <label for="yields">$translations.get("recipe.yields"):</label>
+                        <input type="text" id="yields" name="yields" placeholder='$translations.get("recipe.yields")' value="$recipe.yields"/>
+                    </fieldset>
+                </div>
+
+                <h2>$translations.get("recipe.ingredients")</h2>
+                <textarea id="ingredients" name="ingredients" class="newrecipe-textarea newrecipe-texterea-big"
+                          placeholder="$translations.get('recipe.ingredients')">$recipe.ingredients</textarea>
+
+                <h2>$translations.get("recipe.instructions")</h2>
+                <textarea id="instructions" name="instructions" class="newrecipe-textarea newrecipe-texterea-big"
+                          placeholder="$translations.get('recipe.instructions')">$recipe.instructions</textarea>
+
+                <h2>$translations.get("recipe.modifications")</h2>
+                <textarea id="modifications" name="modifications" class="newrecipe-textarea"
+                          placeholder="$translations.get('recipe.modifications')">$recipe.modifications</textarea>
+
+                <button type="submit" class="pure-button pure-button-primary newrecipe-submit">
+                    $translations.get("newRecipe.submit")
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+#parse("views/components/foot.html")

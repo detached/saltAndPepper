@@ -1,0 +1,22 @@
+<table id="recipe-table" class="pure-table pure-table-horizontal pure-table-striped">
+    <thead>
+    <tr>
+        <th></th>
+        <th>$translations.get("search.table.title")</th>
+        <th>$translations.get("search.table.category")</th>
+        <th>$translations.get("search.table.cuisine")</th>
+        <th>$translations.get("search.table.author")</th>
+    </tr>
+    </thead>
+    <tbody>
+    #foreach($recipe in $recipes)
+    <tr onclick="window.location='$recipe.recipeUrl'">
+        <td>#if($recipe.imageUrl)<img src=$recipe.imageUrl/>#end</td>
+        <td class="recipe-list-td">$recipe.title</td>
+        <td>$recipe.category</td>
+        <td>$recipe.cuisine</td>
+        <td>$recipe.author</td>
+    </tr>
+    #end
+    </tbody>
+</table>

@@ -1,0 +1,55 @@
+#parse("views/components/head.html")
+<body>
+<div id="layout">
+    #parse("views/components/menu.html")
+    <div id="main">
+        <div class="header">
+            <h1>$recipe.title</h1>
+        </div>
+        <div class="content centered">
+            <image-gallery recipeId="$recipe.id"
+                           toggleUploadButtonLabel="$translations.get('recipe.imageUpload')"
+                           uploadImageLabel="$translations.get('image.upload')"
+                           allowUpload=$recipe.allowedToEdit >
+            </image-gallery>
+            <div class="pure-g recipe-info">
+                <div class="pure-u-1-2">$translations.get("recipe.author")</div>
+                <div class="pure-u-1-2">$recipe.author</div>
+                <div class="pure-u-1-2">$translations.get("recipe.category")</div>
+                <div class="pure-u-1-2">$recipe.category</div>
+                <div class="pure-u-1-2">$translations.get("recipe.cuisine")</div>
+                <div class="pure-u-1-2">$recipe.cuisine</div>
+                <div class="pure-u-1-2">$translations.get("recipe.yields")</div>
+                <div class="pure-u-1-2">$recipe.yields</div>
+            </div>
+            <h2>$translations.get("recipe.ingredients")</h2>
+            <p>
+            #foreach($i in $recipe.ingredients.split("\n"))
+            $i<br/>
+            #end
+            </p>
+
+            <h2>$translations.get("recipe.instructions")</h2>
+            <p>
+            #foreach($i in $recipe.instructions.split("\n"))
+            $i<br/>
+            #end
+            </p>
+
+            <h2>$translations.get("recipe.modifications")</h2>
+            <p>
+            #foreach($i in $recipe.modifications.split("\n"))
+            $i<br/>
+            #end
+            </p>
+
+            #if ($recipe.allowedToEdit)
+            <a class="pure-button pure-button-primary" href="$recipe.editUrl">
+                $translations.get("recipe.edit")
+            </a>
+            #end
+        </div>
+    </div>
+</div>
+</body>
+#parse("views/components/foot.html")

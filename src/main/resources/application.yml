@@ -1,0 +1,42 @@
+micronaut:
+  application:
+    name: recipes
+  server:
+    cors:
+      enabled: true
+  router:
+    static-resources:
+      default:
+        enabled: true
+        paths: "classpath:public"
+  views:
+    velocity:
+      enabled: true
+      defaultExtension: "html"
+  caches:
+    users:
+      enabled: true
+  security:
+    authentication: session
+    endpoints:
+      logout:
+        getAllowed: true
+    redirect:
+      login-success: /
+      login-failure: /login/failed
+    intercept-url-map:
+      - pattern: /css/*
+        http-method: GET
+        access:
+          - isAnonymous()
+      - pattern: /res/*
+        http-method: GET
+        access:
+          - isAnonymous()
+      - pattern: /bundle.js
+        http-method: GET
+        access:
+          - isAnonymous()
+
+application:
+  users: "classpath:users.json"

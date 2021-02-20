@@ -1,0 +1,18 @@
+[Unit]
+Description=Recipes
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=recipes
+WorkingDirectory=/opt/recipes/
+ExecStart=java -jar /opt/recipes/recipes.jar
+ExecStartPost
+Environment="APPLICATION_USERS=file:/opt/recipes/users.json"
+Environment="MICRONAUT_ENVIRONMENTS=h2"
+
+[Install]
+WantedBy=multi-user.target

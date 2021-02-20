@@ -1,0 +1,12 @@
+datasources:
+  postgres:
+    url: jdbc:postgresql://127.0.0.1:5432/recipe
+    driverClassName: org.postgresql.Driver
+    username: user
+    password: password
+    sql-dialect: 'POSTGRES'
+
+flyway:
+  datasources:
+    postgres:
+      enabled: true

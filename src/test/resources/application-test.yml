@@ -1,0 +1,12 @@
+datasources:
+  h2:
+    url: jdbc:h2:mem:test;MODE=PostgreSQL
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ''
+    sql-dialect: 'POSTGRES'
+
+flyway:
+  datasources:
+    h2:
+      enabled: true
