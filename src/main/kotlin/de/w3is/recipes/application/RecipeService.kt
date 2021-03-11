@@ -57,6 +57,17 @@ class RecipeService(
         recipeRepository.store(recipe)
         imageService.delete(imageId)
     }
+
+    fun deleteRecipe(recipeId: RecipeId, user: User) {
+
+        val author = user.toAuthor()
+        val recipe = recipeRepository.get(recipeId)
+        recipe.assertIsAuthoredBy(author)
+        recipeRepository.delete(recipe)
+        recipe.getImages().forEach {
+            imageService.delete(it)
+        }
+    }
 }
 
 data class NewRecipeCommand(

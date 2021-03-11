@@ -9,7 +9,6 @@ Features:
  * Simple multiuser support
 
 TODO:
- * Delete recipes
  * Add view to only see your own recipes 
  * Refactor frontend
  * Add and document API

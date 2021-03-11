@@ -11,4 +11,5 @@ data class RecipeViewModel(
         val modifications: String,
         val author: String,
         val allowedToEdit: Boolean,
-        val editUrl: String)
+        val editUrl: String,
+        val deleteUrl: String)

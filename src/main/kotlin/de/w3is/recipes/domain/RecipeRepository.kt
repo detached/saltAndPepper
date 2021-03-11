@@ -8,4 +8,5 @@ interface RecipeRepository {
     fun get(recipeId: RecipeId): Recipe
     fun getAll(): Sequence<Recipe>
     fun search(queryString: String, maxResults: Int): Sequence<Recipe>
+    fun delete(recipe: Recipe)
 }

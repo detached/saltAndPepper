@@ -20,17 +20,17 @@ class Recipe(
 
     fun getImages(): List<ImageId> = mutableImages
     fun addImage(imageId: ImageId, author: Author) {
-        assertAllowedToEdit(author)
+        assertIsAuthoredBy(author)
         mutableImages.add(imageId)
     }
     fun removeImage(imageId: ImageId, author: Author) {
-        assertAllowedToEdit(author)
+        assertIsAuthoredBy(author)
         mutableImages.remove(imageId)
     }
 
     fun updateWith(command: UpdateRecipeCommand, author: Author): Recipe {
 
-        assertAllowedToEdit(author)
+        assertIsAuthoredBy(author)
 
         return Recipe(
             id = id,
@@ -46,7 +46,7 @@ class Recipe(
         )
     }
 
-    private fun assertAllowedToEdit(author: Author) {
+    fun assertIsAuthoredBy(author: Author) {
         if (authorId != author.id) {
             throw NotAllowedToEditException()
         }

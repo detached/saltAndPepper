@@ -1,0 +1,30 @@
+#parse("views/components/head.html")
+<body>
+<div id="layout">
+    #parse("views/components/menu.html")
+    <div id="main">
+        <div class="header">
+            <h1>$translations.get("deleteRecipe.title")</h1>
+        </div>
+        <div class="content centered centered-text">
+
+            #if ($state == "confirm")
+
+            <h1>$recipe.title $translations.get("deleteRecipe.text")</h1>
+
+            <form class="pure-form pure-form-aligned" method="post">
+                <button type="submit" class="pure-button recipe-delete-button">
+                    $translations.get("deleteRecipe.confirm")
+                </button>
+            </form>
+
+            #else
+
+            <h1>$translations.get("deleteRecipe.success")</h1>
+
+            #end
+        </div>
+    </div>
+</div>
+</body>
+#parse("views/components/foot.html")

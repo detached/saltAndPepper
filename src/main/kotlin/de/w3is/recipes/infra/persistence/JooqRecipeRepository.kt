@@ -95,4 +95,8 @@ class JooqRecipeRepository(
             .fetchStream().asSequence()
             .mapNotNull { recordMapper.map(it) }
     }
+
+    override fun delete(recipe: Recipe) {
+        dslContext.deleteFrom(RECIPES).where(RECIPES.RECIPE_ID.eq(recipe.id.recipeId)).execute()
+    }
 }

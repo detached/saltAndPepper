@@ -74,6 +74,46 @@ class RecipeViewController(
         return HttpResponse.redirect(recipe.id.toUri())
     }
 
+    @Get("/{id}/delete")
+    @View("deleteRecipe")
+    fun deleteRecipePage(@PathVariable id: String, authentication: Authentication): HttpResponse<*> {
+
+        val user = authentication.getUser()
+        val recipe = recipeService.get(RecipeId(id))
+
+        return if (recipe.authorId == user.toAuthor().id) {
+            HttpResponse.ok(
+                mapOf(
+                    Pair("translations", translations),
+                    Pair("menu", Menu(activeItem = Site.RECIPE)),
+                    Pair("recipe", recipeViewModelFor(user, RecipeId(id))),
+                    Pair("state", "confirm"),
+                )
+            )
+        } else {
+            HttpResponse.unauthorized<Map<String, String>>()
+        }
+    }
+
+    @Post("/{id}/delete", consumes = [MediaType.APPLICATION_FORM_URLENCODED])
+    @View("deleteRecipe")
+    fun deleteRecipe(
+        @PathVariable id: String,
+        authentication: Authentication
+    ): HttpResponse<*> {
+
+        val user = authentication.getUser()
+        recipeService.deleteRecipe(RecipeId(id), user)
+
+        return HttpResponse.ok(
+            mapOf(
+                Pair("translations", translations),
+                Pair("menu", Menu(activeItem = Site.RECIPE)),
+                Pair("state", "deleted"),
+            )
+        )
+    }
+
     @Get("/new")
     @View("newRecipe")
     fun newRecipePage(): HttpResponse<*> = HttpResponse.ok(
@@ -126,12 +166,14 @@ class RecipeViewController(
                 ingredients = recipe.ingredients,
                 instructions = recipe.instructions,
                 modifications = recipe.modifications,
-                editUrl = recipe.id.toEditUri().toString(),
                 author = author.name,
-                allowedToEdit = user.toAuthor().id == recipe.authorId
+                allowedToEdit = user.toAuthor().id == recipe.authorId,
+                editUrl = recipe.id.toEditUri().toString(),
+                deleteUrl = recipe.id.toDeleteUri().toString(),
             )
         }
 }
 
 fun RecipeId.toUri(): URI = UriBuilder.of("/recipe").path(recipeId).build()
 fun RecipeId.toEditUri(): URI = UriBuilder.of("/recipe").path(recipeId).path("edit").build()
+fun RecipeId.toDeleteUri(): URI = UriBuilder.of("/recipe").path(recipeId).path("delete").build()

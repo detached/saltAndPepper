@@ -248,3 +248,12 @@ body {
     margin-left: auto;
     margin-right: auto;
 }
+
+.recipe-delete-button {
+     background: rgb(202, 60, 60);
+     color: white;
+}
+
+.centered-text {
+     text-align: center;
+}
