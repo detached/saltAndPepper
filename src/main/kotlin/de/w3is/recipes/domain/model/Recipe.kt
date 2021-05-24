@@ -1,6 +1,6 @@
 package de.w3is.recipes.domain.model
 
-import de.w3is.recipes.application.UpdateRecipeCommand
+import de.w3is.recipes.application.RecipeContent
 import java.util.*
 
 class Recipe(
@@ -28,7 +28,7 @@ class Recipe(
         mutableImages.remove(imageId)
     }
 
-    fun updateWith(command: UpdateRecipeCommand, author: Author): Recipe {
+    fun updateWith(content: RecipeContent, author: Author): Recipe {
 
         assertIsAuthoredBy(author)
 
@@ -36,13 +36,13 @@ class Recipe(
             id = id,
             authorId = authorId,
             images = mutableImages,
-            title = command.title,
-            category = command.category,
-            cuisine = command.cuisine,
-            yields = command.yields,
-            ingredients = command.ingredients,
-            instructions = command.instructions,
-            modifications = command.modifications,
+            title = content.title,
+            category = content.category,
+            cuisine = content.cuisine,
+            yields = content.yields,
+            ingredients = content.ingredients,
+            instructions = content.instructions,
+            modifications = content.modifications,
         )
     }
 

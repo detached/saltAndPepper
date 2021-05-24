@@ -21,20 +21,20 @@ class RecipeService(
     fun get(recipeId: RecipeId) = recipeRepository.get(recipeId)
 
     @Transactional
-    fun createNewRecipe(command: NewRecipeCommand, user: User): Recipe {
+    fun createNewRecipe(content: RecipeContent, user: User): Recipe {
 
         val author = user.toAuthor()
-        val recipe = command.toRecipe(author)
+        val recipe = content.toRecipe(author)
         recipeRepository.store(recipe)
         return recipe
     }
 
     @Transactional
-    fun updateRecipe(updateRecipeCommand: UpdateRecipeCommand, user: User): Recipe {
+    fun updateRecipe(id: RecipeId, content: RecipeContent, user: User): Recipe {
 
         val author = user.toAuthor()
-        val recipe = recipeRepository.get(updateRecipeCommand.id)
-        val updatedRecipe = recipe.updateWith(updateRecipeCommand, author)
+        val recipe = recipeRepository.get(id)
+        val updatedRecipe = recipe.updateWith(content, author)
         recipeRepository.store(updatedRecipe)
         return updatedRecipe
     }
@@ -70,7 +70,7 @@ class RecipeService(
     }
 }
 
-data class NewRecipeCommand(
+data class RecipeContent(
     val title: String,
     val category: String,
     val cuisine: String,
@@ -94,14 +94,3 @@ data class NewRecipeCommand(
         )
     }
 }
-
-data class UpdateRecipeCommand(
-    val id: RecipeId,
-    val title: String,
-    val category: String,
-    val cuisine: String,
-    val yields: String,
-    val ingredients: String,
-    val instructions: String,
-    val modifications: String
-)

@@ -1,8 +1,7 @@
 package de.w3is.recipes.infra.views
 
-import de.w3is.recipes.application.NewRecipeCommand
+import de.w3is.recipes.application.RecipeContent
 import de.w3is.recipes.application.RecipeService
-import de.w3is.recipes.application.UpdateRecipeCommand
 import de.w3is.recipes.application.users.User
 import de.w3is.recipes.domain.AuthorRepository
 import de.w3is.recipes.domain.model.RecipeId
@@ -69,7 +68,7 @@ class RecipeViewController(
     ): HttpResponse<Unit> {
 
         val user = authentication.getUser()
-        val recipe = recipeService.updateRecipe(toUpdateRecipeCommand(id, formBody), user)
+        val recipe = recipeService.updateRecipe(RecipeId(id), formBody.toRecipeContent(), user)
 
         return HttpResponse.redirect(recipe.id.toUri())
     }
@@ -128,30 +127,19 @@ class RecipeViewController(
 
         val user = authentication.getUser()
 
-        val recipe = recipeService.createNewRecipe(toNewRecipeCommand(formBody), user)
+        val recipe = recipeService.createNewRecipe(formBody.toRecipeContent(), user)
 
         return HttpResponse.redirect(recipe.id.toUri())
     }
 
-    private fun toUpdateRecipeCommand(id: String, formBody: Map<String, String>) = UpdateRecipeCommand(
-        id = RecipeId(id),
-        title = formBody["title"] ?: error("title was not set"),
-        category = formBody["category"] ?: error("title was not set"),
-        cuisine = formBody["cuisine"] ?: error("cuisine was not set"),
-        yields = formBody["yields"] ?: error("yields was not set"),
-        instructions = formBody["instructions"] ?: error("instructions was not set"),
-        modifications = formBody["modifications"] ?: error("modifications was not set"),
-        ingredients = formBody["ingredients"] ?: error("modifications was not set"),
-    )
-
-    private fun toNewRecipeCommand(formBody: Map<String, String>) = NewRecipeCommand(
-        title = formBody["title"] ?: error("title was not set"),
-        category = formBody["category"] ?: error("title was not set"),
-        cuisine = formBody["cuisine"] ?: error("cuisine was not set"),
-        yields = formBody["yields"] ?: error("yields was not set"),
-        instructions = formBody["instructions"] ?: error("instructions was not set"),
-        modifications = formBody["modifications"] ?: error("modifications was not set"),
-        ingredients = formBody["ingredients"] ?: error("modifications was not set"),
+    private fun Map<String, String>.toRecipeContent() = RecipeContent(
+        title = this["title"] ?: error("title was not set"),
+        category = this["category"] ?: error("title was not set"),
+        cuisine = this["cuisine"] ?: error("cuisine was not set"),
+        yields = this["yields"] ?: error("yields was not set"),
+        instructions = this["instructions"] ?: error("instructions was not set"),
+        modifications = this["modifications"] ?: error("modifications was not set"),
+        ingredients = this["ingredients"] ?: error("modifications was not set"),
     )
 
     private fun recipeViewModelFor(user: User, recipeId: RecipeId): RecipeViewModel =

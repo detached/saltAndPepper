@@ -37,7 +37,7 @@ class RecipeServiceTest {
     fun `when storing new recipe it can be fetched`() {
 
         val newRecipe = recipeService.createNewRecipe(
-            NewRecipeCommand(
+            RecipeContent(
                 title = "title",
                 category = "category",
                 cuisine = "cuisine",
@@ -71,7 +71,7 @@ class RecipeServiceTest {
     @Test
     fun `when adding to recipe it can be fetched`() {
 
-        val recipeId = recipeService.createNewRecipe(givenANewRecipeCommand(), testUser).id
+        val recipeId = recipeService.createNewRecipe(newRecipeContent(), testUser).id
         val imageData = givenImageData()
 
         val imageId = recipeService.addImageToRecipe(recipeId, imageData, testUser)
@@ -86,7 +86,7 @@ class RecipeServiceTest {
     @Test
     fun `when removing image from recipe it is gone`() {
 
-        val recipeId = recipeService.createNewRecipe(givenANewRecipeCommand(), testUser).id
+        val recipeId = recipeService.createNewRecipe(newRecipeContent(), testUser).id
         val imageData = givenImageData()
 
         val imageId = recipeService.addImageToRecipe(recipeId, imageData, testUser)
@@ -101,7 +101,7 @@ class RecipeServiceTest {
         assertThat { imageRepository.get(imageId) }.isFailure()
     }
 
-    private fun givenANewRecipeCommand(): NewRecipeCommand = NewRecipeCommand(
+    private fun newRecipeContent() = RecipeContent(
         title = "title",
         category = "category",
         cuisine = "cuisine",

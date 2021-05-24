@@ -23,7 +23,6 @@ import java.io.File
 @Secured(SecurityRule.IS_AUTHENTICATED)
 class RecipeController(
     private val recipeService: RecipeService,
-    private val importService: ImportService
 ) {
 
     @Get("/")
