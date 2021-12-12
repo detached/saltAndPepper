@@ -1,7 +1,7 @@
 package de.w3is.recipes.application.users
 
+import jakarta.inject.Singleton
 import java.lang.RuntimeException
-import javax.inject.Singleton
 
 @Singleton
 class UserService(private val userRepository: UserRepository) {

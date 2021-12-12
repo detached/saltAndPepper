@@ -1,6 +1,6 @@
 datasources:
   h2:
-    url: jdbc:h2:mem:test;MODE=PostgreSQL
+    url: jdbc:h2:mem:test;MODE=PostgreSQL;INIT=CREATE SCHEMA IF NOT EXISTS PUBLIC;
     driverClassName: org.h2.Driver
     username: sa
     password: ''

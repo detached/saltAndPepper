@@ -2,13 +2,10 @@ package de.w3is.recipes.infra.persistence
 
 import de.w3is.recipes.domain.ImageRepository
 import de.w3is.recipes.domain.model.ImageId
-import de.w3is.recipes.infra.persistence.generated.public_.Tables.IMAGES
-import io.micronaut.cache.annotation.CacheConfig
-import io.micronaut.cache.annotation.CacheInvalidate
-import io.micronaut.cache.annotation.Cacheable
+import de.w3is.recipes.infra.persistence.generated.Tables.IMAGES
+import jakarta.inject.Singleton
 import org.jooq.DSLContext
 import java.io.InputStream
-import javax.inject.Singleton
 
 @Singleton
 class JooqImageRepository(private val dslContext: DSLContext) : ImageRepository {
@@ -26,14 +23,14 @@ class JooqImageRepository(private val dslContext: DSLContext) : ImageRepository 
         return dslContext.select(IMAGES.DATA)
             .from(IMAGES)
             .where(IMAGES.IMAGE_ID.eq(imageId.value))
-            .fetchOne(IMAGES.DATA).inputStream()
+            .fetchOne(IMAGES.DATA)?.inputStream() ?: error("image with id $imageId not found")
     }
 
     override fun getThumbnail(imageId: ImageId): InputStream =
             dslContext.select(IMAGES.THUMBNAIL)
                     .from(IMAGES)
                     .where(IMAGES.IMAGE_ID.eq(imageId.value))
-                    .fetchOne(IMAGES.THUMBNAIL).inputStream()
+                    .fetchOne(IMAGES.THUMBNAIL)?.inputStream() ?: error("thumbnail with id $imageId not found")
 
     override fun delete(imageId: ImageId) {
         dslContext.delete(IMAGES)

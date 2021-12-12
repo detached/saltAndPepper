@@ -1,8 +1,8 @@
 package de.w3is.recipes.infra.views.model
 
 import io.micronaut.context.annotation.Factory
+import jakarta.inject.Singleton
 import java.util.*
-import javax.inject.Singleton
 
 @Factory
 class TranslationsFactory {

@@ -6,13 +6,13 @@ import assertk.assertions.isEqualTo
 import de.w3is.recipes.domain.model.ImageId
 import de.w3is.recipes.domain.model.Recipe
 import de.w3is.recipes.domain.model.RecipeId
-import de.w3is.recipes.infra.persistence.generated.public_.Tables.RECIPES
+import de.w3is.recipes.infra.persistence.generated.Tables.RECIPES
 import de.w3is.recipes.testUser
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
+import jakarta.inject.Inject
 import org.jooq.DSLContext
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import javax.inject.Inject
 
 @MicronautTest
 class JooqSearchListRecipeRepositoryTest {

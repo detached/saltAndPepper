@@ -7,8 +7,8 @@ import de.w3is.recipes.domain.model.Author
 import de.w3is.recipes.domain.model.ImageId
 import de.w3is.recipes.domain.model.Recipe
 import de.w3is.recipes.domain.model.RecipeId
+import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
-import javax.inject.Singleton
 
 interface ImportCommandProvider : Iterator<ImportRecipe>
 

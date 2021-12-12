@@ -3,18 +3,18 @@ package de.w3is.recipes.infra.persistence
 import com.fasterxml.jackson.databind.ObjectMapper
 import de.w3is.recipes.domain.RecipeRepository
 import de.w3is.recipes.domain.model.*
-import de.w3is.recipes.infra.persistence.generated.public_.Tables.RECIPES
-import de.w3is.recipes.infra.persistence.generated.public_.tables.records.RecipesRecord
+import de.w3is.recipes.infra.persistence.generated.Tables.RECIPES
+import de.w3is.recipes.infra.persistence.generated.tables.records.RecipesRecord
+import jakarta.inject.Inject
+import jakarta.inject.Singleton
 import org.jooq.DSLContext
 import org.jooq.RecordMapper
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.math.ceil
 
 @Singleton
 class JooqRecipeRepository(
-    @Inject private val dslContext: DSLContext,
-    @Inject private val objectMapper: ObjectMapper
+    private val dslContext: DSLContext,
+    private val objectMapper: ObjectMapper
 ) : RecipeRepository {
 
     private val recordMapper = RecordMapper<RecipesRecord, Recipe> { record ->

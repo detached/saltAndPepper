@@ -15,5 +15,6 @@
   },
   "dependencies": {
     "lit-element": "^2.4.0"
-  }
+  },
+  "packageManager": "yarn@1.22.10"
 }

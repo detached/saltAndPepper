@@ -17,7 +17,7 @@ import io.micronaut.security.annotation.Secured
 import io.micronaut.security.authentication.Authentication
 import io.micronaut.security.rules.SecurityRule
 import io.micronaut.views.View
-import io.reactivex.Single
+import reactor.core.publisher.Mono
 import java.io.File
 
 @Controller("/import")
@@ -43,7 +43,7 @@ class ImportViewController(
         file: StreamingFileUpload,
         @QueryValue(value = "format", defaultValue = "gourmet") format: String,
         authentication: Authentication
-    ): Single<HttpResponse<*>> {
+    ): Mono<HttpResponse<*>> {
 
         val user = authentication.getUser()
 
@@ -54,7 +54,7 @@ class ImportViewController(
         val tempFile = File.createTempFile("upload", "temp")
         val upload = file.transferTo(tempFile)
 
-        return Single.fromPublisher(upload).map { success ->
+        return Mono.from(upload).map { success ->
             if (success) {
 
                 val gourmetFile = GourmetRecipeSource(tempFile.inputStream())

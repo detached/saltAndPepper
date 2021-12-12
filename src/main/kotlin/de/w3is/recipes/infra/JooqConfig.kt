@@ -1,10 +1,10 @@
 package de.w3is.recipes.infra
 
 import io.micronaut.context.annotation.Factory
+import jakarta.inject.Named
+import jakarta.inject.Singleton
 import org.jooq.conf.RenderNameCase
 import org.jooq.conf.Settings
-import javax.inject.Named
-import javax.inject.Singleton
 
 @Factory
 class JooqConfig {
@@ -14,4 +14,11 @@ class JooqConfig {
     fun postgresSettings() = Settings()
         .withRenderNameCase(RenderNameCase.LOWER)
         .withRenderSchema(false)
+
+    @Singleton
+    @Named("h2")
+    fun h2Settings() = Settings()
+        .withRenderNameCase(RenderNameCase.UPPER)
+        .withRenderSchema(false)
+
 }

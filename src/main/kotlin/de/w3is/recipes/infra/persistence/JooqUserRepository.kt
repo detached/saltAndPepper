@@ -7,18 +7,15 @@ import de.w3is.recipes.application.users.UserRepository
 import de.w3is.recipes.domain.AuthorRepository
 import de.w3is.recipes.domain.model.Author
 import de.w3is.recipes.domain.model.AuthorId
-import de.w3is.recipes.infra.persistence.generated.public_.Tables.*
+import de.w3is.recipes.infra.persistence.generated.Tables.*
 import io.micronaut.cache.annotation.CacheConfig
 import io.micronaut.cache.annotation.Cacheable
+import jakarta.inject.Singleton
 import org.jooq.DSLContext
-import javax.inject.Inject
-import javax.inject.Singleton
 
 @Singleton
 @CacheConfig(cacheNames = ["users"])
-class JooqUserRepository(
-    @Inject private val dslContext: DSLContext
-) : UserRepository, AuthorRepository {
+open class JooqUserRepository(private val dslContext: DSLContext) : UserRepository, AuthorRepository {
 
     @Cacheable
     override fun findUser(userName: String): User? =
@@ -47,5 +44,5 @@ class JooqUserRepository(
                 id = AuthorId(it.userId),
                 name = it.username
             )
-        }
+        } ?: error("Author with id $authorId")
 }

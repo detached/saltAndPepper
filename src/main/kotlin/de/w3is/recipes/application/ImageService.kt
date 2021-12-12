@@ -2,10 +2,10 @@ package de.w3is.recipes.application
 
 import de.w3is.recipes.domain.ImageRepository
 import de.w3is.recipes.domain.model.ImageId
+import jakarta.inject.Singleton
 import net.coobird.thumbnailator.Thumbnails
 import java.io.*
 import javax.imageio.ImageIO
-import javax.inject.Singleton
 
 @Singleton
 class ImageService(private val imageRepository: ImageRepository) {

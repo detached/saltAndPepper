@@ -6,8 +6,8 @@ import de.w3is.recipes.domain.model.Author
 import de.w3is.recipes.domain.model.ImageId
 import de.w3is.recipes.domain.model.Recipe
 import de.w3is.recipes.domain.model.RecipeId
+import jakarta.inject.Singleton
 import java.io.InputStream
-import javax.inject.Singleton
 import javax.transaction.Transactional
 
 @Singleton

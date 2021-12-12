@@ -7,13 +7,13 @@ import assertk.assertions.isFailure
 import assertk.assertions.isSuccess
 import de.w3is.recipes.domain.ImageRepository
 import de.w3is.recipes.domain.model.Recipe
-import de.w3is.recipes.infra.persistence.generated.public_.Tables
+import de.w3is.recipes.infra.persistence.generated.Tables
 import de.w3is.recipes.testUser
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
+import jakarta.inject.Inject
 import org.jooq.DSLContext
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import javax.inject.Inject
 
 @MicronautTest
 class RecipeServiceTest {

@@ -121,8 +121,8 @@ class GourmetRecipeSource(inputStream: InputStream) : ImportCommandProvider {
     private fun XMLEvent.isStartElement(name: String) = isStartElement && asStartElement().name() == name
     private fun XMLEvent.isEndElement(name: String) = isEndElement && asEndElement().name() == name
     private fun XMLEventReader.nextAsString() = nextEvent().asCharacters().toString().trim()
-    private fun StartElement.name() = name.localPart.toLowerCase()
-    private fun EndElement.name() = name.localPart.toLowerCase()
+    private fun StartElement.name() = name.localPart.lowercase()
+    private fun EndElement.name() = name.localPart.lowercase()
 
 }
 
