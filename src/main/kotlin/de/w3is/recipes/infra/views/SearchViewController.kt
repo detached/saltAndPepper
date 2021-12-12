@@ -12,14 +12,21 @@ import io.micronaut.http.HttpResponse
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.QueryValue
+import io.micronaut.http.uri.UriBuilder
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
 import io.micronaut.views.View
+import org.apache.velocity.tools.generic.EscapeTool
 import java.net.URI
 import java.net.URLDecoder
 import java.net.URLEncoder
 
-@Controller("/search")
+const val SEARCH_PATH = "/search"
+const val QUERY_PARAM = "query"
+const val MAX_RESULTS_PARAM = "maxResults"
+const val PAGE_PARAM = "page"
+
+@Controller(SEARCH_PATH)
 @Secured(SecurityRule.IS_AUTHENTICATED)
 class SearchViewController(
     private val translations: Translations,
@@ -29,23 +36,71 @@ class SearchViewController(
 
     @Get
     @View("search")
-    fun getSearch(@QueryValue query: String?): HttpResponse<Map<String, *>> {
+    fun getSearch(
+        @QueryValue(QUERY_PARAM) query: String?,
+        @QueryValue(MAX_RESULTS_PARAM) maxResults: Int?,
+        @QueryValue(PAGE_PARAM) page: Int?
+    ): HttpResponse<Map<String, *>> {
 
         val queryString = URLDecoder.decode(query.orEmpty(), "UTF-8")
+        val encodedQueryString = URLEncoder.encode(queryString, "UTF-8")
 
-        val recipes = recipeRepository.search(queryString, maxResults = 50)
-
-        return HttpResponse.ok(
-            mapOf(
-                Pair("translations", translations),
-                Pair("menu", Menu(activeItem = Site.SEARCH)),
-                Pair("recipes", toListEntries(recipes)),
-                Pair("search", URLEncoder.encode(queryString, "UTF-8"))
-            )
+        val searchResponse = recipeRepository.search(
+            query = queryString,
+            limit = maxResults ?: 10,
+            page = page ?: 0
         )
+
+        val model = mutableMapOf(
+            Pair("translations", translations),
+            Pair("menu", Menu(activeItem = Site.SEARCH)),
+            Pair("recipes", searchResponse.results.toListEntries()),
+            Pair("currentPageNumber", searchResponse.page.current),
+            Pair("maxPageNumber", searchResponse.page.max),
+            Pair("search", EscapeTool().html(queryString))
+        )
+
+        if (searchResponse.page.current < searchResponse.page.max) {
+            model["nextPageUrl"] = buildSearchUrl(
+                queryString = encodedQueryString,
+                maxResults = maxResults,
+                page = searchResponse.page.current + 1
+            )
+            model["lastPageUrl"] = buildSearchUrl(
+                queryString = encodedQueryString,
+                maxResults = maxResults,
+                page = searchResponse.page.max
+            )
+        }
+
+        if (searchResponse.page.current > 0) {
+            model["prevPageUrl"] = buildSearchUrl(
+                queryString = encodedQueryString,
+                maxResults = maxResults,
+                page = searchResponse.page.current - 1
+            )
+            model["firstPageUrl"] = buildSearchUrl(
+                queryString = encodedQueryString,
+                maxResults = maxResults,
+                page = 0
+            )
+        }
+
+        return HttpResponse.ok(model)
     }
 
-    fun toListEntries(recipes: Sequence<Recipe>) = recipes.map { recipe ->
+    private fun buildSearchUrl(queryString: String, maxResults: Int?, page: Int): String =
+        UriBuilder.of(SEARCH_PATH)
+            .queryParam(QUERY_PARAM, queryString)
+            .queryParam(PAGE_PARAM, page)
+            .apply {
+                if (maxResults != null) {
+                    this.queryParam(MAX_RESULTS_PARAM, maxResults)
+                }
+            }
+            .build().toString()
+
+    fun List<Recipe>.toListEntries() = map { recipe ->
 
         val author = authorRepository.get(recipe.authorId)
 

@@ -5,12 +5,14 @@
     <div id="main">
         <div class="search-header">
             <form class="pure-form">
-                <input type="search" id="query" name="query" class="pure-input-3-4" value=$search>
+                <input type="search" id="query" name="query" class="pure-input-3-4" value="$search">
                 <input type="submit" value=$translations.get("search.submit") class="pure-button pure-button-primary">
             </form>
         </div>
         <div class="content">
+            #parse("views/components/pagination.html")
             #parse("views/components/recipeList.html")
+            #parse("views/components/pagination.html")
         </div>
     </div>
 </div>

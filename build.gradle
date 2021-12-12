@@ -15,7 +15,6 @@ mainClassName = "de.w3is.recipes.ApplicationKt"
 
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 configurations {
@@ -51,6 +50,7 @@ dependencies {
     implementation("org.springframework.security:spring-security-core:${springSecurityVersion}")
     implementation("net.coobird:thumbnailator:${thumbnailatorVersion}")
     implementation("org.apache.commons:commons-text:${commonsTextVersion}")
+    implementation("org.apache.velocity:velocity-tools:${velocityToolsVersion}")
 
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
