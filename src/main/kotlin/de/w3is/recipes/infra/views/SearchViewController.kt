@@ -7,7 +7,6 @@ import de.w3is.recipes.infra.api.toThumbnailUrl
 import de.w3is.recipes.infra.views.model.Menu
 import de.w3is.recipes.infra.views.model.RecipeListEntryModel
 import de.w3is.recipes.infra.views.model.Site
-import de.w3is.recipes.infra.views.model.Translations
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
@@ -16,7 +15,6 @@ import io.micronaut.http.uri.UriBuilder
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
 import io.micronaut.views.View
-import org.apache.velocity.tools.generic.EscapeTool
 import java.net.URI
 import java.net.URLDecoder
 import java.net.URLEncoder
@@ -29,7 +27,6 @@ const val PAGE_PARAM = "page"
 @Controller(SEARCH_PATH)
 @Secured(SecurityRule.IS_AUTHENTICATED)
 class SearchViewController(
-    private val translations: Translations,
     private val recipeRepository: RecipeRepository,
     private val authorRepository: AuthorRepository
 ) {
@@ -52,12 +49,11 @@ class SearchViewController(
         )
 
         val model = mutableMapOf(
-            "translations" to translations,
             "menu" to Menu(activeItem = Site.SEARCH),
             "recipes" to searchResponse.results.toListEntries(),
             "currentPageNumber" to searchResponse.page.current,
             "maxPageNumber" to searchResponse.page.max,
-            "search" to EscapeTool().html(queryString)
+            "search" to queryString
         )
 
         if (searchResponse.page.current < searchResponse.page.max) {

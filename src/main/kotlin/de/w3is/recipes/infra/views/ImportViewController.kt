@@ -5,7 +5,6 @@ import de.w3is.recipes.infra.importer.GourmetRecipeSource
 import de.w3is.recipes.infra.security.getUser
 import de.w3is.recipes.infra.views.model.Menu
 import de.w3is.recipes.infra.views.model.Site
-import de.w3is.recipes.infra.views.model.Translations
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Controller
@@ -23,7 +22,6 @@ import java.io.File
 @Controller("/import")
 @Secured(SecurityRule.IS_AUTHENTICATED)
 class ImportViewController(
-    private val translations: Translations,
     private val importService: ImportService
 ) {
 
@@ -31,7 +29,6 @@ class ImportViewController(
     @View("import")
     fun getImportPage(): HttpResponse<Map<String, *>> = HttpResponse.ok(
         mapOf(
-            "translations" to translations,
             "menu" to Menu(activeItem = Site.IMPORT),
             "error" to false,
         )
@@ -64,7 +61,6 @@ class ImportViewController(
             } else {
                 HttpResponse.ok(
                     mapOf(
-                        "translations" to translations,
                         "menu" to Menu(activeItem = Site.IMPORT),
                         "error" to true,
                     )

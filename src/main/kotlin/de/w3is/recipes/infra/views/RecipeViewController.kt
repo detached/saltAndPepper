@@ -20,7 +20,6 @@ import java.net.URI
 @Controller("/recipe")
 @Secured(SecurityRule.IS_AUTHENTICATED)
 class RecipeViewController(
-    private val translations: Translations,
     private val recipeService: RecipeService,
     private val authorRepository: AuthorRepository,
 ) {
@@ -33,7 +32,6 @@ class RecipeViewController(
 
         return HttpResponse.ok(
             mapOf(
-                "translations" to translations,
                 "menu" to Menu(activeItem = Site.RECIPE),
                 "recipe" to recipeViewModelFor(user, RecipeId(id)),
             )
@@ -50,7 +48,6 @@ class RecipeViewController(
         return if (recipe.authorId == user.toAuthor().id) {
             HttpResponse.ok(
                 mapOf(
-                    "translations" to translations,
                     "menu" to Menu(activeItem = Site.RECIPE),
                     "recipe" to recipeViewModelFor(user, RecipeId(id))
                 )
@@ -83,7 +80,6 @@ class RecipeViewController(
         return if (recipe.authorId == user.toAuthor().id) {
             HttpResponse.ok(
                 mapOf(
-                    "translations" to translations,
                     "menu" to Menu(activeItem = Site.RECIPE),
                     "recipe" to recipeViewModelFor(user, RecipeId(id)),
                     "state" to "confirm",
@@ -106,7 +102,6 @@ class RecipeViewController(
 
         return HttpResponse.ok(
             mapOf(
-                "translations" to translations,
                 "menu" to Menu(activeItem = Site.RECIPE),
                 "state" to "deleted",
             )
@@ -117,7 +112,6 @@ class RecipeViewController(
     @View("newRecipe")
     fun newRecipePage(): HttpResponse<*> = HttpResponse.ok(
         mapOf(
-            "translations" to translations,
             "menu" to Menu(activeItem = Site.RECIPE)
         )
     )

@@ -52,10 +52,7 @@ class UserRegistrationController(
         val user = invitationService.createUserByInvite(code, name, PlainPassword(plainPassword))
 
         return HttpResponse.ok(
-            mapOf(
-                "translations" to translations,
-                "name" to user.name
-            )
+            mapOf("name" to user.name)
         )
     }
 
@@ -90,10 +87,7 @@ class UserRegistrationController(
         val invite = invitationService.getInviteByCode(code)
         val invitingUser = userService.getUser(invite.creator)
 
-        return mapOf(
-            "translations" to translations,
-            "invitingUser" to invitingUser.name
-        )
+        return mapOf("invitingUser" to invitingUser.name)
     }
 }
 
