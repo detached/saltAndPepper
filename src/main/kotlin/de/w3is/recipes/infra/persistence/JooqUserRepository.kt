@@ -36,6 +36,14 @@ open class JooqUserRepository(private val dslContext: DSLContext) : UserReposito
         }.store()
     }
 
+    override fun update(user: User) {
+        dslContext.update(USERS)
+            .set(USERS.PASSWORD, user.password.value)
+            .set(USERS.ROLE, user.role.name)
+            .where(USERS.USER_ID.equal(user.id.value))
+            .execute()
+    }
+
     override fun get(authorId: AuthorId): Author =
         dslContext.selectFrom(USERS).where(USERS.USER_ID.equal(authorId.value)).fetchOne {
             Author(

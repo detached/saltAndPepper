@@ -1,12 +1,12 @@
 package de.w3is.recipes.application.users
 
+import assertk.all
 import assertk.assertThat
 import assertk.assertions.*
 import de.w3is.recipes.testUser
 import org.junit.jupiter.api.Test
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.verify
-import org.mockito.kotlin.whenever
+import org.mockito.ArgumentCaptor
+import org.mockito.kotlin.*
 
 class UserServiceTest {
 
@@ -49,4 +49,55 @@ class UserServiceTest {
             .isInstanceOf(EncryptedPassword::class)
             .transform { it.value }.isNotEqualTo("12345")
     }
+
+    @Test
+    fun `test change password`() {
+
+        val oldPassword = PlainPassword("12345")
+        val newPassword = PlainPassword("67890")
+        val user = givenUser("abc", oldPassword)
+
+        userService.changePassword(user, oldPassword, newPassword)
+
+        val argumentCaptor = argumentCaptor<User>()
+
+        verify(userRepository).update(argumentCaptor.capture())
+
+        assertThat(argumentCaptor.firstValue.id).isEqualTo(user.id)
+        assertThat(argumentCaptor.firstValue.authenticate(oldPassword)).isFalse()
+        assertThat(argumentCaptor.firstValue.authenticate(newPassword)).isTrue()
+    }
+
+    @Test
+    fun `when changing password then enforce password rules`() {
+
+        val oldPassword = PlainPassword("12345")
+        val newPassword = PlainPassword("67")
+        val user = givenUser("abc", oldPassword)
+
+        assertThat {
+            userService.changePassword(user, oldPassword, newPassword)
+        }.isFailure()
+
+        assertThat {
+            userService.changePassword(user, oldPassword, PlainPassword(""))
+        }.isFailure()
+    }
+
+    @Test
+    fun `when changing password and user provides wrong old password than throw error`() {
+
+        val oldPassword = PlainPassword("12345")
+        val newPassword = PlainPassword("67890")
+        val user = givenUser("abc", oldPassword)
+
+        assertThat {
+            userService.changePassword(user, PlainPassword("aWrongOne"), newPassword)
+        }.isFailure()
+    }
+
+    private fun givenUser(username: String, password: PlainPassword): User =
+        User.createNew(username, password, role = Role.USER).also {
+            whenever(userRepository.findUser(it.name)).thenReturn(it)
+        }
 }

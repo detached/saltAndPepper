@@ -41,6 +41,6 @@ logger:
       de.w3is.recipes: DEBUG
 
 application:
-  users: "classpath:users.json"
+  initialAdminPassword: changeme
   allowInvitationFor: ADMIN,USER
   minPasswordLength: 5

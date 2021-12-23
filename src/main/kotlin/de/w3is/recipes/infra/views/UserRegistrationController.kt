@@ -69,7 +69,7 @@ class UserRegistrationController(
     fun handlePasswordToWeekException(@PathVariable("code") code: String): HttpResponse<Map<String, *>> =
         HttpResponse.ok(
             buildModelForInvite(code)
-                    + ("errorText" to translations.get("inviteRegistration.error.passwordTooWeek"))
+                    + ("errorText" to translations.get("password.error.passwordTooWeek"))
         )
 
     @Error(exception = UsernameInvalidException::class)

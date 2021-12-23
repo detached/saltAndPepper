@@ -1,19 +1,15 @@
 package de.w3is.recipes.infra.views
 
-import de.w3is.recipes.application.users.InvitationService
-import de.w3is.recipes.application.users.Invite
-import de.w3is.recipes.application.users.User
+import de.w3is.recipes.application.users.*
 import de.w3is.recipes.infra.security.getUser
 import de.w3is.recipes.infra.views.model.Menu
 import de.w3is.recipes.infra.views.model.ProfileViewModel
 import de.w3is.recipes.infra.views.model.Site
+import de.w3is.recipes.infra.views.model.Translations
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.MediaType
-import io.micronaut.http.MutableHttpResponse
-import io.micronaut.http.annotation.Controller
-import io.micronaut.http.annotation.Get
-import io.micronaut.http.annotation.Post
+import io.micronaut.http.annotation.*
 import io.micronaut.http.server.util.HttpHostResolver
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.authentication.Authentication
@@ -24,13 +20,15 @@ import io.micronaut.views.View
 @Secured(SecurityRule.IS_AUTHENTICATED)
 class ProfileViewController(
     private val invitationService: InvitationService,
-    private val httpHostResolver: HttpHostResolver
+    private val userService: UserService,
+    private val httpHostResolver: HttpHostResolver,
+    private val translations: Translations,
 ) {
 
     @Get
     @View("profile")
     fun showProfile(request: HttpRequest<*>, authentication: Authentication): HttpResponse<Map<String, *>> =
-        buildProfileModel(request, authentication.getUser())
+        HttpResponse.ok(buildProfileModel(request, authentication.getUser()))
 
     @Post("/invitation", consumes = [MediaType.APPLICATION_FORM_URLENCODED])
     @View("profile")
@@ -39,14 +37,46 @@ class ProfileViewController(
         val user = authentication.getUser()
         val invite = invitationService.createInvite(user)
 
-        return buildProfileModel(request, user, invite)
+        return HttpResponse.ok(buildProfileModel(request, user, invite))
     }
+
+    @Post("/changePassword", consumes = [MediaType.APPLICATION_FORM_URLENCODED])
+    @View("profile")
+    fun changePassword(
+        request: HttpRequest<*>,
+        authentication: Authentication,
+        @RequestAttribute("oldPassword") oldPassword: String,
+        @RequestAttribute("newPassword") newPassword: String
+    ): HttpResponse<Map<String, *>> {
+
+        val user = authentication.getUser()
+        userService.changePassword(user, PlainPassword(oldPassword), PlainPassword(newPassword))
+
+        return HttpResponse.ok(buildProfileModel(request, user) +
+                ("passwordChangeSuccess" to true))
+    }
+
+    @Error(exception = PasswordTooWeekException::class)
+    @View("profile")
+    fun handlePasswordToWeekException(request: HttpRequest<*>, authentication: Authentication): HttpResponse<Map<String, *>> =
+        HttpResponse.ok(
+            buildProfileModel(request, authentication.getUser()) +
+                    ("passwordChangeError" to translations.get("password.error.passwordTooWeek"))
+        )
+
+    @Error(exception = WrongPasswordException::class)
+    @View("profile")
+    fun handleWrongPasswordException(request: HttpRequest<*>, authentication: Authentication): HttpResponse<Map<String, *>> =
+        HttpResponse.ok(
+            buildProfileModel(request, authentication.getUser()) +
+                    ("passwordChangeError" to translations.get("password.error.wrongPassword"))
+        )
 
     private fun buildProfileModel(
         request: HttpRequest<*>,
         user: User,
         invite: Invite? = null
-    ): MutableHttpResponse<Map<String, *>> {
+    ): Map<String, *> {
 
         val model = mutableMapOf(
             "profile" to ProfileViewModel(
@@ -62,6 +92,6 @@ class ProfileViewController(
             model["invite"] = invite
         }
 
-        return HttpResponse.ok(model)
+        return model
     }
 }

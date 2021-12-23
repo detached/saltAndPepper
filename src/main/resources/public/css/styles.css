@@ -261,3 +261,8 @@ body {
 .form-error-message {
      color: red;
 }
+
+.content-section {
+     border-bottom: 1px solid #eee;
+     padding-bottom: 2em;
+}

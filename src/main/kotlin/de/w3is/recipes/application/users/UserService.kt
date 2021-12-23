@@ -19,7 +19,22 @@ class UserService(
         validateUsername(name)
         validatePassword(name, plainPassword)
 
-        return User.createNew(name, plainPassword, Role.USER).also { userRepository.store(it) }
+        return User.createNew(name, plainPassword, Role.USER).also {
+            userRepository.store(it)
+        }
+    }
+
+    fun changePassword(user: User, oldPassword: PlainPassword, newPassword: PlainPassword) {
+
+        if (!user.authenticate(oldPassword)) {
+            throw WrongPasswordException()
+        }
+
+        validatePassword(user.name, newPassword)
+
+        user.copy(password = EncryptedPassword.fromPlain(newPassword)).also {
+            userRepository.update(it)
+        }
     }
 
     private fun validatePassword(name: String, plainPassword: PlainPassword) {
@@ -44,3 +59,4 @@ class UserNotFoundException(username: String) : RuntimeException("User $username
 class UserAlreadyExistsException(username: String) : RuntimeException("User $username already exists")
 class UsernameInvalidException(username: String) : RuntimeException("The username $username is invalid")
 class PasswordTooWeekException : RuntimeException("The given password is to week")
+class WrongPasswordException : RuntimeException("The provided password is not correct")
