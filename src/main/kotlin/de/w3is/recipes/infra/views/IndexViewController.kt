@@ -13,11 +13,10 @@ import java.security.Principal
 class IndexViewController {
 
     @Get
-    fun getIndex(principal: Principal?): HttpResponse<Map<String, *>> {
-        return if (principal == null) {
+    fun getIndex(principal: Principal?): HttpResponse<Map<String, *>> =
+        if (principal == null) {
             HttpResponse.redirect(UriBuilder.of("/login").build())
         } else {
             HttpResponse.redirect(UriBuilder.of("/search").build())
         }
-    }
 }

@@ -6,7 +6,6 @@ plugins {
     id "io.micronaut.application" version '3.0.1'
     id 'org.flywaydb.flyway' version '8.2.1'
     id 'nu.studer.jooq' version '6.0.1'
-    id 'org.siouan.frontend-jdk11' version '6.0.0'
 }
 
 version "0.1"
@@ -46,8 +45,6 @@ dependencies {
     implementation("io.micronaut.sql:micronaut-jooq")
     implementation("io.micronaut.flyway:micronaut-flyway")
     implementation("io.micronaut.views:micronaut-views-velocity")
-    implementation("io.micronaut.cache:micronaut-cache-core")
-    implementation("io.micronaut.cache:micronaut-cache-caffeine")
     implementation("io.projectreactor:reactor-core")
     implementation("org.springframework.security:spring-security-core:${springSecurityVersion}")
     implementation("net.coobird:thumbnailator:${thumbnailatorVersion}")
@@ -61,6 +58,7 @@ dependencies {
 
     kaptTest("io.micronaut:micronaut-inject-java")
     testImplementation("com.willowtreeapps.assertk:assertk:${assertKVersion}")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:${mockitoVersion}")
 }
 
 java {
@@ -127,20 +125,7 @@ jooq {
     }
 }
 
-frontend {
-    yarnVersion = "1.22.10"
-    nodeVersion = "14.15.0"
-
-    yarnEnabled = true
-    nodeDistributionProvided = false
-
-    packageJsonDirectory = file("./src/main/js/")
-
-    assembleScript = "run build"
-}
-
 task(copyFrontendBundle, type: Copy) {
-    dependsOn assembleFrontend
     from(file('src/main/js/dist/')) {
         include '**/*'
     }

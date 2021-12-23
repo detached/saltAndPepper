@@ -16,24 +16,37 @@ enum class Role {
     USER
 }
 
+data class PlainPassword(val value: String) {
+    override fun toString() = "xxx"
+}
+
+data class EncryptedPassword(val value: String) {
+    companion object {
+        fun fromPlain(plainPassword: PlainPassword): EncryptedPassword {
+            return EncryptedPassword(BCryptPasswordEncoder().encode(plainPassword.value))
+        }
+    }
+}
+
 data class User(
     val id: UserId,
     val name: String,
-    val password: String,
+    val password: EncryptedPassword,
     val role: Role
 ) {
     companion object {
-        fun createNew(name: String, plainPassword: String, role: Role = Role.USER): User {
+        fun createNew(name: String, password: PlainPassword, role: Role = Role.USER): User {
             return User(
                 id = UserId.new(),
                 name = name,
-                password = BCryptPasswordEncoder().encode(plainPassword),
+                password = EncryptedPassword.fromPlain(password),
                 role = role
             )
         }
     }
 
-    fun authenticate(plainPassword: String) = BCryptPasswordEncoder().matches(plainPassword, password)
+    fun authenticate(plainPassword: PlainPassword) =
+        BCryptPasswordEncoder().matches(plainPassword.value, password.value)
 
     override fun toString(): String {
         return "User(id=$id, name='$name')"

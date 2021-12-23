@@ -2,6 +2,7 @@ package de.w3is.recipes.infra.security
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
+import de.w3is.recipes.application.users.PlainPassword
 import de.w3is.recipes.application.users.Role
 import de.w3is.recipes.application.users.User
 import de.w3is.recipes.application.users.UserRepository
@@ -34,7 +35,7 @@ class UserInitializer(private val userRepository: UserRepository,
             val user = userRepository.findUser(it.name)
             if (user == null) {
                 logger.info("Add user ${it.name}")
-                userRepository.store(User.createNew(it.name, it.password, Role.valueOf(it.role)))
+                userRepository.store(User.createNew(it.name, PlainPassword(it.password), Role.valueOf(it.role)))
             }
         }
     }

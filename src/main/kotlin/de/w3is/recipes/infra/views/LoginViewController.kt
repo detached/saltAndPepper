@@ -14,18 +14,20 @@ class LoginViewController(private val translations: Translations) {
 
     @Get
     @View("login")
-    fun loginPage(): HttpResponse<Map<String, *>> {
-        return HttpResponse.ok(mapOf(
-            Pair("translations", translations)
-        ))
-    }
+    fun loginPage(): HttpResponse<Map<String, *>> =
+        HttpResponse.ok(
+            mapOf(
+                "translations" to translations
+            )
+        )
 
     @Get("failed")
     @View("login")
-    fun loginFailedPage(): HttpResponse<Map<String, *>> {
-        return HttpResponse.ok(mapOf(
-            Pair("translations", translations),
-            Pair("errors", true)
-        ))
-    }
+    fun loginFailedPage(): HttpResponse<Map<String, *>> =
+        HttpResponse.ok(
+            mapOf(
+                "translations" to translations,
+                "errors" to true
+            )
+        )
 }

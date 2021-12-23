@@ -10,8 +10,8 @@
 
         <input type="submit" value='$translations.get("login.submit")' class="pure-button pure-button-primary pure-input-1-2"/>
     </form>
-    #if( $errors )
-    <span style="color: red;">$translations.get("login.failed")</span>
+    #if($errors)
+    <span class="form-error-message">$translations.get("login.failed")</span>
     #end
 </div>
 </body>

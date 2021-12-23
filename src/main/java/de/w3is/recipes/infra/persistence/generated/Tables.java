@@ -6,6 +6,7 @@ package de.w3is.recipes.infra.persistence.generated;
 
 import de.w3is.recipes.infra.persistence.generated.tables.FlywaySchemaHistory;
 import de.w3is.recipes.infra.persistence.generated.tables.Images;
+import de.w3is.recipes.infra.persistence.generated.tables.Invitations;
 import de.w3is.recipes.infra.persistence.generated.tables.Recipes;
 import de.w3is.recipes.infra.persistence.generated.tables.Users;
 
@@ -25,6 +26,11 @@ public class Tables {
      * The table <code>public.images</code>.
      */
     public static final Images IMAGES = Images.IMAGES;
+
+    /**
+     * The table <code>public.invitations</code>.
+     */
+    public static final Invitations INVITATIONS = Invitations.INVITATIONS;
 
     /**
      * The table <code>public.recipes</code>.

@@ -33,9 +33,9 @@ class RecipeViewController(
 
         return HttpResponse.ok(
             mapOf(
-                Pair("translations", translations),
-                Pair("menu", Menu(activeItem = Site.RECIPE)),
-                Pair("recipe", recipeViewModelFor(user, RecipeId(id))),
+                "translations" to translations,
+                "menu" to Menu(activeItem = Site.RECIPE),
+                "recipe" to recipeViewModelFor(user, RecipeId(id)),
             )
         )
     }
@@ -50,9 +50,9 @@ class RecipeViewController(
         return if (recipe.authorId == user.toAuthor().id) {
             HttpResponse.ok(
                 mapOf(
-                    Pair("translations", translations),
-                    Pair("menu", Menu(activeItem = Site.RECIPE)),
-                    Pair("recipe", recipeViewModelFor(user, RecipeId(id)))
+                    "translations" to translations,
+                    "menu" to Menu(activeItem = Site.RECIPE),
+                    "recipe" to recipeViewModelFor(user, RecipeId(id))
                 )
             )
         } else {
@@ -83,10 +83,10 @@ class RecipeViewController(
         return if (recipe.authorId == user.toAuthor().id) {
             HttpResponse.ok(
                 mapOf(
-                    Pair("translations", translations),
-                    Pair("menu", Menu(activeItem = Site.RECIPE)),
-                    Pair("recipe", recipeViewModelFor(user, RecipeId(id))),
-                    Pair("state", "confirm"),
+                    "translations" to translations,
+                    "menu" to Menu(activeItem = Site.RECIPE),
+                    "recipe" to recipeViewModelFor(user, RecipeId(id)),
+                    "state" to "confirm",
                 )
             )
         } else {
@@ -106,9 +106,9 @@ class RecipeViewController(
 
         return HttpResponse.ok(
             mapOf(
-                Pair("translations", translations),
-                Pair("menu", Menu(activeItem = Site.RECIPE)),
-                Pair("state", "deleted"),
+                "translations" to translations,
+                "menu" to Menu(activeItem = Site.RECIPE),
+                "state" to "deleted",
             )
         )
     }
@@ -117,8 +117,8 @@ class RecipeViewController(
     @View("newRecipe")
     fun newRecipePage(): HttpResponse<*> = HttpResponse.ok(
         mapOf(
-            Pair("translations", translations),
-            Pair("menu", Menu(activeItem = Site.RECIPE))
+            "translations" to translations,
+            "menu" to Menu(activeItem = Site.RECIPE)
         )
     )
 

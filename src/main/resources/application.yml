@@ -13,9 +13,6 @@ micronaut:
     velocity:
       enabled: true
       defaultExtension: "html"
-  caches:
-    users:
-      enabled: true
   security:
     authentication: session
     endpoints:
@@ -38,5 +35,12 @@ micronaut:
         access:
           - isAnonymous()
 
+logger:
+    levels:
+      io.micronaut: DEBUG
+      de.w3is.recipes: DEBUG
+
 application:
   users: "classpath:users.json"
+  allowInvitationFor: ADMIN,USER
+  minPasswordLength: 5

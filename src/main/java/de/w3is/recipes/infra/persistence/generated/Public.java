@@ -6,6 +6,7 @@ package de.w3is.recipes.infra.persistence.generated;
 
 import de.w3is.recipes.infra.persistence.generated.tables.FlywaySchemaHistory;
 import de.w3is.recipes.infra.persistence.generated.tables.Images;
+import de.w3is.recipes.infra.persistence.generated.tables.Invitations;
 import de.w3is.recipes.infra.persistence.generated.tables.Recipes;
 import de.w3is.recipes.infra.persistence.generated.tables.Users;
 
@@ -42,6 +43,11 @@ public class Public extends SchemaImpl {
     public final Images IMAGES = Images.IMAGES;
 
     /**
+     * The table <code>public.invitations</code>.
+     */
+    public final Invitations INVITATIONS = Invitations.INVITATIONS;
+
+    /**
      * The table <code>public.recipes</code>.
      */
     public final Recipes RECIPES = Recipes.RECIPES;
@@ -68,6 +74,7 @@ public class Public extends SchemaImpl {
     public final List<Sequence<?>> getSequences() {
         return Arrays.<Sequence<?>>asList(
             Sequences.IMAGES_ID_SEQ,
+            Sequences.INVITATIONS_ID_SEQ,
             Sequences.RECIPES_ID_SEQ,
             Sequences.USERS_ID_SEQ);
     }
@@ -77,6 +84,7 @@ public class Public extends SchemaImpl {
         return Arrays.<Table<?>>asList(
             FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY,
             Images.IMAGES,
+            Invitations.INVITATIONS,
             Recipes.RECIPES,
             Users.USERS);
     }

@@ -21,6 +21,11 @@ public class Sequences {
     public static final Sequence<Integer> IMAGES_ID_SEQ = Internal.createSequence("images_id_seq", Public.PUBLIC, SQLDataType.INTEGER.nullable(false), null, null, null, null, false, null);
 
     /**
+     * The sequence <code>public.invitations_id_seq</code>
+     */
+    public static final Sequence<Integer> INVITATIONS_ID_SEQ = Internal.createSequence("invitations_id_seq", Public.PUBLIC, SQLDataType.INTEGER.nullable(false), null, null, null, null, false, null);
+
+    /**
      * The sequence <code>public.recipes_id_seq</code>
      */
     public static final Sequence<Integer> RECIPES_ID_SEQ = Internal.createSequence("recipes_id_seq", Public.PUBLIC, SQLDataType.INTEGER.nullable(false), null, null, null, null, false, null);

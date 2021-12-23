@@ -257,3 +257,7 @@ body {
 .centered-text {
      text-align: center;
 }
+
+.form-error-message {
+     color: red;
+}

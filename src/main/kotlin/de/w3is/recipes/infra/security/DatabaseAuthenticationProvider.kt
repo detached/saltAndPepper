@@ -1,5 +1,6 @@
 package de.w3is.recipes.infra.security
 
+import de.w3is.recipes.application.users.PlainPassword
 import de.w3is.recipes.application.users.UserRepository
 import io.micronaut.http.HttpRequest
 import io.micronaut.security.authentication.*
@@ -19,7 +20,7 @@ class DatabaseAuthenticationProvider(private val userRepository: UserRepository)
     ): Publisher<AuthenticationResponse> = Mono.create { emitter ->
 
         val username = authenticationRequest.identity as String
-        val plainPassword = authenticationRequest.secret as String
+        val plainPassword = PlainPassword(authenticationRequest.secret as String)
 
         val user = userRepository.findUser(username)
 

@@ -52,12 +52,12 @@ class SearchViewController(
         )
 
         val model = mutableMapOf(
-            Pair("translations", translations),
-            Pair("menu", Menu(activeItem = Site.SEARCH)),
-            Pair("recipes", searchResponse.results.toListEntries()),
-            Pair("currentPageNumber", searchResponse.page.current),
-            Pair("maxPageNumber", searchResponse.page.max),
-            Pair("search", EscapeTool().html(queryString))
+            "translations" to translations,
+            "menu" to Menu(activeItem = Site.SEARCH),
+            "recipes" to searchResponse.results.toListEntries(),
+            "currentPageNumber" to searchResponse.page.current,
+            "maxPageNumber" to searchResponse.page.max,
+            "search" to EscapeTool().html(queryString)
         )
 
         if (searchResponse.page.current < searchResponse.page.max) {

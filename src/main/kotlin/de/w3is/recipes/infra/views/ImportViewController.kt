@@ -31,9 +31,9 @@ class ImportViewController(
     @View("import")
     fun getImportPage(): HttpResponse<Map<String, *>> = HttpResponse.ok(
         mapOf(
-            Pair("translations", translations),
-            Pair("menu", Menu(activeItem = Site.IMPORT)),
-            Pair("error", false),
+            "translations" to translations,
+            "menu" to Menu(activeItem = Site.IMPORT),
+            "error" to false,
         )
     )
 
@@ -64,9 +64,9 @@ class ImportViewController(
             } else {
                 HttpResponse.ok(
                     mapOf(
-                        Pair("translations", translations),
-                        Pair("menu", Menu(activeItem = Site.IMPORT)),
-                        Pair("error", true),
+                        "translations" to translations,
+                        "menu" to Menu(activeItem = Site.IMPORT),
+                        "error" to true,
                     )
                 )
             }

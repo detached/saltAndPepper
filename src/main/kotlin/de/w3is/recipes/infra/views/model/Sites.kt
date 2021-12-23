@@ -5,4 +5,5 @@ enum class Site {
     RECIPE,
     NEW_RECIPE,
     IMPORT,
+    PROFILE,
 }

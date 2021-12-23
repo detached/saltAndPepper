@@ -1,0 +1,31 @@
+#parse("views/components/head.html")
+<body>
+<div class="splash content centered" style="text-transform: none;">
+
+    <h1>$translations.get("inviteRegistration.title")</h1>
+    <p>$invitingUser $translations.get("inviteRegistration.text")</p>
+
+    <form class="pure-form pure-form-aligned" method="post">
+        <div class="pure-control-group">
+            <fieldset>
+                <label for="name">$translations.get("inviteRegistration.name"):</label>
+                <input type="text" id="name" name="name"
+                       placeholder="$translations.get('inviteRegistration.name')"/>
+            </fieldset>
+            <fieldset>
+                <label for="password">$translations.get("inviteRegistration.password"):</label>
+                <input type="password" id="password" name="password"
+                       placeholder="$translations.get('inviteRegistration.password')"/>
+            </fieldset>
+            <span>$translations.get("inviteRegistration.passwordRules")</span>
+        </div>
+        <button class="pure-button pure-button-primary" type="submit">
+            $translations.get("inviteRegistration.register")
+        </button>
+    </form>
+    #if($errorText)
+    <span class="form-error-message">$errorText</span>
+    #end
+</div>
+</body>
+#parse("views/components/foot.html")

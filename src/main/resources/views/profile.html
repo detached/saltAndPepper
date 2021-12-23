@@ -1,0 +1,57 @@
+#parse("views/components/head.html")
+<body>
+<div id="layout">
+    #parse("views/components/menu.html")
+    <div id="main">
+        <div class="header">
+            <h1>$translations.get("profile.title")</h1>
+        </div>
+        <div class="content centered">
+
+            <form class="pure-form pure-form-aligned">
+                <div class="pure-control-group">
+                    <fieldset>
+                        <label for="name">$translations.get("profile.name"):</label>
+                        <input type="text" id="name" name="name" value="$profile.name" readonly/>
+                    </fieldset>
+                    <fieldset>
+                        <label for="role">$translations.get("profile.role"):</label>
+                        <input type="text" id="role" name="role" value="$profile.role" readonly/>
+                    </fieldset>
+                </div>
+            </form>
+
+            #if($allowedToInvite)
+            <p>$translations.get("profile.invitationText")</p>
+
+            <form class="pure-form pure-form-aligned" method="post" action="/profile/invitation">
+                <div class="pure-control-group">
+                    #if($invitationLink)
+
+                    <fieldset>
+                        <input class="pure-button" type="submit" id="createInvitation" name="createInvitation"
+                               value="$translations.get('profile.createInvitation')" disabled/>
+                    </fieldset>
+                    <fieldset>
+                        <input class="pure-input-2-3" type="text" id="invitationLink" name="invitationLink"
+                               value="$invitationLink" readonly/>
+                        <button class="pure-button" onclick="copyToClipboard('invitationLink');">
+                            $translations.get('copyToClipboard')
+                        </button>
+                    </fieldset>
+
+                    #else
+
+                    <input class="pure-button" type="submit" id="createInvitation" name="createInvitation"
+                           value="$translations.get('profile.createInvitation')"/>
+
+                    #end
+                </div>
+            </form>
+
+            #end
+        </div>
+    </div>
+</div>
+</body>
+#parse("views/components/foot.html")
