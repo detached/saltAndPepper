@@ -18,15 +18,17 @@ jobs:
       with:
         java-version: '11'
         distribution: 'adopt'
-    - name: Setup Yarn
-      uses: mskelton/setup-yarn@v1.2.1
+    - uses: actions/setup-node@v2
       with:
         node-version: 'v16.13.1'
-        flags: '--cwd ./src/main/js/'
+        cache: 'yarn'
+        cache-dependency-path: './src/main/js/yarn.lock'
+    - name: Install dependencies
+      run: yarn --cwd ./src/main/js/ install --immutable
+      shell: bash
     - name: yarn build
-      uses: Borales/actions-yarn@v2.3.0
-      with:
-        cmd: '--cwd ./src/main/js/ run build'
+      run: yarn --cwd ./src/main/js/ run build 
+      shell: bash
     - name: Build Backend
       uses: gradle/gradle-build-action@4137be6a8bf7d7133955359dbd952c0ca73b1021
       with:
