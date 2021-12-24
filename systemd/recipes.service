@@ -11,7 +11,6 @@ User=recipes
 WorkingDirectory=/opt/recipes/
 ExecStart=java -jar /opt/recipes/recipes.jar
 ExecStartPost
-Environment="APPLICATION_USERS=file:/opt/recipes/users.json"
 Environment="MICRONAUT_ENVIRONMENTS=h2"
 
 [Install]

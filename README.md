@@ -36,10 +36,10 @@ If not specified the test users from `src/main/resources/users.json` are created
 
 Example: Running with h2
 ```shell
-MICRONAUT_ENVIRONMENTS=h2 APPLICATION_USERS=file:/path/to/users.json java -jar ./recipes-0.1-all.jar
+MICRONAUT_ENVIRONMENTS=h2 java -jar ./recipes-0.1-all.jar
 ```
 
 Example: Running with postgresql
 ```shell
-MICRONAUT_ENVIRONMENTS=postgres APPLICATION_USERS=file:/path/to/users.json java -jar ./recipes-0.1-all.jar
+MICRONAUT_ENVIRONMENTS=postgres java -jar ./recipes-0.1-all.jar
 ```

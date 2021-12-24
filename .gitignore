@@ -16,4 +16,4 @@ yarn/
 node/
 dist/
 node_modules/
-recipe.h2.mv.db
+*.db
