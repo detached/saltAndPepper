@@ -22,6 +22,7 @@ jobs:
       uses: mskelton/setup-yarn@v1.2.1
       with:
         node-version: 'v16.13.1'
+        flags: --cwd ./src/main/js/
     - name: yarn install
       uses: Borales/actions-yarn@v2.3.0
       with:
