@@ -1,3 +1,4 @@
+#parse("views/components/imageGallery.html")
 #parse("views/components/head.html")
 <body>
 <div id="layout">
@@ -7,11 +8,9 @@
             <h1>$recipe.title</h1>
         </div>
         <div class="content centered">
-            <image-gallery recipeId="$recipe.id"
-                           toggleUploadButtonLabel="$translations.get('recipe.imageUpload')"
-                           uploadImageLabel="$translations.get('image.upload')"
-                           allowUpload=$recipe.allowedToEdit >
-            </image-gallery>
+
+            #imageGallery($recipe.id, $images, $recipe.allowedToEdit)
+
             <div class="pure-g recipe-info">
                 <div class="pure-u-1-2">$translations.get("recipe.author")</div>
                 <div class="pure-u-1-2">$recipe.author</div>

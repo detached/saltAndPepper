@@ -266,3 +266,31 @@ body {
      border-bottom: 1px solid #eee;
      padding-bottom: 2em;
 }
+
+.image-gallery-image {
+     padding-right: 1em;
+     padding-bottom: 1em;
+     display: inline-block;
+     letter-spacing: normal;
+     word-spacing: normal;
+     vertical-align: top;
+     text-rendering: auto;
+     position: relative;
+}
+
+.image-gallery-image:hover img {
+     opacity: 0.3;
+}
+
+.image-gallery-image:hover a {
+     opacity: 1;
+}
+
+.image-gallery-image-button {
+      position: absolute;
+      top: 1px;
+      right: 20px;
+      color: black;
+      cursor: pointer;
+      opacity: 0;
+}

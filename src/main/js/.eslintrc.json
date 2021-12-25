@@ -1,10 +1,6 @@
 {
     "extends": [
-        "eslint:recommended",
-        "plugin:lit/recommended"
-    ],
-    "plugins": [
-        "lit"
+        "eslint:recommended"
     ],
     "parserOptions": {
         "ecmaVersion": 6,

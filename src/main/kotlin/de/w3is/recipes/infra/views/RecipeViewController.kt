@@ -4,12 +4,16 @@ import de.w3is.recipes.application.RecipeContent
 import de.w3is.recipes.application.RecipeService
 import de.w3is.recipes.application.users.User
 import de.w3is.recipes.domain.AuthorRepository
+import de.w3is.recipes.domain.model.ImageId
+import de.w3is.recipes.domain.model.Recipe
 import de.w3is.recipes.domain.model.RecipeId
+import de.w3is.recipes.infra.api.toImageUrl
 import de.w3is.recipes.infra.security.getUser
 import de.w3is.recipes.infra.views.model.*
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.*
+import io.micronaut.http.multipart.CompletedFileUpload
 import io.micronaut.http.uri.UriBuilder
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.authentication.Authentication
@@ -29,13 +33,39 @@ class RecipeViewController(
     fun showRecipe(@PathVariable id: String, authentication: Authentication): HttpResponse<*> {
 
         val user = authentication.getUser()
+        val recipe = recipeService.get(RecipeId(id))
 
         return HttpResponse.ok(
             mapOf(
                 "menu" to Menu(activeItem = Site.RECIPE),
-                "recipe" to recipeViewModelFor(user, RecipeId(id)),
+                "recipe" to getRecipeViewModelFor(user, recipe),
+                "images" to getImageViewModelsFor(recipe)
             )
         )
+    }
+
+    @Post("/{id}/images", consumes = [MediaType.MULTIPART_FORM_DATA])
+    fun uploadRecipeImage(
+        @PathVariable id: String,
+        image: CompletedFileUpload,
+        authentication: Authentication
+    ): HttpResponse<Unit> {
+        val user = authentication.getUser()
+        val recipeId = RecipeId(id)
+        recipeService.addImageToRecipe(recipeId, image.inputStream, user)
+        return HttpResponse.redirect(recipeId.toUri())
+    }
+
+    @Delete("/{id}/image/{imageId}")
+    fun removeRecipeImage(
+        @PathVariable id: String,
+        @PathVariable imageId: String,
+        authentication: Authentication
+    ): HttpResponse<Unit> {
+        val user = authentication.getUser()
+        val recipeId = RecipeId(id)
+        recipeService.deleteImageFromRecipe(recipeId, ImageId(imageId), user)
+        return HttpResponse.ok()
     }
 
     @Get("/{id}/edit")
@@ -49,7 +79,7 @@ class RecipeViewController(
             HttpResponse.ok(
                 mapOf(
                     "menu" to Menu(activeItem = Site.RECIPE),
-                    "recipe" to recipeViewModelFor(user, RecipeId(id))
+                    "recipe" to getRecipeViewModelFor(user, recipe)
                 )
             )
         } else {
@@ -81,7 +111,7 @@ class RecipeViewController(
             HttpResponse.ok(
                 mapOf(
                     "menu" to Menu(activeItem = Site.RECIPE),
-                    "recipe" to recipeViewModelFor(user, RecipeId(id)),
+                    "recipe" to getRecipeViewModelFor(user, recipe),
                     "state" to "confirm",
                 )
             )
@@ -136,23 +166,27 @@ class RecipeViewController(
         ingredients = this["ingredients"] ?: error("modifications was not set"),
     )
 
-    private fun recipeViewModelFor(user: User, recipeId: RecipeId): RecipeViewModel =
-        recipeService.get(recipeId).let { recipe ->
-            val author = authorRepository.get(recipe.authorId)
-            RecipeViewModel(
-                id = recipe.id.recipeId,
-                title = recipe.title,
-                category = recipe.category,
-                cuisine = recipe.cuisine,
-                yields = recipe.yields,
-                ingredients = recipe.ingredients,
-                instructions = recipe.instructions,
-                modifications = recipe.modifications,
-                author = author.name,
-                allowedToEdit = user.toAuthor().id == recipe.authorId,
-                editUrl = recipe.id.toEditUri().toString(),
-                deleteUrl = recipe.id.toDeleteUri().toString(),
-            )
+    private fun getRecipeViewModelFor(user: User, recipe: Recipe): RecipeViewModel {
+        val author = authorRepository.get(recipe.authorId)
+        return RecipeViewModel(
+            id = recipe.id.recipeId,
+            title = recipe.title,
+            category = recipe.category,
+            cuisine = recipe.cuisine,
+            yields = recipe.yields,
+            ingredients = recipe.ingredients,
+            instructions = recipe.instructions,
+            modifications = recipe.modifications,
+            author = author.name,
+            allowedToEdit = user.toAuthor().id == recipe.authorId,
+            editUrl = recipe.id.toEditUri().toString(),
+            deleteUrl = recipe.id.toDeleteUri().toString(),
+        )
+    }
+
+    private fun getImageViewModelsFor(recipe: Recipe) =
+        recipe.getImages().map {
+            ImageViewModel(it.value, it.toImageUrl())
         }
 }
 

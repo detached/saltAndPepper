@@ -1,0 +1,22 @@
+#macro(imageGallery $recipeId, $images, $uploadAllowed)
+<div id="image-gallery">
+    <div class="pure-g">
+        #foreach($image in $images)
+        <div class="pure-u-1-5 image-gallery-image">
+            <img class="pure-img" src="$image.url"/>
+            <a onclick="deleteRecipeImage('$recipeId', '$image.id');" class="image-gallery-image-button">X</a>
+        </div>
+        #end
+    </div>
+    #if($uploadAllowed)
+    <a onclick="toggleHidden('image-gallery.upload')"
+       class="pure-button">$translations.get('imageGallery.toggleUpload')</a>
+    <div id="image-gallery.upload" class="image-gallery-upload" style="visibility: hidden;">
+        <form action="/recipe/$recipeId/images" method="post" enctype="multipart/form-data">
+            <input type="file" name="image" accept="image/png, image/jpeg"/>
+            <input type="submit" class="pure-button" value="$translations.get('imageGallery.upload')"/>
+        </form>
+    </div>
+    #end
+</div>
+#end
