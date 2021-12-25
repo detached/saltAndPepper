@@ -19,12 +19,12 @@ body {
 }
 
 #layout.active #menu {
-     left: 150px;
-     width: 150px;
+    left: 150px;
+    width: 150px;
 }
 
 #layout.active .menu-link {
-     left: 150px;
+    left: 150px;
 }
 
 .content {
@@ -34,36 +34,36 @@ body {
 }
 
 .centered {
-     padding: 2em 2em;
-     max-width: 800px;
+    padding: 2em 2em;
+    max-width: 800px;
 }
 
 .header {
-     margin: 0;
-     color: #333;
-     text-align: center;
-     padding: 2.5em 2em 0;
-     border-bottom: 1px solid #eee;
- }
+    margin: 0;
+    color: #333;
+    text-align: center;
+    padding: 2.5em 2em 0;
+    border-bottom: 1px solid #eee;
+}
 
 .header h1 {
-     margin: 0.2em 0;
-     font-size: 3em;
-     font-weight: 300;
+    margin: 0.2em 0;
+    font-size: 3em;
+    font-weight: 300;
 }
 
 .header h2 {
-     font-weight: 300;
-     color: #ccc;
-     padding: 0;
-     margin-top: 0;
+    font-weight: 300;
+    color: #ccc;
+    padding: 0;
+    margin-top: 0;
 }
 
 .search-header {
-     margin: 0;
-     color: #333;
-     text-align: center;
-     padding: 1em 1em;
+    margin: 0;
+    color: #333;
+    text-align: center;
+    padding: 1em 1em;
 }
 
 .content-subhead {
@@ -171,13 +171,13 @@ body {
 
 .menu-link span:before,
 .menu-link span:after {
-     position: absolute;
-     margin-top: -0.6em;
-     content: " ";
+    position: absolute;
+    margin-top: -0.6em;
+    content: " ";
 }
 
 .menu-link span:after {
-     margin-top: 0.6em;
+    margin-top: 0.6em;
 }
 
 #recipe-table {
@@ -226,7 +226,7 @@ body {
 }
 
 .recipe-list-td {
-     cursor: pointer;
+    cursor: pointer;
 }
 
 .splash {
@@ -250,47 +250,155 @@ body {
 }
 
 .recipe-delete-button {
-     background: rgb(202, 60, 60);
-     color: white;
+    background: rgb(202, 60, 60);
+    color: white;
 }
 
 .centered-text {
-     text-align: center;
+    text-align: center;
 }
 
 .form-error-message {
-     color: red;
+    color: red;
 }
 
 .content-section {
-     border-bottom: 1px solid #eee;
-     padding-bottom: 2em;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 2em;
+}
+
+.image-gallery-upload {
+    margin-top: 1em;
+    padding: 1em;
+    background-color: rgb(25, 24, 24);
+    color: rgb(153, 153, 153);
+}
+
+.image-gallery-upload input {
+    margin-top: 1em;
 }
 
 .image-gallery-image {
-     padding-right: 1em;
-     padding-bottom: 1em;
-     display: inline-block;
-     letter-spacing: normal;
-     word-spacing: normal;
-     vertical-align: top;
-     text-rendering: auto;
-     position: relative;
+    padding-right: 1em;
+    padding-bottom: 1em;
+    display: inline-block;
+    letter-spacing: normal;
+    word-spacing: normal;
+    vertical-align: top;
+    text-rendering: auto;
+    position: relative;
 }
 
 .image-gallery-image:hover img {
-     opacity: 0.3;
+    opacity: 0.3;
 }
 
 .image-gallery-image:hover a {
-     opacity: 1;
+    opacity: 1;
 }
 
-.image-gallery-image-button {
-      position: absolute;
-      top: 1px;
-      right: 20px;
-      color: black;
-      cursor: pointer;
-      opacity: 0;
+a.image-gallery-image-button {
+    position: absolute;
+    top: 1px;
+    right: 20px;
+    color: black;
+    cursor: pointer;
+    opacity: 0;
+}
+
+.image-gallery-lightbox {
+    position: fixed;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, .7);
+    width: 100%;
+    opacity: 0;
+    -webkit-transition: opacity .5s ease-in-out;
+    -moz-transition: opacity .5s ease-in-out;
+    -o-transition: opacity .5s ease-in-out;
+    transition: opacity .5s ease-in-out;
+    overflow: hidden;
+    z-index: 999;
+}
+
+.image-gallery-lightbox img {
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left:0;
+    right:0;
+    bottom: 0;
+    max-height: 0%;
+    max-width: 0%;
+    border: 3px solid white;
+    box-shadow: 0px 0px 8px rgba(0,0,0,.3);
+    box-sizing: border-box;
+    -webkit-transition: .5s ease-in-out;
+    -moz-transition: .5s ease-in-out;
+    -o-transition: .5s ease-in-out;
+    transition: .5s ease-in-out;
+}
+
+a.image-gallery-lightbox-close {
+    display: block;
+    width:50px;
+    height:50px;
+    box-sizing: border-box;
+    background: white;
+    color: black;
+    text-decoration: none;
+    position: absolute;
+    top: -80px;
+    right: 0;
+    -webkit-transition: .5s ease-in-out;
+    -moz-transition: .5s ease-in-out;
+    -o-transition: .5s ease-in-out;
+    transition: .5s ease-in-out;
+}
+
+a.image-gallery-lightbox-close:before {
+    content: "";
+    display: block;
+    height: 30px;
+    width: 1px;
+    background: black;
+    position: absolute;
+    left: 26px;
+    top:10px;
+    -webkit-transform:rotate(45deg);
+    -moz-transform:rotate(45deg);
+    -o-transform:rotate(45deg);
+    transform:rotate(45deg);
+}
+
+a.image-gallery-lightbox-close:after {
+    content: "";
+    display: block;
+    height: 30px;
+    width: 1px;
+    background: black;
+    position: absolute;
+    left: 26px;
+    top:10px;
+    -webkit-transform:rotate(-45deg);
+    -moz-transform:rotate(-45deg);
+    -o-transform:rotate(-45deg);
+    transform:rotate(-45deg);
+}
+
+.image-gallery-lightbox:target {
+    opacity: 1;
+    top: 0;
+    bottom: 0;
+    overflow:scroll;
+}
+
+.image-gallery-lightbox:target img {
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.image-gallery-lightbox:target a.image-gallery-lightbox-close {
+    top: 0;
 }

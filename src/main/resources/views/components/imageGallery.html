@@ -3,8 +3,14 @@
     <div class="pure-g">
         #foreach($image in $images)
         <div class="pure-u-1-5 image-gallery-image">
-            <img class="pure-img" src="$image.url"/>
+            <a href="#image-$image.id">
+                <img class="pure-img" src="$image.url"/>
+            </a>
             <a onclick="deleteRecipeImage('$recipeId', '$image.id');" class="image-gallery-image-button">X</a>
+        </div>
+        <div class="image-gallery-lightbox" id="image-$image.id">
+            <img src="$image.url"/>
+            <a class="image-gallery-lightbox-close" href="#"></a>
         </div>
         #end
     </div>
@@ -14,6 +20,7 @@
     <div id="image-gallery.upload" class="image-gallery-upload" style="visibility: hidden;">
         <form action="/recipe/$recipeId/images" method="post" enctype="multipart/form-data">
             <input type="file" name="image" accept="image/png, image/jpeg"/>
+            <br />
             <input type="submit" class="pure-button" value="$translations.get('imageGallery.upload')"/>
         </form>
     </div>

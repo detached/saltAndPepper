@@ -4,6 +4,8 @@ micronaut:
   server:
     cors:
       enabled: true
+    multipart:
+      max-file-size: 5000000
   router:
     static-resources:
       default:
