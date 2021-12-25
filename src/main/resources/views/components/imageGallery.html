@@ -17,7 +17,7 @@
     #if($uploadAllowed)
     <a onclick="toggleHidden('image-gallery.upload')"
        class="pure-button">$translations.get('imageGallery.toggleUpload')</a>
-    <div id="image-gallery.upload" class="image-gallery-upload" style="visibility: hidden;">
+    <div id="image-gallery.upload" class="image-gallery-upload" style="visibility: hidden; height: 0px;">
         <form action="/recipe/$recipeId/images" method="post" enctype="multipart/form-data">
             <input type="file" name="image" accept="image/png, image/jpeg"/>
             <br />
