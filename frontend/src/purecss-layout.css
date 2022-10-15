@@ -155,7 +155,7 @@ how it works:
 small screens.
 */
 .menu-link {
-  position: fixed;
+  /*position: fixed; */
   display: block; /* show this only on small screens */
   top: 0;
   left: 0; /* "#menu width" */

@@ -1,0 +1,15 @@
+.recipe-list {
+    overflow-x:auto;
+}
+
+.recipe-list table {
+    width: 100%;
+}
+
+.recipe-list-pagination {
+    text-align: center;
+}
+
+.recipe-list-pagination ul li {
+    margin-right: 0.5em;
+}

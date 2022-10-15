@@ -4,7 +4,8 @@ import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import "purecss/build/pure.css";
+import "purecss/build/pure-min.css";
+import "purecss/build/grids-responsive-min.css"
 import "./purecss-layout.css";
 
 import "./i18n";

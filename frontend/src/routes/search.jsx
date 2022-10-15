@@ -2,6 +2,7 @@ import {useCallback, useState} from "react";
 import {useTranslation} from "react-i18next";
 import RecipeList from "../components/recipeList";
 import {Page, SaltAndPepper, SearchRequest} from "../api/saltAndPepper";
+import "./search.css";
 
 export default function Search() {
     const {t} = useTranslation();
@@ -36,14 +37,14 @@ export default function Search() {
     }
 
     return (
-        <>
-            <div className="search-header">
-                <form className="pure-form" onSubmit={(e) => submitSearchQuery(e)}>
+        <div className="pure-g">
+            <div className="pure-u-1-1">
+                <form className="pure-form search-mask" onSubmit={(e) => submitSearchQuery(e)}>
                     <input
                         type="search"
                         id="query"
                         name="query"
-                        className="pure-input-3-4"
+                        className="search-input"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
@@ -55,9 +56,9 @@ export default function Search() {
                     />
                 </form>
             </div>
-            <div className="content">
+            <div className="pure-u-1-1">
                 <RecipeList page={page} listItems={searchResults} switchPageCallback={switchPage}/>
             </div>
-        </>
+        </div>
     );
 }
