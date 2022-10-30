@@ -37,7 +37,7 @@ export default function Search() {
     });
 
     const [isLoading, setIsLoading] = useState(false);
-    const [doSearch, setDoSearch] = useState(false);
+    const [doSearch, setDoSearch] = useState(true);
 
     const submitSearchQuery = useCallback(
         (event) => {
