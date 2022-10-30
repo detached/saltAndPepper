@@ -61,6 +61,42 @@ export class Page {
     }
 }
 
+export class NewRecipeRequest {
+
+    /**
+     * @param title {string}
+     * @param category {string}
+     * @param cuisine {string}
+     * @param yields {string}
+     * @param ingredients {string}
+     * @param instructions {string}
+     * @param modifications {string}
+     */
+    constructor(title, category, cuisine, yields, ingredients, instructions, modifications) {
+        this.title = title;
+        this.category = category;
+        this.cuisine = cuisine;
+        this.yields = yields;
+        this.ingredients = ingredients;
+        this.instructions = instructions;
+        this.modifications = modifications;
+    }
+}
+
+export class NewRecipeResponse {
+
+    /**
+     * @param id {string}
+     */
+    constructor(id) {
+        this.id = id;
+    }
+
+    static assertType(object) {
+        assertProperty(object, "id");
+    }
+}
+
 export const SaltAndPepper = {
     /**
      * @param searchRequest {SearchRequest}
@@ -91,4 +127,24 @@ export const SaltAndPepper = {
             return data;
         }
     },
+
+    /**
+     *
+     * @param newRecipeRequest {NewRecipeRequest}
+     * @returns {Promise<NewRecipeResponse>}
+     */
+    newRecipe: async function (newRecipeRequest) {
+        if (mockConfig.enabled) {
+            console.log("newRecipe: " + newRecipeRequest);
+            return new NewRecipeResponse("1");
+        } else {
+            const response = await saltAndPepperClient.post(
+                "/recipe/",
+                newRecipeRequest
+            );
+            const data = response.data;
+            NewRecipeResponse.assertType(data);
+            return data;
+        }
+    }
 };
