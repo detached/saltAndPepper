@@ -245,3 +245,8 @@ Hides the menu at `48em`, but modify this based on your app's needs.
 .content {
   margin-top: 1.5em;
 }
+
+.content-section {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 2em;
+}

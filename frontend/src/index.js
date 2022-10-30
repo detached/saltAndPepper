@@ -13,7 +13,6 @@ import "./i18n";
 import Root from "./routes/root";
 import Search from "./routes/search";
 import NewRecipe from "./routes/newRecipe";
-import Import from "./routes/import";
 import Profile from "./routes/profile";
 import Logout from "./routes/logout";
 
@@ -29,10 +28,6 @@ const router = createBrowserRouter([
       {
         path: "recipe/new",
         element: <NewRecipe />,
-      },
-      {
-        path: "import",
-        element: <Import />,
       },
       {
         path: "profile",

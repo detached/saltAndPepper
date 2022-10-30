@@ -54,7 +54,6 @@ export default function Root() {
           <ul className="pure-menu-list">
             {menuItem("search", t("menu.search"))}
             {menuItem("recipe/new", t("menu.newRecipe"))}
-            {menuItem("import", t("menu.import"))}
             {menuItem("profile", t("menu.profile"))}
             {menuItem("logout", t("menu.logout"))}
           </ul>
