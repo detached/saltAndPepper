@@ -70,8 +70,14 @@ export const SaltAndPepper = {
         if (mockConfig.enabled) {
             return new SearchResponse(
                 [
-                    new SearchResponseData(searchRequest.page.number + "1", "test1.jpg", "Test1" + searchRequest.page.number, "TestCategory1", "TestCuisine1", "Author1"),
-                    new SearchResponseData(searchRequest.page.number + "2", "test2.jpg", "Test2" + searchRequest.page.number, "TestCategory2", "TestCuisine2", "Author2")
+                    new SearchResponseData(searchRequest.page.number + "1", "https://picsum.photos/150", searchRequest.searchQuery + "1" + searchRequest.page.number, "TestCategory1", "TestCuisine1", "Author1"),
+                    new SearchResponseData(searchRequest.page.number + "2", "https://picsum.photos/150", searchRequest.searchQuery + "2" + searchRequest.page.number, "TestCategory2", "TestCuisine2", "Author2"),
+                    new SearchResponseData(searchRequest.page.number + "3", "https://picsum.photos/150", searchRequest.searchQuery + "2" + searchRequest.page.number, "TestCategory2", "TestCuisine2", "Author2"),
+                    new SearchResponseData(searchRequest.page.number + "4", "https://picsum.photos/150", searchRequest.searchQuery + "2" + searchRequest.page.number, "TestCategory2", "TestCuisine2", "Author2"),
+                    new SearchResponseData(searchRequest.page.number + "5", "https://picsum.photos/150", searchRequest.searchQuery + "2" + searchRequest.page.number, "TestCategory2", "TestCuisine2", "Author2"),
+                    new SearchResponseData(searchRequest.page.number + "6", "https://picsum.photos/150", searchRequest.searchQuery + "2" + searchRequest.page.number, "TestCategory2", "TestCuisine2", "Author2"),
+                    new SearchResponseData(searchRequest.page.number + "7", "https://picsum.photos/150", searchRequest.searchQuery + "2" + searchRequest.page.number, "TestCategory2", "TestCuisine2", "Author2"),
+                    new SearchResponseData(searchRequest.page.number + "8", "https://picsum.photos/150", searchRequest.searchQuery + "2" + searchRequest.page.number, "TestCategory2", "TestCuisine2", "Author2")
                 ],
                 new Page(searchRequest.page.size, searchRequest.page.number, 10)
             );

@@ -2,11 +2,10 @@ import {useTranslation} from "react-i18next";
 import {useNavigate} from "react-router-dom";
 import "./recipeList.css"
 
-export default function RecipeList(props) {
+export default function RecipeList({page, listItems, setPage}) {
 
     const {t} = useTranslation();
-    const {page, listItems, switchToPageCallback} = props;
-    const {navigateTo} = useNavigate();
+    const navigateTo = useNavigate();
 
     /**
      * @param recipe {SearchResponseData}
@@ -20,38 +19,28 @@ export default function RecipeList(props) {
      * @returns {JSX.Element}
      */
     function pagination(page) {
-        return <div className="pure-menu pure-menu-horizontal recipe-list-pagination">
+        return <div className="pure-button-group recipe-list-pagination" role="group">
             <ul>
                 {
                     page.number - 2 >= 0 ?
-                        <li className="pure-menu-item">
-                            <button className="pure-button"
-                                    onClick={() => switchToPageCallback(0)}>{t("pagination.first")}</button>
-                        </li> : null
+                        <button name="first" className="pure-button"
+                                onClick={() => setPage(0)}>{t("pagination.first")}</button> : null
                 }
                 {
                     page.number - 1 >= 0 ?
-                        <li className="pure-menu-item">
-                            <button className="pure-button"
-                                    onClick={() => switchToPageCallback(page.number - 1)}>&#10218;</button>
-                        </li> : null
+                        <button name="prev" className="pure-button"
+                                onClick={() => setPage(page.number - 1)}>&#10218;</button> : null
                 }
-                <li className="pure-menu-item pure-menu-selected">
-                    <button className="pure-button">{page.number}</button>
-                </li>
+                <button name="current" className="pure-button pure-button-active">{page.number}</button>
                 {
                     page.number + 1 <= page.maxNumber ?
-                        <li className="pure-menu-item">
-                            <button className="pure-button"
-                                    onClick={() => switchToPageCallback(page.number + 1)}>&#10219;</button>
-                        </li> : null
+                        <button name="next" className="pure-button"
+                                onClick={() => setPage(page.number + 1)}>&#10219;</button> : null
                 }
                 {
                     page.number + 2 <= page.maxNumber ?
-                        <li className="pure-menu-item">
-                            <button className="pure-button"
-                                    onClick={() => switchToPageCallback(page.maxNumber)}>{t("pagination.last")}</button>
-                        </li> : null
+                        <button name="last" className="pure-button"
+                                onClick={() => setPage(page.maxNumber)}>{t("pagination.last")}</button> : null
                 }
             </ul>
         </div>
@@ -76,17 +65,15 @@ export default function RecipeList(props) {
                 {listItems.map(recipe =>
                     <tr key={recipe.id} onClick={() => navigateToRecipe(recipe)}>
                         <td>{recipe.imageUrl ? <img src={recipe.imageUrl} alt=""/> : null}</td>
-                        <td className="recipe-list-td">{recipe.title}</td>
-                        <td>{recipe.category}</td>
-                        <td>{recipe.cuisine}</td>
-                        <td>{recipe.author}</td>
+                        <td>{recipe.title}</td>
+                        <td className="desktop-only">{recipe.category}</td>
+                        <td className="desktop-only">{recipe.cuisine}</td>
+                        <td className="desktop-only">{recipe.author}</td>
                     </tr>)}
                 </tbody>
             </table>
         </div>
     }
-
-    console.log(page);
 
     return <>
         {pagination(page)}

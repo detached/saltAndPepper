@@ -1,15 +1,24 @@
 .recipe-list {
-    overflow-x:auto;
+    overflow-x: auto;
 }
 
 .recipe-list table {
     width: 100%;
 }
 
+@media screen and (max-width: 48em) {
+    .recipe-list table tr th:nth-child(n+3),
+    .desktop-only {
+        display: none
+    }
+}
+
 .recipe-list-pagination {
     text-align: center;
 }
 
-.recipe-list-pagination ul li {
-    margin-right: 0.5em;
+.recipe-list-pagination button {
+    background: none!important;
+    border: none;
+
 }

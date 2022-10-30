@@ -1,7 +1,9 @@
 .search-mask {
-    margin: 1em 2em 1em 2em;
+    display: flex;
+    margin: 1em 10%;
 }
 
-.search-input {
-    margin-right: 0.5em;
+.search-mask #query {
+    margin: 0 0.5em 0 0;
+    width: 100%;
 }
