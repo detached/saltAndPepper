@@ -4,7 +4,7 @@
 
 Features:
  * Adding recipes
- * Search recipes
+ * SearchRoute recipes
  * Import from gourmet xml
  * Simple multiuser support
 

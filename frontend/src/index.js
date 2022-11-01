@@ -10,32 +10,32 @@ import "./purecss-layout.css";
 
 import "./i18n";
 
-import Root from "./routes/root";
-import Search from "./routes/search";
-import NewRecipe from "./routes/newRecipe";
-import Profile from "./routes/profile";
-import Logout from "./routes/logout";
+import RootRoute from "./routes/rootRoute";
+import SearchRoute from "./routes/searchRoute";
+import NewRecipeRoute from "./routes/newRecipeRoute";
+import ProfileRoute from "./routes/profileRoute";
+import LogoutRoute from "./routes/logoutRoute";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Root />,
+    element: <RootRoute />,
     children: [
       {
         path: "search",
-        element: <Search />,
+        element: <SearchRoute />,
       },
       {
         path: "recipe/new",
-        element: <NewRecipe />,
+        element: <NewRecipeRoute />,
       },
       {
         path: "profile",
-        element: <Profile />,
+        element: <ProfileRoute />,
       },
       {
         path: "logout",
-        element: <Logout />,
+        element: <LogoutRoute />,
       },
     ],
   },

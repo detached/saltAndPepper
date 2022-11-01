@@ -4,7 +4,7 @@ import {mockConfig} from "../config/mockConfig";
 
 export class SearchRequest {
     /**
-     * @param searchQuery {string}
+     * @param searchQuery {String}
      * @param page {Page}
      */
     constructor(searchQuery, page) {
@@ -31,12 +31,12 @@ export class SearchResponse {
 
 export class SearchResponseData {
     /**
-     * @param id {string}
-     * @param imageUrl {string}
-     * @param title {string}
-     * @param category {string}
-     * @param cuisine {string}
-     * @param author {string}
+     * @param id {String}
+     * @param imageUrl {String}
+     * @param title {String}
+     * @param category {String}
+     * @param cuisine {String}
+     * @param author {String}
      */
     constructor(id, imageUrl, title, category, cuisine, author) {
         this.id = id;
@@ -50,9 +50,9 @@ export class SearchResponseData {
 
 export class Page {
     /**
-     * @param size {number}
-     * @param number {number}
-     * @param maxNumber {number}
+     * @param size {Number}
+     * @param number {Number}
+     * @param maxNumber {Number}
      */
     constructor(size, number, maxNumber = 0) {
         this.size = size;
@@ -64,13 +64,13 @@ export class Page {
 export class NewRecipeRequest {
 
     /**
-     * @param title {string}
-     * @param category {string}
-     * @param cuisine {string}
-     * @param yields {string}
-     * @param ingredients {string}
-     * @param instructions {string}
-     * @param modifications {string}
+     * @param title {String}
+     * @param category {String}
+     * @param cuisine {String}
+     * @param yields {String}
+     * @param ingredients {String}
+     * @param instructions {String}
+     * @param modifications {String}
      */
     constructor(title, category, cuisine, yields, ingredients, instructions, modifications) {
         this.title = title;
@@ -86,7 +86,7 @@ export class NewRecipeRequest {
 export class NewRecipeResponse {
 
     /**
-     * @param id {string}
+     * @param id {String}
      */
     constructor(id) {
         this.id = id;
@@ -94,6 +94,52 @@ export class NewRecipeResponse {
 
     static assertType(object) {
         assertProperty(object, "id");
+    }
+}
+
+export class Profile {
+
+    /**
+     * @param name {String}
+     * @param role {String}
+     * @param isAllowedToInvite {Boolean}
+     */
+    constructor(name, role, isAllowedToInvite) {
+        this.name = name;
+        this.role = role;
+        this.isAllowedToInvite = isAllowedToInvite;
+    }
+
+    static assertType(object) {
+        assertProperty(object, "name");
+        assertProperty(object, "role");
+        assertProperty(object, "isAllowedToInvite");
+    }
+}
+
+export class ChangePasswordRequest {
+
+    /**
+     * @param oldPassword {String}
+     * @param newPassword {String}
+     */
+    constructor(oldPassword, newPassword) {
+        this.oldPassword = oldPassword;
+        this.newPassword = newPassword;
+    }
+}
+
+export class InvitationLinkResponse {
+
+    /**
+     * @param invitationLink {String}
+     */
+    constructor(invitationLink) {
+        this.invitationLink = invitationLink;
+    }
+
+    static assertType(object) {
+        assertProperty(object, "invitationLink");
     }
 }
 
@@ -145,6 +191,93 @@ export const SaltAndPepper = {
             const data = response.data;
             NewRecipeResponse.assertType(data);
             return data;
+        }
+    },
+
+    /**
+     * @returns {Promise<Profile>}
+     */
+    getProfile: async function () {
+      if (mockConfig.enabled) {
+          return new Profile("Testname", "Testrole", true);
+      } else {
+          const response = await saltAndPepperClient.get("/profile/");
+          if (response.status !== 200) {
+              throw new Error(response.statusText)
+          }
+          const data = response.data;
+          Profile.assertType(data);
+          return data;
+      }
+    },
+
+    /**
+     * @param changePasswordRequest {ChangePasswordRequest}
+     * @returns {Promise<>}
+     */
+    changePassword: async function (changePasswordRequest) {
+        if (mockConfig.enabled) {
+            if (changePasswordRequest.oldPassword !== changePasswordRequest.newPassword) {
+                throw new Error("Passwords don't match");
+            }
+        } else {
+            const response = await saltAndPepperClient.patch("/profile/password", changePasswordRequest);
+            if (response.status !== 202) {
+                throw new Error(response.statusText)
+            }
+        }
+    },
+
+    /**
+     * @returns {Promise<InvitationLinkResponse|null>}
+     */
+    getInvitationLink: async function() {
+        if (mockConfig.enabled) {
+            return null;
+            //return new InvitationLinkResponse("http://localhost:3000/invitation/landing?code=1234");
+        } else {
+            const response = await saltAndPepperClient.get("/invitation");
+            if (response.status === 200) {
+                const data = response.data;
+                InvitationLinkResponse.assertType(data);
+                return data;
+            }
+        }
+    },
+
+    /**
+     * @returns {Promise<InvitationLinkResponse>}
+     */
+    createInvitationLink: async function() {
+        if (mockConfig.enabled) {
+            return new InvitationLinkResponse("http://localhost:3000/invitation/landing?code=1234");
+        } else {
+            const response = await saltAndPepperClient.post("/invitation");
+            const data = response.data;
+            InvitationLinkResponse.assertType(data);
+            return data;
+        }
+    },
+
+    /**
+     * @param fileFormat {String}
+     * @param file {File}
+     * @returns {Promise<>}
+     */
+    import: async function(fileFormat, file) {
+        if (mockConfig.enabled) {
+            console.log("Upload " + fileFormat + " " + file.name);
+        } else {
+            const formData = new FormData();
+            formData.append("file", file);
+            const result = await saltAndPepperClient.post("/import/" + fileFormat, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            });
+            if (result.status !== 202) {
+                throw Error(result.statusText);
+            }
         }
     }
 };

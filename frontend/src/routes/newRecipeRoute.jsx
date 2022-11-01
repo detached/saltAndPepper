@@ -1,10 +1,10 @@
 import {useTranslation} from "react-i18next";
-import "./newRecipe.css"
+import "./newRecipeRoute.css"
 import {useCallback, useState} from "react";
 import {NewRecipeRequest, SaltAndPepper} from "../api/saltAndPepper";
 import {useNavigate} from "react-router-dom";
 
-export default function NewRecipe() {
+export default function NewRecipeRoute() {
 
     const {t} = useTranslation();
     const navigateTo = useNavigate();

@@ -2,7 +2,7 @@ import {useCallback, useEffect, useReducer, useState} from "react";
 import {useTranslation} from "react-i18next";
 import RecipeList from "../components/recipeList";
 import {Page, SaltAndPepper, SearchRequest} from "../api/saltAndPepper";
-import "./search.css";
+import "./searchRoute.css";
 
 const SearchRequestActions = {
     SET_PAGE_NUMBER: "SET_PAGE_NUMBER",
@@ -23,7 +23,7 @@ function searchRequestReducer (state, action) {
         default: return state;
     }
 }
-export default function Search() {
+export default function SearchRoute() {
     const {t} = useTranslation();
 
     const [searchRequest, dispatchSearchRequest] = useReducer(searchRequestReducer, {

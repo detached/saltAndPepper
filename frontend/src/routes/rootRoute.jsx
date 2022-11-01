@@ -2,7 +2,7 @@ import { NavLink, Outlet } from "react-router-dom";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-export default function Root() {
+export default function RootRoute() {
   const { t } = useTranslation();
 
   const menuLinkRef = React.createRef();
