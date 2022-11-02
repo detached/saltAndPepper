@@ -3,7 +3,7 @@ import {useDropzone} from "react-dropzone";
 import "./xmlImportForm.css";
 import {useCallback, useState} from "react";
 import {SaltAndPepper} from "../api/saltAndPepper";
-import {OperationState} from "../model/OperationState";
+import {OperationState} from "../model/operationState";
 
 export default function XmlImportForm() {
 

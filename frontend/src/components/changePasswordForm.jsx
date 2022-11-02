@@ -2,7 +2,7 @@ import {useTranslation} from "react-i18next";
 import {useCallback, useState} from "react";
 import {ChangePasswordRequest, SaltAndPepper} from "../api/saltAndPepper";
 import "./changePasswordForm.css";
-import {OperationState} from "../model/OperationState";
+import {OperationState} from "../model/operationState";
 
 export default function ChangePasswordForm() {
 

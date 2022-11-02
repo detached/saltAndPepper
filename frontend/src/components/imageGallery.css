@@ -1,0 +1,40 @@
+.image-gallery {
+    display: flex;
+    justify-content: flex-start;
+    gap: 1em;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+    flex-wrap: nowrap;
+}
+
+.image-gallery div {
+    flex-direction: column;
+    letter-spacing: normal;
+    word-spacing: normal;
+    vertical-align: top;
+    text-rendering: auto;
+    position: relative;
+}
+
+.image-gallery div img:hover {
+    opacity: 0.3;
+}
+
+.image-gallery-lightbox {
+    z-index: 1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-gallery-lightbox img {
+    height: 80vh;
+    max-width: 90vw;
+    object-fit: cover;
+}

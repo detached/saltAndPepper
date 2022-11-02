@@ -1,6 +1,7 @@
 import {saltAndPepperClient} from "../config/axiosConfig";
 import assertProperty from "../utils/assertProperty";
 import {mockConfig} from "../config/mockConfig";
+import {Author, Recipe, RecipeImage} from "../model/recipe";
 
 export class SearchRequest {
     /**
@@ -100,17 +101,20 @@ export class NewRecipeResponse {
 export class Profile {
 
     /**
+     * @param id {String}
      * @param name {String}
      * @param role {String}
      * @param isAllowedToInvite {Boolean}
      */
-    constructor(name, role, isAllowedToInvite) {
+    constructor(id, name, role, isAllowedToInvite) {
+        this.id = id;
         this.name = name;
         this.role = role;
         this.isAllowedToInvite = isAllowedToInvite;
     }
 
     static assertType(object) {
+        assertProperty(object, "id");
         assertProperty(object, "name");
         assertProperty(object, "role");
         assertProperty(object, "isAllowedToInvite");
@@ -150,6 +154,7 @@ export const SaltAndPepper = {
      */
     search: async function (searchRequest) {
         if (mockConfig.enabled) {
+            console.log("search: " + JSON.stringify(searchRequest));
             return new SearchResponse(
                 [
                     new SearchResponseData(searchRequest.page.number + "1", "https://picsum.photos/150", searchRequest.searchQuery + "1" + searchRequest.page.number, "TestCategory1", "TestCuisine1", "Author1"),
@@ -181,7 +186,7 @@ export const SaltAndPepper = {
      */
     newRecipe: async function (newRecipeRequest) {
         if (mockConfig.enabled) {
-            console.log("newRecipe: " + newRecipeRequest);
+            console.log("newRecipe: " + JSON.stringify(newRecipeRequest));
             return new NewRecipeResponse("1");
         } else {
             const response = await saltAndPepperClient.post(
@@ -198,17 +203,18 @@ export const SaltAndPepper = {
      * @returns {Promise<Profile>}
      */
     getProfile: async function () {
-      if (mockConfig.enabled) {
-          return new Profile("Testname", "Testrole", true);
-      } else {
-          const response = await saltAndPepperClient.get("/profile/");
-          if (response.status !== 200) {
-              throw new Error(response.statusText)
-          }
-          const data = response.data;
-          Profile.assertType(data);
-          return data;
-      }
+        if (mockConfig.enabled) {
+            console.log("getProfile");
+            return new Profile("1", "Testname", "Testrole", true);
+        } else {
+            const response = await saltAndPepperClient.get("/profile/");
+            if (response.status !== 200) {
+                throw new Error(response.statusText)
+            }
+            const data = response.data;
+            Profile.assertType(data);
+            return data;
+        }
     },
 
     /**
@@ -217,6 +223,7 @@ export const SaltAndPepper = {
      */
     changePassword: async function (changePasswordRequest) {
         if (mockConfig.enabled) {
+            console.log("changePassword: " + JSON.stringify(changePasswordRequest));
             if (changePasswordRequest.oldPassword !== changePasswordRequest.newPassword) {
                 throw new Error("Passwords don't match");
             }
@@ -231,8 +238,9 @@ export const SaltAndPepper = {
     /**
      * @returns {Promise<InvitationLinkResponse|null>}
      */
-    getInvitationLink: async function() {
+    getInvitationLink: async function () {
         if (mockConfig.enabled) {
+            console.log("getInvitationLink");
             return null;
             //return new InvitationLinkResponse("http://localhost:3000/invitation/landing?code=1234");
         } else {
@@ -248,8 +256,9 @@ export const SaltAndPepper = {
     /**
      * @returns {Promise<InvitationLinkResponse>}
      */
-    createInvitationLink: async function() {
+    createInvitationLink: async function () {
         if (mockConfig.enabled) {
+            console.log("createInvitationLink");
             return new InvitationLinkResponse("http://localhost:3000/invitation/landing?code=1234");
         } else {
             const response = await saltAndPepperClient.post("/invitation");
@@ -264,9 +273,9 @@ export const SaltAndPepper = {
      * @param file {File}
      * @returns {Promise<>}
      */
-    import: async function(fileFormat, file) {
+    import: async function (fileFormat, file) {
         if (mockConfig.enabled) {
-            console.log("Upload " + fileFormat + " " + file.name);
+            console.log("import " + fileFormat + " " + file.name);
         } else {
             const formData = new FormData();
             formData.append("file", file);
@@ -278,6 +287,65 @@ export const SaltAndPepper = {
             if (result.status !== 202) {
                 throw Error(result.statusText);
             }
+        }
+    },
+
+    /**
+     * @param recipeId {String}
+     * @returns {Promise<Recipe>}
+     */
+    getRecipe: async function (recipeId) {
+        if (mockConfig.enabled) {
+            console.log("getRecipe: " + recipeId);
+            let r = new Recipe(
+                "Title",
+                "Category",
+                "Cuisine",
+                "Yields",
+                "Ingredients\nline2\nline3",
+                "Instructions\nline2\nline3",
+                "Modifications\nline2\nline3");
+            r.id = recipeId;
+            r.author = new Author("1", "Author");
+            r.images = [
+                new RecipeImage("1", "https://picsum.photos/800/600", "https://picsum.photos/150"),
+                new RecipeImage("2", "https://picsum.photos/600/800", "https://picsum.photos/150")
+            ];
+            return r;
+        } else {
+            const response = await saltAndPepperClient.get("/recipe/" + recipeId);
+            return response.data;
+        }
+    },
+
+    /**
+     * @param recipeId {String}
+     * @param image {File}
+     * @returns {Promise<RecipeImage>}
+     */
+    addImageToRecipe: async function (recipeId, image) {
+        if (mockConfig.enabled) {
+            console.log("addImageToRecipe: recipeId:" + recipeId + " image: " + image.name);
+            return new RecipeImage("123", "https://picsum.photos/800/600", "https://picsum.photos/150");
+        } else {
+            const formData = new FormData();
+            formData.append("file", image);
+            const response = await saltAndPepperClient.post("/recipe/" + recipeId + "/images/", {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            });
+            return response.data;
+        }
+    },
+
+    updateRecipe: async function(recipe) {
+        if (mockConfig.enabled) {
+            console.log("updateRecipe: " + JSON.stringify(recipe));
+            return recipe;
+        } else {
+            const response = await saltAndPepperClient.put("/recipe/" + recipe.id, recipe);
+            return response.data;
         }
     }
 };

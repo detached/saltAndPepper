@@ -9,7 +9,9 @@ export default function InvitationForm() {
     const [isLoading, setIsLoading] = useState(false);
     useEffect(() => {
         SaltAndPepper.getInvitationLink().then((result) => {
-            setInvitationLink(result.invitationLink);
+            if (result) {
+                setInvitationLink(result.invitationLink)
+            }
         });
     }, [setInvitationLink]);
 
@@ -22,7 +24,9 @@ export default function InvitationForm() {
 
         SaltAndPepper.createInvitationLink().then((result) => {
             setInvitationLink(result.invitationLink);
-        }).finally(() => {setIsLoading(false)});
+        }).finally(() => {
+            setIsLoading(false)
+        });
     }, [isLoading, setInvitationLink, setIsLoading]);
 
     return <>
@@ -39,7 +43,7 @@ export default function InvitationForm() {
                     <fieldset>
                         <input className="pure-input-2-3" type="text" id="invitationLink" name="invitationLink"
                                value={invitationLink} readOnly/>
-                        <button className="pure-button" onClick="copyToClipboard('invitationLink');">
+                        <button className="pure-button" onClick={() => {navigator.clipboard.writeText(invitationLink)}}>
                             {t("copyToClipboard")}
                         </button>
                     </fieldset> : null}

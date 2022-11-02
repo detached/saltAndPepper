@@ -1,22 +1,15 @@
 import {useTranslation} from "react-i18next";
 import ProfileInfoForm from "../components/profileInfoForm";
 import ChangePasswordForm from "../components/changePasswordForm";
-import {Profile, SaltAndPepper} from "../api/saltAndPepper";
-import {useEffect, useState} from "react";
+import {useContext} from "react";
 import InvitationForm from "../components/invitationForm";
 import XmlImportForm from "../components/xmlImportForm";
+import {ProfileContext} from "../context/profile";
 
 export default function ProfileRoute() {
 
     const {t} = useTranslation();
-    const [profile, setProfile] = useState(new Profile("", "", false));
-
-    useEffect(() => {
-        SaltAndPepper.getProfile().then(response => {
-                setProfile(response);
-            }
-        )
-    }, [setProfile])
+    const profile = useContext(ProfileContext);
 
     return <>
         <div className="header">

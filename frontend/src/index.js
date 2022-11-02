@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
 
 import "purecss/build/pure-min.css";
 import "purecss/build/grids-responsive-min.css"
@@ -15,35 +15,24 @@ import SearchRoute from "./routes/searchRoute";
 import NewRecipeRoute from "./routes/newRecipeRoute";
 import ProfileRoute from "./routes/profileRoute";
 import LogoutRoute from "./routes/logoutRoute";
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <RootRoute />,
-    children: [
-      {
-        path: "search",
-        element: <SearchRoute />,
-      },
-      {
-        path: "recipe/new",
-        element: <NewRecipeRoute />,
-      },
-      {
-        path: "profile",
-        element: <ProfileRoute />,
-      },
-      {
-        path: "logout",
-        element: <LogoutRoute />,
-      },
-    ],
-  },
-]);
+import RecipeRoute from "./routes/recipeRoute";
+import EditRecipeRoute from "./routes/editRecipeRoute";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<RootRoute/>}>
+          <Route index element={<SearchRoute/>} />
+          <Route path="search" element={<SearchRoute/>} index />
+          <Route path="recipe/new" element={<NewRecipeRoute/>} />
+          <Route path="recipe/:recipeId/edit" element={<EditRecipeRoute/>} />
+          <Route path="recipe/:recipeId" element={<RecipeRoute/>} />
+          <Route path="profile" element={<ProfileRoute/>} />
+          <Route path="logout" element={<LogoutRoute/>}/>
+        </Route>
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>
 );
 

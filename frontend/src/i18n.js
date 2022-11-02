@@ -31,6 +31,7 @@ const resources = {
       "newRecipe.title": "Neues Rezept",
       "newRecipe.name": "Titel",
       "newRecipe.submit": "Speichern",
+      "newRecipe.dropzone": "Bilder hinzufügen",
       "deleteRecipe.title": "Rezept löschen",
       "deleteRecipe.text": "unwiederuflich löschen?",
       "deleteRecipe.confirm": "Ja, wirklich löschen!",
