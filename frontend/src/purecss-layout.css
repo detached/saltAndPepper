@@ -250,3 +250,7 @@ Hides the menu at `48em`, but modify this based on your app's needs.
   border-bottom: 1px solid #eee;
   padding-bottom: 2em;
 }
+
+.form-error-message {
+  color: red;
+}

@@ -4,7 +4,7 @@ import ChangePasswordForm from "../components/changePasswordForm";
 import {useContext} from "react";
 import InvitationForm from "../components/invitationForm";
 import XmlImportForm from "../components/xmlImportForm";
-import {ProfileContext} from "../context/profile";
+import {ProfileContext} from "../context/profileProvider";
 
 export default function ProfileRoute() {
 

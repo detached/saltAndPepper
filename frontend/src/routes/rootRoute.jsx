@@ -1,23 +1,14 @@
 import {NavLink, Outlet} from "react-router-dom";
-import React, {useEffect, useState} from "react";
+import {createRef} from "react";
 import {useTranslation} from "react-i18next";
-import {Profile, SaltAndPepper} from "../api/saltAndPepper";
-import {ProfileContext} from "../context/profile";
+import {ProfileProvider} from "../context/profileProvider";
 
 export default function RootRoute() {
     const {t} = useTranslation();
 
-    const menuLinkRef = React.createRef();
-    const menuRef = React.createRef();
-    const layoutRef = React.createRef();
-
-    const [profile, setProfile] = useState(new Profile("", "", false));
-    useEffect(() => {
-        SaltAndPepper.getProfile().then(response => {
-                setProfile(response);
-            }
-        )
-    }, [setProfile]);
+    const menuLinkRef = createRef();
+    const menuRef = createRef();
+    const layoutRef = createRef();
 
     const toggleMenu = () => {
         const toggleActive = (element) => {
@@ -71,9 +62,9 @@ export default function RootRoute() {
             </div>
 
             <div id="main">
-                <ProfileContext.Provider value={profile}>
+                <ProfileProvider>
                     <Outlet/>
-                </ProfileContext.Provider>
+                </ProfileProvider>
             </div>
         </div>
     );

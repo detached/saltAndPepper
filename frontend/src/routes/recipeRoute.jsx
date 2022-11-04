@@ -1,9 +1,9 @@
 import {useNavigate, useParams} from "react-router-dom";
-import {useContext, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import ImageGallery from "../components/imageGallery";
 import {SaltAndPepper} from "../api/saltAndPepper";
-import {ProfileContext} from "../context/profile";
+import {useProfile} from "../context/profileProvider";
 
 export default function RecipeRoute() {
 
@@ -11,7 +11,7 @@ export default function RecipeRoute() {
     const navigateTo = useNavigate();
     const {recipeId} = useParams();
     const [recipe, setRecipe] = useState(null);
-    const profile = useContext(ProfileContext);
+    const profile = useProfile();
 
     useEffect(() => {
         SaltAndPepper.getRecipe(recipeId).then((result) => {

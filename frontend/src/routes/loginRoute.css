@@ -1,0 +1,10 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-content {
+    justify-content: center;
+    max-width: 20em;
+}

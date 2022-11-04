@@ -17,23 +17,28 @@ import ProfileRoute from "./routes/profileRoute";
 import LogoutRoute from "./routes/logoutRoute";
 import RecipeRoute from "./routes/recipeRoute";
 import EditRecipeRoute from "./routes/editRecipeRoute";
+import {AuthProvider} from "./context/authProvider";
+import LoginRoute from "./routes/loginRoute";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<RootRoute/>}>
-          <Route index element={<SearchRoute/>} />
-          <Route path="search" element={<SearchRoute/>} index />
-          <Route path="recipe/new" element={<NewRecipeRoute/>} />
-          <Route path="recipe/:recipeId/edit" element={<EditRecipeRoute/>} />
-          <Route path="recipe/:recipeId" element={<RecipeRoute/>} />
-          <Route path="profile" element={<ProfileRoute/>} />
-          <Route path="logout" element={<LogoutRoute/>}/>
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  </React.StrictMode>
+    <React.StrictMode>
+        <BrowserRouter>
+            <AuthProvider>
+                <Routes>
+                    <Route path="/" element={<RootRoute/>}>
+                        <Route index element={<SearchRoute/>}/>
+                        <Route path="search" element={<SearchRoute/>}/>
+                        <Route path="recipe/new" element={<NewRecipeRoute/>}/>
+                        <Route path="recipe/:recipeId/edit" element={<EditRecipeRoute/>}/>
+                        <Route path="recipe/:recipeId" element={<RecipeRoute/>}/>
+                        <Route path="profile" element={<ProfileRoute/>}/>
+                        <Route path="logout" element={<LogoutRoute/>}/>
+                    </Route>
+                    <Route path="/login" element={<LoginRoute/>}/>
+                </Routes>
+            </AuthProvider>
+        </BrowserRouter>
+    </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -347,5 +347,22 @@ export const SaltAndPepper = {
             const response = await saltAndPepperClient.put("/recipe/" + recipe.id, recipe);
             return response.data;
         }
-    }
+    },
+
+    login: async function (username, password) {
+        if (mockConfig.enabled) {
+            console.log("login " + username + " password " + password)
+            return "12345";
+        } else {
+            const formData = new FormData();
+            formData.append("username", username);
+            formData.append("password", password);
+            const response = await saltAndPepperClient.post("/login", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            });
+            return response.data;
+        }
+    },
 };
