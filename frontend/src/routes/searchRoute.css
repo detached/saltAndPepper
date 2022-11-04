@@ -1,9 +1,9 @@
 .search-mask {
-    display: flex;
-    margin: 1em 10%;
+  display: flex;
+  margin: 1em 10%;
 }
 
 .search-mask #query {
-    margin: 0 0.5em 0 0;
-    width: 100%;
+  margin: 0 0.5em 0 0;
+  width: 100%;
 }

@@ -1,20 +1,19 @@
-import {useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
-import {SaltAndPepper} from "../api/saltAndPepper";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { SaltAndPepper } from "../api/saltAndPepper";
 import EditRecipeForm from "../components/editRecipeForm";
 
 export default function EditRecipeRoute() {
+  const { recipeId } = useParams();
+  const [recipe, setRecipe] = useState(null);
 
-    const {recipeId} = useParams();
-    const [recipe, setRecipe] = useState(null);
+  useEffect(() => {
+    SaltAndPepper.getRecipe(recipeId).then((r) => setRecipe(r));
+  }, [recipeId, setRecipe]);
 
-    useEffect(() => {
-        SaltAndPepper.getRecipe(recipeId).then((r) => setRecipe(r));
-    }, [recipeId, setRecipe]);
-
-    if (recipe) {
-        return <EditRecipeForm titelKey="editRecipe.title" initRecipe={recipe}/>;
-    } else {
-        return <p>Loading...</p>
-    }
+  if (recipe) {
+    return <EditRecipeForm titelKey="editRecipe.title" initRecipe={recipe} />;
+  } else {
+    return <p>Loading...</p>;
+  }
 }

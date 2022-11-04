@@ -46,7 +46,8 @@ const resources = {
       "login.failed": "Anmeldung fehlgeschlagen",
       "import.submit": "Import",
       "import.gourmet": "Gourmet XML Import",
-      "import.dropzone": "Ziehe eine XML-Datei auf diese Fläche oder klicke sie an",
+      "import.dropzone":
+        "Ziehe eine XML-Datei auf diese Fläche oder klicke sie an",
       "import.dropzone.file": "Datei",
       "import.success": "Import erfolgreich!",
       "import.error": "Es ist ein Fehler aufgetreten",
@@ -78,8 +79,7 @@ const resources = {
       "userRegistered.text":
         "Du kannst dich jetzt mit deinem Passwort anmelden",
       "userRegistered.link": "Zum login!",
-      "password.rules":
-        "Das Passwort muss mindestens fünf Zeichen lang sein.",
+      "password.rules": "Das Passwort muss mindestens fünf Zeichen lang sein.",
       "password.error.passwordTooWeek": "Das gewählte Passwort ist zu schwach.",
       "password.error.wrongPassword": "Falsches Passwort!",
     },

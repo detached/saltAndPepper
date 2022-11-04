@@ -1,9 +1,11 @@
 import EditRecipeForm from "../components/editRecipeForm";
-import {Recipe} from "../model/recipe";
+import { Recipe } from "../model/recipe";
 
 export default function NewRecipeRoute() {
-
-    return <EditRecipeForm
-        titelKey="newRecipe.title"
-        initRecipe={new Recipe("", "", "", "", "", "", "")} />
+  return (
+    <EditRecipeForm
+      titelKey="newRecipe.title"
+      initRecipe={new Recipe("", "", "", "", "", "", "")}
+    />
+  );
 }
