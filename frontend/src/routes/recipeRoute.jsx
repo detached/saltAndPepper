@@ -38,7 +38,7 @@ export default function RecipeRoute() {
   }
 
   if (recipe === null) {
-    return <span>Loading...</span>;
+    return null;
   } else {
     return (
       <>

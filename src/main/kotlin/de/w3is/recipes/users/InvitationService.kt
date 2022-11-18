@@ -12,7 +12,7 @@ import java.time.Duration
 import javax.transaction.Transactional
 
 @Singleton
-class InvitationService(
+open class InvitationService(
     private val invitationRepository: InvitationRepository,
     private val userService: UserService,
     @Property(name = "application.allowInvitationFor")
@@ -21,8 +21,16 @@ class InvitationService(
 
     private val logger = LoggerFactory.getLogger(InvitationService::class.java)
 
+    fun findExistingInvite(creator: User): Invite? {
+        if(!isAllowedToInvite(creator)) {
+            return null
+        }
+
+        return invitationRepository.findByCreator(creator.id)
+    }
+
     @Transactional
-    fun createInvite(creator: User): Invite {
+    open fun createInvite(creator: User): Invite {
 
         if (!isAllowedToInvite(creator)) {
             throw NotAllowedToInviteException()
@@ -47,7 +55,7 @@ class InvitationService(
     fun getInviteByCode(code: String): Invite = invitationRepository.findByCode(code) ?: throw InvitationNotFoundException()
 
     @Transactional
-    fun createUserByInvite(code: String, name: String, plainPassword: PlainPassword): User {
+    open fun createUserByInvite(code: String, name: String, plainPassword: PlainPassword): User {
 
         val invite = getInviteByCode(code)
         val user = userService.createNewUser(name, plainPassword)

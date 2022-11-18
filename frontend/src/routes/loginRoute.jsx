@@ -21,8 +21,8 @@ export default function LoginRoute() {
       }
       setIsLoading(true);
       SaltAndPepper.login(username, password)
-        .then((result) => {
-          authentication.onLogin(result);
+        .then((token) => {
+          authentication.onLogin(token);
         })
         .catch((error) => {
           setErrorMessage(error.message);

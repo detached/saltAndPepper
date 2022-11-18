@@ -7,9 +7,9 @@ export default function InvitationForm() {
   const [invitationLink, setInvitationLink] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
-    SaltAndPepper.getInvitationLink().then((result) => {
+    SaltAndPepper.getInvitationCode().then((result) => {
       if (result) {
-        setInvitationLink(result.invitationLink);
+        setInvitationLink(result.code);
       }
     });
   }, [setInvitationLink]);
@@ -22,9 +22,9 @@ export default function InvitationForm() {
       }
       setIsLoading(true);
 
-      SaltAndPepper.createInvitationLink()
+      SaltAndPepper.createInvitationCode()
         .then((result) => {
-          setInvitationLink(result.invitationLink);
+          setInvitationLink(result.code);
         })
         .finally(() => {
           setIsLoading(false);

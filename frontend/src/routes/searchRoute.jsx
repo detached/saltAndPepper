@@ -8,6 +8,7 @@ const SearchRequestActions = {
   SET_PAGE_NUMBER: "SET_PAGE_NUMBER",
   SET_QUERY: "SET_QUERY",
 };
+
 function searchRequestReducer(state, action) {
   switch (action?.type) {
     case SearchRequestActions.SET_PAGE_NUMBER:
@@ -24,6 +25,7 @@ function searchRequestReducer(state, action) {
       return state;
   }
 }
+
 export default function SearchRoute() {
   const { t } = useTranslation();
 

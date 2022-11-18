@@ -15,6 +15,7 @@ class AdminInitializer(
 ) {
 
     @EventListener
+    @Suppress("UNUSED_PARAMETER")
     fun setupInitialAdmin(event: StartupEvent) {
 
         val admin = userRepository.findUser("admin")

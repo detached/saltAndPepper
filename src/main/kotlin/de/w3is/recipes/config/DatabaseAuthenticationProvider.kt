@@ -1,6 +1,5 @@
 package de.w3is.recipes.config
 
-import de.w3is.recipes.common.userAttribute
 import de.w3is.recipes.users.model.PlainPassword
 import de.w3is.recipes.users.UserRepository
 import io.micronaut.http.HttpRequest
@@ -29,9 +28,8 @@ class DatabaseAuthenticationProvider(private val userRepository: UserRepository)
             if (user.authenticate(plainPassword)) {
                 emitter.success(
                     AuthenticationResponse.success(
-                        user.name,
-                        listOf(user.role.name),
-                        mapOf(userAttribute to user)
+                        user.id.value,
+                        listOf(user.role.name)
                     )
                 )
             } else {

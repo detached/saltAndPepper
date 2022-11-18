@@ -2,6 +2,7 @@ import { saltAndPepperClient } from "../config/axiosConfig";
 import assertProperty from "../utils/assertProperty";
 import { mockConfig } from "../config/mockConfig";
 import { Author, Recipe, RecipeImage } from "../model/recipe";
+import { getToken } from "../service/tokenStore";
 
 export class SearchRequest {
   /**
@@ -137,17 +138,33 @@ export class ChangePasswordRequest {
   }
 }
 
-export class InvitationLinkResponse {
+export class InvitationCodeResponse {
   /**
-   * @param invitationLink {String}
+   * @param code {String}
    */
-  constructor(invitationLink) {
-    this.invitationLink = invitationLink;
+  constructor(code) {
+    this.code = code;
   }
 
   static assertType(object) {
-    assertProperty(object, "invitationLink");
+    assertProperty(object, "code");
   }
+}
+
+function doRequest(method, url, data, headers) {
+  const token = getToken();
+  let headersAndAuth = { ...headers };
+
+  if (token) {
+    headersAndAuth.Authorization = `Bearer ${getToken()}`;
+  }
+
+  return saltAndPepperClient.request({
+    method,
+    url,
+    data,
+    headers: headersAndAuth,
+  });
 }
 
 export const SaltAndPepper = {
@@ -228,10 +245,7 @@ export const SaltAndPepper = {
         new Page(searchRequest.page.size, searchRequest.page.number, 10)
       );
     } else {
-      const response = await saltAndPepperClient.post(
-        "/recipe/search",
-        searchRequest
-      );
+      const response = await doRequest("POST", "/recipe/search", searchRequest);
       const data = response.data;
       SearchResponse.assertType(data);
       return data;
@@ -248,10 +262,7 @@ export const SaltAndPepper = {
       console.log("newRecipe: " + JSON.stringify(newRecipeRequest));
       return new NewRecipeResponse("1");
     } else {
-      const response = await saltAndPepperClient.post(
-        "/recipe/",
-        newRecipeRequest
-      );
+      const response = await doRequest("POST", "/recipe/", newRecipeRequest);
       const data = response.data;
       NewRecipeResponse.assertType(data);
       return data;
@@ -266,7 +277,7 @@ export const SaltAndPepper = {
       console.log("getProfile");
       return new Profile("1", "Testname", "Testrole", true);
     } else {
-      const response = await saltAndPepperClient.get("/profile/");
+      const response = await doRequest("GET", "/profile/");
       if (response.status !== 200) {
         throw new Error(response.statusText);
       }
@@ -289,7 +300,8 @@ export const SaltAndPepper = {
         throw new Error("Passwords don't match");
       }
     } else {
-      const response = await saltAndPepperClient.patch(
+      const response = await doRequest(
+        "PATCH",
         "/profile/password",
         changePasswordRequest
       );
@@ -300,36 +312,34 @@ export const SaltAndPepper = {
   },
 
   /**
-   * @returns {Promise<InvitationLinkResponse|null>}
+   * @returns {Promise<InvitationCodeResponse|null>}
    */
-  getInvitationLink: async function () {
+  getInvitationCode: async function () {
     if (mockConfig.enabled) {
-      console.log("getInvitationLink");
+      console.log("getInvitationCode");
       return null;
-      //return new InvitationLinkResponse("http://localhost:3000/invitation/landing?code=1234");
+      //return new InvitationCodeResponse("1234");
     } else {
-      const response = await saltAndPepperClient.get("/invitation");
+      const response = await doRequest("GET", "/invitation");
       if (response.status === 200) {
         const data = response.data;
-        InvitationLinkResponse.assertType(data);
+        InvitationCodeResponse.assertType(data);
         return data;
       }
     }
   },
 
   /**
-   * @returns {Promise<InvitationLinkResponse>}
+   * @returns {Promise<InvitationCodeResponse>}
    */
-  createInvitationLink: async function () {
+  createInvitationCode: async function () {
     if (mockConfig.enabled) {
-      console.log("createInvitationLink");
-      return new InvitationLinkResponse(
-        "http://localhost:3000/invitation/landing?code=1234"
-      );
+      console.log("createInvitationCode");
+      return new InvitationCodeResponse("1234");
     } else {
-      const response = await saltAndPepperClient.post("/invitation");
+      const response = await doRequest("POST", "/invitation");
       const data = response.data;
-      InvitationLinkResponse.assertType(data);
+      InvitationCodeResponse.assertType(data);
       return data;
     }
   },
@@ -345,7 +355,8 @@ export const SaltAndPepper = {
     } else {
       const formData = new FormData();
       formData.append("file", file);
-      const result = await saltAndPepperClient.post(
+      const result = await doRequest(
+        "POST",
         "/import/" + fileFormat,
         formData,
         {
@@ -392,7 +403,7 @@ export const SaltAndPepper = {
       ];
       return r;
     } else {
-      const response = await saltAndPepperClient.get("/recipe/" + recipeId);
+      const response = await doRequest("GET", "/recipe/" + recipeId);
       return response.data;
     }
   },
@@ -415,8 +426,10 @@ export const SaltAndPepper = {
     } else {
       const formData = new FormData();
       formData.append("file", image);
-      const response = await saltAndPepperClient.post(
+      const response = await doRequest(
+        "POST",
         "/recipe/" + recipeId + "/images/",
+        formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -432,10 +445,7 @@ export const SaltAndPepper = {
       console.log("updateRecipe: " + JSON.stringify(recipe));
       return recipe;
     } else {
-      const response = await saltAndPepperClient.put(
-        "/recipe/" + recipe.id,
-        recipe
-      );
+      const response = await doRequest("PUT", "/recipe/" + recipe.id, recipe);
       return response.data;
     }
   },
@@ -443,17 +453,13 @@ export const SaltAndPepper = {
   login: async function (username, password) {
     if (mockConfig.enabled) {
       console.log("login " + username + " password " + password);
-      return "12345";
+      return "1234";
     } else {
-      const formData = new FormData();
-      formData.append("username", username);
-      formData.append("password", password);
-      const response = await saltAndPepperClient.post("/login", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+      const response = await saltAndPepperClient.post("/login", {
+        username,
+        password,
       });
-      return response.data;
+      return response.data["access_token"];
     }
   },
 };

@@ -3,4 +3,4 @@ defaultPackage: de.w3is.recipes
 testFramework: junit
 sourceLanguage: kotlin
 buildTool: gradle
-features: [annotation-api, app-name, gradle, graphql, h2, http-client, jdbc-hikari, jooq, junit, kotlin, kotlin-application, kotlin-extension-functions, logback, netty-server, readme, shade, yaml]
+features: [annotation-api, app-name, flyway, gradle, h2, http-client, jackson-databind, jdbc-hikari, jooq, junit, kotlin, kotlin-application, kotlin-build, logback, micronaut-build, netty-server, readme, security, security-annotations, security-session, shade, yaml]

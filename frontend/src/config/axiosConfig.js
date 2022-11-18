@@ -2,5 +2,6 @@ import axios from "axios";
 
 export const saltAndPepperClient = axios.create({
   withCredentials: true,
-  baseURL: "/",
+  //baseURL: "/api/",
+  baseURL: "http://localhost:8080/api/",
 });
