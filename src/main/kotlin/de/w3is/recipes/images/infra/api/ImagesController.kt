@@ -12,7 +12,7 @@ import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
 
 @Controller("/api/images")
-@Secured(SecurityRule.IS_AUTHENTICATED)
+@Secured(SecurityRule.IS_ANONYMOUS)
 class ImagesController(private val imageRepository: ImageRepository) {
 
     @Get("/{id}", produces = [MediaType.IMAGE_PNG])

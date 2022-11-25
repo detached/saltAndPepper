@@ -11,7 +11,7 @@ import java.io.InputStream
 import javax.transaction.Transactional
 
 @Singleton
-class RecipeService(
+open class RecipeService(
     private val recipeRepository: RecipeRepository,
     private val imageService: ImageService
 ) {
@@ -21,7 +21,7 @@ class RecipeService(
     fun get(recipeId: RecipeId) = recipeRepository.get(recipeId)
 
     @Transactional
-    fun createNewRecipe(content: RecipeContent, user: User): Recipe {
+    open fun createNewRecipe(content: RecipeContent, user: User): Recipe {
 
         val author = user.toAuthor()
         val recipe = content.toRecipe(author)
@@ -30,7 +30,7 @@ class RecipeService(
     }
 
     @Transactional
-    fun updateRecipe(id: RecipeId, content: RecipeContent, user: User): Recipe {
+    open fun updateRecipe(id: RecipeId, content: RecipeContent, user: User): Recipe {
 
         val author = user.toAuthor()
         val recipe = recipeRepository.get(id)
@@ -40,7 +40,7 @@ class RecipeService(
     }
 
     @Transactional
-    fun addImageToRecipe(recipeId: RecipeId, imageData: InputStream, user: User): ImageId {
+    open fun addImageToRecipe(recipeId: RecipeId, imageData: InputStream, user: User): ImageId {
 
         val recipe = recipeRepository.get(recipeId)
         val newImage = imageService.convertAndStoreImage(imageData)
@@ -50,7 +50,7 @@ class RecipeService(
     }
 
     @Transactional
-    fun deleteImageFromRecipe(recipeId: RecipeId, imageId: ImageId, user: User) {
+    open fun deleteImageFromRecipe(recipeId: RecipeId, imageId: ImageId, user: User) {
 
         val recipe = recipeRepository.get(recipeId)
         recipe.removeImage(imageId, user.toAuthor())
@@ -77,7 +77,8 @@ data class RecipeContent(
     val yields: String,
     val ingredients: String,
     val instructions: String,
-    val modifications: String
+    val modifications: String,
+    val images: List<ImageId>,
 ) {
     fun toRecipe(author: Author): Recipe {
         return Recipe(

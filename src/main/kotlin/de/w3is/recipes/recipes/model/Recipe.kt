@@ -36,7 +36,7 @@ class Recipe(
         return Recipe(
             id = id,
             authorId = authorId,
-            images = mutableImages,
+            images = content.images,
             title = content.title,
             category = content.category,
             cuisine = content.cuisine,
