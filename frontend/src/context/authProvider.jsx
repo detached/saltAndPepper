@@ -6,7 +6,7 @@ import {
   useState,
 } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
-import {getToken, removeToken, storeToken} from "../service/tokenStore";
+import { getToken, removeToken, storeToken } from "../service/tokenStore";
 import { saltAndPepperClient } from "../config/axiosConfig";
 
 const AuthContext = createContext(null);
