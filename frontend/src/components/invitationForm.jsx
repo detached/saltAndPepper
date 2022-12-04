@@ -44,12 +44,12 @@ export default function InvitationForm() {
     [isLoading, setInvitationLink, setIsLoading]
   );
 
-    function copyLinkToClipboard(e) {
-        e.preventDefault();
-        navigator.clipboard.writeText(invitationLink);
-    }
+  function copyLinkToClipboard(e) {
+    e.preventDefault();
+    navigator.clipboard.writeText(invitationLink);
+  }
 
-    return (
+  return (
     <>
       <h3>{t("profile.invitation.title")}</h3>
       <p>{t("profile.invitation.text")}</p>
@@ -79,7 +79,7 @@ export default function InvitationForm() {
               />
               <button
                 className="pure-button"
-                onClick={e => copyLinkToClipboard(e)}
+                onClick={(e) => copyLinkToClipboard(e)}
               >
                 {t("copyToClipboard")}
               </button>

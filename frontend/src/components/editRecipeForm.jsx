@@ -5,6 +5,7 @@ import { useDropzone } from "react-dropzone";
 import { FaTrashAlt } from "react-icons/fa";
 import { storeRecipe } from "../service/storeRecipeService";
 import "./editRecipeForm.css";
+import Spinner from "./spinner";
 
 const EditRecipeActions = {
   SET_TITLE: "SET_TITLE",
@@ -186,6 +187,7 @@ export default function EditRecipeForm({ titelKey, initRecipe }) {
 
   return (
     <>
+      { isLoading ? <Spinner fixedCentered="true" /> : null }
       <div className="header">
         <h1>{t(titelKey)}</h1>
       </div>

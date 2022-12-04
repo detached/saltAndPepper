@@ -21,7 +21,7 @@ export default function InviteRoute() {
         setInvitingUser(result.invitingUser);
       })
       .catch(() => {
-        navigateTo("/")
+        navigateTo("/");
       });
   }, [code, setInvitingUser, navigateTo]);
 
