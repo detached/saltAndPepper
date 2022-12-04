@@ -1,3 +1,3 @@
 export const mockConfig = {
-  enabled: true,
+  enabled: false,
 };
