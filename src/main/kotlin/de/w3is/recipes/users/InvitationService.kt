@@ -36,6 +36,10 @@ open class InvitationService(
             throw NotAllowedToInviteException()
         }
 
+        assert(invitationRepository.findByCreator(creator.id) == null) {
+            "User has already created an invite code"
+        }
+
         return Invite.createNew(creator).also {
             invitationRepository.store(it)
             logger.info("${creator.name} created invite ${it.code}")

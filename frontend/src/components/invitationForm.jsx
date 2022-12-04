@@ -6,10 +6,21 @@ export default function InvitationForm() {
   const { t } = useTranslation();
   const [invitationLink, setInvitationLink] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  function createInviteLink(code) {
+    return (
+      window.location.protocol +
+      "//" +
+      window.location.host +
+      "/#/invite/" +
+      code
+    );
+  }
+
   useEffect(() => {
     SaltAndPepper.getInvitationCode().then((result) => {
       if (result) {
-        setInvitationLink(result.code);
+        setInvitationLink(createInviteLink(result.code));
       }
     });
   }, [setInvitationLink]);
@@ -24,7 +35,7 @@ export default function InvitationForm() {
 
       SaltAndPepper.createInvitationCode()
         .then((result) => {
-          setInvitationLink(result.code);
+          setInvitationLink(createInviteLink(result.code));
         })
         .finally(() => {
           setIsLoading(false);
@@ -33,15 +44,17 @@ export default function InvitationForm() {
     [isLoading, setInvitationLink, setIsLoading]
   );
 
-  return (
+    function copyLinkToClipboard(e) {
+        e.preventDefault();
+        navigator.clipboard.writeText(invitationLink);
+    }
+
+    return (
     <>
       <h3>{t("profile.invitation.title")}</h3>
       <p>{t("profile.invitation.text")}</p>
 
-      <form
-        className="pure-form pure-form-aligned"
-        onSubmit={(e) => createInvitationLink(e)}
-      >
+      <form className="pure-form pure-form-aligned">
         <div className="pure-control-group">
           <fieldset>
             <input
@@ -50,6 +63,7 @@ export default function InvitationForm() {
               id="createInvitation"
               name="createInvitation"
               value={t("profile.createInvitation")}
+              onClick={(e) => createInvitationLink(e)}
               disabled={invitationLink !== ""}
             />
           </fieldset>
@@ -65,9 +79,7 @@ export default function InvitationForm() {
               />
               <button
                 className="pure-button"
-                onClick={() => {
-                  navigator.clipboard.writeText(invitationLink);
-                }}
+                onClick={e => copyLinkToClipboard(e)}
               >
                 {t("copyToClipboard")}
               </button>

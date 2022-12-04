@@ -19,6 +19,7 @@ import RecipeRoute from "./routes/recipeRoute";
 import EditRecipeRoute from "./routes/editRecipeRoute";
 import { AuthProvider } from "./context/authProvider";
 import LoginRoute from "./routes/loginRoute";
+import InviteRoute from "./routes/InviteRoute";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -35,6 +36,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <Route path="logout" element={<LogoutRoute />} />
           </Route>
           <Route path="/login" element={<LoginRoute />} />
+          <Route path="/invite/:code" element={<InviteRoute />} />
         </Routes>
       </AuthProvider>
     </HashRouter>

@@ -67,7 +67,8 @@ const resources = {
         "Lade Freunde ein, indem du einen einmal gültigen Link generierst. Dieser Link ist 24 Stunden gültig.",
       "inviteRegistration.title": "Willkommen!",
       "inviteRegistration.text":
-        "hat dich eingeladen deine Rezepte zu teilen! Erstelle einen Account:",
+        "{{invitingUser}} hat dich eingeladen deine Rezepte zu teilen!",
+      "inviteRegistration.text2": "Erstelle einen Account:",
       "inviteRegistration.name": "Name",
       "inviteRegistration.password": "Passwort",
       "inviteRegistration.register": "Registrieren!",
@@ -75,7 +76,7 @@ const resources = {
         "Ein Nutzer mit diesem Namen existiert bereits.",
       "inviteRegistration.error.usernameInvalid":
         "Der Nutzername kann nicht verwendet werden.",
-      "userRegistered.title": "Hallo",
+      "userRegistered.title": "Hallo {{username}}!",
       "userRegistered.text":
         "Du kannst dich jetzt mit deinem Passwort anmelden",
       "userRegistered.link": "Zum login!",

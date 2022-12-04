@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState("");
   const location = useLocation();
   const navigateTo = useNavigate();
+  const unauthenticatedPaths = ["/login", "/invite"];
 
   const handleLogin = (token) => {
     storeToken(token);
@@ -53,7 +54,16 @@ export const AuthProvider = ({ children }) => {
     onLogout: handleLogout,
   };
 
-  if (location.pathname === "/login" || isLoggedIn()) {
+  function doesntNeedAuthentication(pathname) {
+    for (let i = 0; i < unauthenticatedPaths.length; i++) {
+      if (pathname.startsWith(unauthenticatedPaths[i])) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  if (doesntNeedAuthentication(location.pathname) || isLoggedIn()) {
     return (
       <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
     );

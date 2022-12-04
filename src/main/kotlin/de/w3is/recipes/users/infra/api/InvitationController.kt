@@ -49,6 +49,16 @@ class InvitationController(
         return InvitationCodeResponse(invite.code)
     }
 
+    @Get("/{code}")
+    @Secured(SecurityRule.IS_ANONYMOUS)
+    fun getInvitationInfo(@PathVariable("code") inviteCode: String): InvitationInfoResponse {
+        val invite = invitationService.getInviteByCode(inviteCode)
+        val invitingUser = userService.getUser(invite.creator)
+        return InvitationInfoResponse(
+            invitingUser = invitingUser.name
+        )
+    }
+
     @Put("/{code}")
     @Secured(SecurityRule.IS_ANONYMOUS)
     fun useInvitation(

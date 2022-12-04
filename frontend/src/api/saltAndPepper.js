@@ -151,6 +151,19 @@ export class InvitationCodeResponse {
   }
 }
 
+export class InvitationInfoResponse {
+  /**
+   * @param invitingUser {String}
+   */
+  constructor(invitingUser) {
+    this.invitingUser = invitingUser;
+  }
+
+  static assertType(object) {
+    assertProperty(object, "invitingUser");
+  }
+}
+
 function doRequest(method, url, data, headers) {
   const token = getToken();
   let headersAndAuth = { ...headers };
@@ -345,6 +358,49 @@ export const SaltAndPepper = {
   },
 
   /**
+   * @param code {String}
+   * @returns {Promise<InvitationInfoResponse>}
+   */
+  getInvitationInfo: async function (code) {
+    if (mockConfig.enabled) {
+      console.log("getInvitationInfo code: " + code);
+      return new InvitationInfoResponse("InvitingUser", "2022-12-12T12:12:12Z");
+    } else {
+      const response = await doRequest("GET", "/invitation/" + code);
+      const data = response.data;
+      InvitationInfoResponse.assertType(data);
+      return data;
+    }
+  },
+
+  /**
+   * @param code {String}
+   * @param username {String}
+   * @param password {String}
+   * @returns {Promise<>}
+   */
+  registerByInvitation: async function (code, username, password) {
+    if (mockConfig.enabled) {
+      console.log(
+        "useInvitation code: " +
+          code +
+          ", username: " +
+          username +
+          ", password: " +
+          password
+      );
+    } else {
+      const result = await doRequest("PUT", "/invitation/" + code, {
+        username: username,
+        password: password,
+      });
+      if (result.status !== 200) {
+        throw Error(result.statusText);
+      }
+    }
+  },
+
+  /**
    * @param fileFormat {String}
    * @param file {File}
    * @returns {Promise<>}
@@ -440,6 +496,10 @@ export const SaltAndPepper = {
     }
   },
 
+  /**
+   * @param recipe {Recipe}
+   * @returns {Promise<Recipe>}
+   */
   updateRecipe: async function (recipe) {
     if (mockConfig.enabled) {
       console.log("updateRecipe: " + JSON.stringify(recipe));
@@ -450,6 +510,11 @@ export const SaltAndPepper = {
     }
   },
 
+  /**
+   * @param username {String}
+   * @param password {String}
+   * @returns {Promise<String>}
+   */
   login: async function (username, password) {
     if (mockConfig.enabled) {
       console.log("login " + username + " password " + password);
