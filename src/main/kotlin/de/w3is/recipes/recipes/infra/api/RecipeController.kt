@@ -53,6 +53,12 @@ class RecipeController(
         return recipeService.get(RecipeId(recipeId)).toModel()
     }
 
+    @Delete("/{id}")
+    fun deleteRecipe(@PathVariable("id") recipeId: String, authentication: Authentication) {
+        val user = with(userService) { authentication.getUser() }
+        recipeService.deleteRecipe(RecipeId(recipeId), user)
+    }
+
     @Put("/{id}")
     fun updateRecipe(
         @PathVariable("id") recipeId: String,

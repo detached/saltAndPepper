@@ -511,6 +511,21 @@ export const SaltAndPepper = {
   },
 
   /**
+   * @param recipeId {String}
+   * @returns {Promise<>}
+   */
+  deleteRecipe: async function(recipeId) {
+    if (mockConfig.enabled) {
+      console.log("deleteRecipe: " + recipeId);
+    } else {
+      const result = await doRequest("DELETE", "/recipe/" + recipeId);
+      if (result.status !== 200) {
+        throw Error(result.statusText);
+      }
+    }
+  },
+
+  /**
    * @param username {String}
    * @param password {String}
    * @returns {Promise<String>}
