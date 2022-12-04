@@ -4,6 +4,7 @@ import { SaltAndPepper } from "../api/saltAndPepper";
 import "./loginRoute.css";
 import { useAuth } from "../context/authProvider";
 import logo from "../res/saltAndPepper.png";
+import Snowflakes from "../components/snowflakes";
 
 export default function LoginRoute() {
   const { t } = useTranslation();
@@ -42,7 +43,8 @@ export default function LoginRoute() {
   );
 
   return (
-    <div className="content login-container">
+    <div className="login-container">
+      <Snowflakes />
       <div className="login-content pure-g">
         <img className="pure-img pure-u-1" src={logo} alt="logo" />
         <form
