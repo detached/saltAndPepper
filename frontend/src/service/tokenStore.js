@@ -3,7 +3,12 @@ export function storeToken(token) {
 }
 
 export function getToken() {
-  return localStorage.getItem("TOKEN");
+  let token = localStorage.getItem("TOKEN");
+  if (token) {
+    return token;
+  } else {
+    return "";
+  }
 }
 
 export function removeToken() {

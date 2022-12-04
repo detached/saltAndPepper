@@ -6,13 +6,13 @@ import {
   useState,
 } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
-import { removeToken, storeToken } from "../service/tokenStore";
+import {getToken, removeToken, storeToken} from "../service/tokenStore";
 import { saltAndPepperClient } from "../config/axiosConfig";
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState(getToken());
   const location = useLocation();
   const navigateTo = useNavigate();
   const unauthenticatedPaths = ["/login", "/invite"];
