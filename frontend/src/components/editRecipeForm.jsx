@@ -187,7 +187,7 @@ export default function EditRecipeForm({ titelKey, initRecipe }) {
 
   return (
     <>
-      { isLoading ? <Spinner fixedCentered="true" /> : null }
+      {isLoading ? <Spinner fixedCentered="true" /> : null}
       <div className="header">
         <h1>{t(titelKey)}</h1>
       </div>
