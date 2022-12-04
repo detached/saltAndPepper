@@ -2,6 +2,7 @@ import { NavLink, Outlet } from "react-router-dom";
 import { createRef } from "react";
 import { useTranslation } from "react-i18next";
 import { ProfileProvider } from "../context/profileProvider";
+import "./rootRoute.css"
 
 export default function RootRoute() {
   const { t } = useTranslation();
@@ -40,15 +41,14 @@ export default function RootRoute() {
 
   return (
     <div id="layout" ref={layoutRef}>
-      <a
-        href="#menu"
+      <div
         ref={menuLinkRef}
         id="menuLink"
         className="menu-link"
         onClick={toggleMenu}
       >
         <span></span>
-      </a>
+      </div>
 
       <div id="menu" ref={menuRef} onClick={toggleMenu}>
         <div className="pure-menu">

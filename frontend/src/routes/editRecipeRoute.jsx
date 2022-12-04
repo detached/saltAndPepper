@@ -12,7 +12,7 @@ export default function EditRecipeRoute() {
   }, [recipeId, setRecipe]);
 
   if (recipe) {
-    return <EditRecipeForm titelKey="editRecipe.title" initRecipe={recipe} />;
+    return <EditRecipeForm titleKey="editRecipe.title" initRecipe={recipe} />;
   } else {
     return <p>Loading...</p>;
   }

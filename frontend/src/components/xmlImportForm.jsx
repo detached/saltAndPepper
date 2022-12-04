@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useDropzone } from "react-dropzone";
 import "./xmlImportForm.css";
+import "./dropzone.css"
 import { useCallback, useState } from "react";
 import { SaltAndPepper } from "../api/saltAndPepper";
 import { OperationState } from "../model/operationState";
@@ -56,13 +57,13 @@ export default function XmlImportForm() {
   return (
     <>
       <h3>{t("import.gourmet")}</h3>
-      <section className="container">
+      <section className="import-dropzone-container">
         <div {...getRootProps({ className: "dropzone" })}>
           <input {...getInputProps()} />
           <p>{t("import.dropzone")}</p>
         </div>
         {acceptedFiles.length !== 0 ? (
-          <aside className="file">
+          <aside className="import-file">
             {t("import.dropzone.file")}: {acceptedFiles[0].name}
           </aside>
         ) : null}

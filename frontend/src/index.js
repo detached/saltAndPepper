@@ -1,12 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import { HashRouter, Route, Routes } from "react-router-dom";
 
 import "purecss/build/pure-min.css";
 import "purecss/build/grids-responsive-min.css";
-import "./purecss-layout.css";
+import "./index.css";
 
 import "./i18n";
 

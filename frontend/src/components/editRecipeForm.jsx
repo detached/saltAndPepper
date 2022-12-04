@@ -5,6 +5,7 @@ import { useDropzone } from "react-dropzone";
 import { FaTrashAlt } from "react-icons/fa";
 import { storeRecipe } from "../service/storeRecipeService";
 import "./editRecipeForm.css";
+import "./dropzone.css";
 import Spinner from "./spinner";
 
 const EditRecipeActions = {
@@ -84,7 +85,7 @@ function recipeReducer(state, action) {
   }
 }
 
-export default function EditRecipeForm({ titelKey, initRecipe }) {
+export default function EditRecipeForm({ titleKey, initRecipe }) {
   const { t } = useTranslation();
   const navigateTo = useNavigate();
 
@@ -189,14 +190,14 @@ export default function EditRecipeForm({ titelKey, initRecipe }) {
     <>
       {isLoading ? <Spinner fixedCentered="true" /> : null}
       <div className="header">
-        <h1>{t(titelKey)}</h1>
+        <h1>{t(titleKey)}</h1>
       </div>
       <div className="content pure-g">
         <form className="pure-form pure-form-stacked">
           <div className="pure-u-1 pure-u-md-1-2">
             <section className="edit-recipe-images-container">
               <div
-                {...getRootProps({ className: "edit-recipe-images-dropzone" })}
+                {...getRootProps({ className: "dropzone" })}
               >
                 <input {...getInputProps()} />
                 <p>{t("newRecipe.dropzone")}</p>
