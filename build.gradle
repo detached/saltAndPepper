@@ -9,7 +9,7 @@ plugins {
     id 'com.github.node-gradle.node' version '3.5.0'
 }
 
-version "0.1"
+version "1.0"
 group "de.w3is"
 mainClassName = "de.w3is.recipes.ApplicationKt"
 
