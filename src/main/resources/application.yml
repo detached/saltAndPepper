@@ -8,41 +8,57 @@ micronaut:
       max-file-size: 5000000
   router:
     static-resources:
+      index:
+        paths: "classpath:/public/index.html"
+        mapping: "/"
       default:
-        enabled: true
         paths: "classpath:public"
-  views:
-    velocity:
-      enabled: true
-      defaultExtension: "html"
+        mapping: "/**"
   security:
-    authentication: session
-    endpoints:
-      logout:
-        getAllowed: true
+    authentication: bearer
+    token:
+      enabled: true
+      jwt:
+        bearer:
+          enabled: true
+        signatures:
+          secret:
+            generator:
+              secret: 'cGxlYXNlQ2hhbmdlVGhpc1NlY3JldEZvckFOZXdPbmU='
+              base64: true
+              jws-algorithm: HS256
+        enabled: true
     redirect:
-      login-success: /
-      login-failure: /login/failed
+      enabled: false
+    endpoints:
+      login:
+        path: /api/login
+      logout:
+        enabled: false
     intercept-url-map:
-      - pattern: /css/*
+      - pattern: /api/login
+        access:
+          - isAnonymous()
+      - pattern: /*
         http-method: GET
         access:
           - isAnonymous()
-      - pattern: /res/*
+      - pattern: /static/**
         http-method: GET
         access:
           - isAnonymous()
-      - pattern: /bundle.js
-        http-method: GET
-        access:
-          - isAnonymous()
+    reject-not-found: true
+
 
 logger:
     levels:
-      io.micronaut: DEBUG
+      io.micronaut: INFO
       de.w3is.recipes: DEBUG
 
 application:
   initialAdminPassword: changeme
   allowInvitationFor: ADMIN,USER
   minPasswordLength: 5
+
+jackson:
+  serialization-inclusion: always

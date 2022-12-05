@@ -1,11 +1,12 @@
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "1.6.0"
-    id "org.jetbrains.kotlin.kapt" version "1.6.0"
-    id "org.jetbrains.kotlin.plugin.allopen" version "1.6.0"
-    id "com.github.johnrengelman.shadow" version "7.1.0"
-    id "io.micronaut.application" version '3.0.1'
-    id 'org.flywaydb.flyway' version '8.2.1'
-    id 'nu.studer.jooq' version '6.0.1'
+    id "org.jetbrains.kotlin.jvm" version "1.6.21"
+    id "org.jetbrains.kotlin.kapt" version "1.6.21"
+    id "org.jetbrains.kotlin.plugin.allopen" version "1.6.21"
+    id "com.github.johnrengelman.shadow" version "7.1.2"
+    id "io.micronaut.application" version '3.6.3'
+    id 'org.flywaydb.flyway' version '9.7.0'
+    id 'nu.studer.jooq' version '8.0'
+    id 'com.github.node-gradle.node' version '3.5.0'
 }
 
 version "0.1"
@@ -25,31 +26,28 @@ dependencies {
     jooqGenerator("org.postgresql:postgresql:${postgresqlJdbcVersion}")
 
     kapt("io.micronaut:micronaut-http-validation")
-    kapt("io.micronaut:micronaut-validation")
-    kapt("io.micronaut:micronaut-inject-java")
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
     implementation("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
-    implementation("javax.annotation:javax.annotation-api")
-    implementation("javax.transaction:javax.transaction-api:1.3")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
+    implementation("jakarta.annotation:jakarta.annotation-api")
+    implementation("javax.transaction:javax.transaction-api:${javaxTransactionApiVersion}")
 
-    implementation("io.micronaut:micronaut-runtime")
     implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
-    implementation("io.micronaut.kotlin:micronaut-kotlin-extension-functions")
-    implementation("io.micronaut:micronaut-inject")
+    implementation("io.micronaut:micronaut-http-client")
+    implementation("io.micronaut:micronaut-jackson-databind")
     implementation("io.micronaut:micronaut-validation")
-    implementation("io.micronaut:micronaut-runtime")
-    implementation("io.micronaut.security:micronaut-security-session")
+    implementation("io.micronaut.security:micronaut-security")
+    implementation("io.micronaut.security:micronaut-security-jwt")
     implementation("io.micronaut.security:micronaut-security-annotations")
+
+    implementation("io.micronaut.flyway:micronaut-flyway")
     implementation("io.micronaut.sql:micronaut-jdbc-hikari")
     implementation("io.micronaut.sql:micronaut-jooq")
-    implementation("io.micronaut.flyway:micronaut-flyway")
-    implementation("io.micronaut.views:micronaut-views-velocity")
+
     implementation("io.projectreactor:reactor-core")
     implementation("org.springframework.security:spring-security-core:${springSecurityVersion}")
     implementation("net.coobird:thumbnailator:${thumbnailatorVersion}")
     implementation("org.apache.commons:commons-text:${commonsTextVersion}")
-    implementation("org.apache.velocity:velocity-tools:${velocityToolsVersion}")
 
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -61,19 +59,30 @@ dependencies {
     testImplementation("org.mockito.kotlin:mockito-kotlin:${mockitoVersion}")
 }
 
+node {
+    download = true
+    version = nodeVersion
+    npmVersion = nodeNpmVersion
+    nodeProjectDir = file("${project.projectDir}/frontend/")
+}
+
 java {
-    sourceCompatibility = JavaVersion.toVersion('11')
+    sourceCompatibility = JavaVersion.toVersion(javaVersion)
 }
 
 compileKotlin {
     kotlinOptions {
-        jvmTarget = '11'
+        languageVersion = "1.6"
+        jvmTarget = javaVersion
+        freeCompilerArgs = ["-Xcontext-receivers"]
     }
 }
 
 compileTestKotlin {
     kotlinOptions {
-        jvmTarget = '11'
+        languageVersion = "1.6"
+        jvmTarget = javaVersion
+        freeCompilerArgs = ["-Xcontext-receivers"]
     }
 }
 
@@ -101,7 +110,7 @@ flyway {
 }
 
 jooq {
-    version = '3.14.12'
+    version = jooqVersion
     configurations {
         main {
             generateSchemaSourceOnCompilation = false
@@ -125,8 +134,13 @@ jooq {
     }
 }
 
-task(copyFrontendBundle, type: Copy) {
-    from(file('src/main/js/dist/')) {
+tasks.register('buildFrontend', NpmTask) {
+    args = ['run', 'build']
+}
+
+tasks.register('copyFrontendBundle', Copy) {
+    dependsOn(buildFrontend)
+    from(file('frontend/build/')) {
         include '**/*'
     }
     into('build/resources/main/public/')

@@ -1,0 +1,22 @@
+.invite-container {
+  text-align: center;
+  max-width: 30em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.invite-container p {
+  margin-bottom: 1.5em;
+}
+
+.invite-form {
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.invite-form fieldset {
+  max-width: 15em;
+}

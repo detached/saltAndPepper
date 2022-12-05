@@ -1,0 +1,26 @@
+.import-dropzone-container {
+  display: flex;
+  flex-direction: column;
+  font-family: sans-serif;
+}
+
+.import-dropzone-container > p {
+  font-size: 1rem;
+}
+
+.import-dropzone-container > em {
+  font-size: 0.8rem;
+}
+
+.import-button {
+  margin-top: 1.5em;
+}
+
+.import-result {
+  margin-top: 1.5em;
+}
+
+.import-file {
+  margin-top: 1.5em;
+  font-weight: bold;
+}

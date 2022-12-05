@@ -1,0 +1,32 @@
+.modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    top: 50%;
+    width: 100%;
+    transform: translate(-50%, -50%);
+}
+.model-inner {
+    background-color: white;
+    border-radius: 0.5em;
+    padding: 2em;
+    margin: auto;
+    border: 2px solid var(--contourColor);
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid black;
+}
+.modal-buttons {
+    margin-top: 2em;
+}
+
+.modal-buttons button {
+    margin-right: 1em;
+}
