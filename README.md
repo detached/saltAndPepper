@@ -11,7 +11,7 @@ Features:
 TODO:
  * Add view to only see your own recipes 
  * Refactor frontend
- * Add and document API
+ * Document API
  * User management
  * Other auth providers
  * Other storage backends
@@ -26,7 +26,7 @@ The build output is located under `build/libs/`
 
 ## Running
 
-Use Java 11 to execute the `recipes-*-all.jar` from the build directory.
+Use Java 17 to execute the `recipes-*-all.jar` from the build directory.
 
 Specify the database backend with the environment variable `MICRONAUT_ENVIRONMENTS=h2` or
 `MICRONAUT_ENVIRONMENT=postgres`.
@@ -42,4 +42,20 @@ MICRONAUT_ENVIRONMENTS=h2 java -jar ./recipes-0.1-all.jar
 Example: Running with postgresql
 ```shell
 MICRONAUT_ENVIRONMENTS=postgres java -jar ./recipes-0.1-all.jar
+```
+
+Change the following settings in your application.yml:
+
+```
+application:
+  initialAdminPassword: xyz
+  
+micronaut:
+  security:
+    token:
+      jwt:
+        signatures:
+          secret:
+            generator:
+              secret: 'cGxlYXNlQ2hhbmdlVGhpc1NlY3JldEZvckFOZXdPbmU='
 ```
