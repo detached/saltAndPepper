@@ -5,22 +5,33 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isFailure
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isSuccess
+import de.w3is.recipes.infra.persistence.generated.Tables
 import de.w3is.recipes.testUser
 import de.w3is.recipes.users.model.PlainPassword
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import jakarta.inject.Inject
+import org.jooq.DSLContext
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import javax.transaction.Transactional
 
 @MicronautTest
 @Transactional
-class InvitationServiceTest {
+open class InvitationServiceTest {
 
     @Inject
     private lateinit var invitationService: InvitationService
 
     @Inject
     private lateinit var userService: UserService
+
+    @Inject
+    private lateinit var dslContext: DSLContext
+
+    @BeforeEach
+    fun reset() {
+        dslContext.truncate(Tables.INVITATIONS).execute()
+    }
 
     @Test
     fun `when creating a invite then the creating user is recorded as creator`() {
@@ -32,12 +43,12 @@ class InvitationServiceTest {
     }
 
     @Test
-    fun `when a user has created a invitation then she can create another one`() {
+    fun `when a user has created a invitation then she can't create another one`() {
 
         assertThat {
             invitationService.createInvite(testUser)
             invitationService.createInvite(testUser)
-        }.isSuccess()
+        }.isFailure()
     }
 
     @Test

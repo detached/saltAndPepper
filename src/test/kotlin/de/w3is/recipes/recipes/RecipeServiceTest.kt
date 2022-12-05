@@ -44,7 +44,8 @@ class RecipeServiceTest {
                 yields = "yields",
                 ingredients = "ingredients",
                 instructions = "instructions",
-                modifications = "modifications"
+                modifications = "modifications",
+                images = emptyList()
             ),
             user = testUser
         )
@@ -108,8 +109,9 @@ class RecipeServiceTest {
         yields = "yields",
         ingredients = "ingredients",
         instructions = "instructions",
-        modifications = "modifications"
+        modifications = "modifications",
+        images = emptyList()
     )
 
-    private fun givenImageData() = this.javaClass.getResourceAsStream("/images/cake.jpg")
+    private fun givenImageData() = this.javaClass.getResourceAsStream("/images/cake.jpg")!!
 }
