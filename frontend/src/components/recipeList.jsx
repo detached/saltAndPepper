@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import saltAndPepperIcon from "../res/saltAndPepper.png";
 import "./recipeList.css";
 
 export default function RecipeList({ page, listItems, setPage }) {
@@ -86,8 +87,8 @@ export default function RecipeList({ page, listItems, setPage }) {
               <tr key={recipe.id} onClick={() => navigateToRecipe(recipe)}>
                 <td>
                   {recipe.imageUrl ? (
-                    <img src={recipe.imageUrl} alt="" />
-                  ) : null}
+                    <img src={recipe.imageUrl} className="recipe-list-icon" alt="" />
+                  ) : <img src={saltAndPepperIcon} className="recipe-list-default-icon" alt="" />}
                 </td>
                 <td>{recipe.title}</td>
                 <td className="desktop-only">{recipe.category}</td>

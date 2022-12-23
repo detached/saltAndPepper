@@ -21,3 +21,17 @@
   background: none !important;
   border: none;
 }
+
+.recipe-list-icon {
+  max-width: 150px;
+  max-height: 150px;
+  border: 1px solid var(--contourColor);
+}
+
+.recipe-list-default-icon {
+  max-width: 150px;
+  max-height: 150px;
+  background-color: var(--color5);
+  border: 1px solid var(--contourColor);
+  filter: opacity(40%);
+}
