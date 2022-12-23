@@ -134,11 +134,16 @@ jooq {
     }
 }
 
+tasks.register('installFrontendDependencies', NpmTask) {
+    args = ['install']
+}
+
 tasks.register('buildFrontend', NpmTask) {
     args = ['run', 'build']
 }
 
 tasks.register('copyFrontendBundle', Copy) {
+    dependsOn(installFrontendDependencies)
     dependsOn(buildFrontend)
     from(file('frontend/build/')) {
         include '**/*'
