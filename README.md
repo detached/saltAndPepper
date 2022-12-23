@@ -2,21 +2,6 @@
 [![Build](https://github.com/detached/saltAndPepper/actions/workflows/build.yml/badge.svg)](https://github.com/detached/saltAndPepper/actions/workflows/build.yml)
 
 ## A selfhosting recipe database
-
-Features:
- * Adding recipes
- * SearchRoute recipes
- * Import from gourmet xml
- * Simple multiuser support
-
-TODO:
- * Add view to only see your own recipes 
- * Refactor frontend
- * Document API
- * User management
- * Other auth providers
- * Other storage backends
-
 ## Building
 
 ```shell
@@ -31,9 +16,6 @@ Use Java 17 to execute the `recipes-*-all.jar` from the build directory.
 
 Specify the database backend with the environment variable `MICRONAUT_ENVIRONMENTS=h2` or
 `MICRONAUT_ENVIRONMENT=postgres`.
-
-Use `APPLICATION_USERS=file:/path/to/users.json` to specify the application users the server should setup upon startup.
-If not specified the test users from `src/main/resources/users.json` are created.
 
 Example: Running with h2
 ```shell
