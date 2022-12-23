@@ -1,4 +1,5 @@
 # Salt and Pepper
+[![Build](https://github.com/detached/saltAndPepper/actions/workflows/build.yml/badge.svg)](https://github.com/detached/saltAndPepper/actions/workflows/build.yml)
 
 ## A selfhosting recipe database
 
