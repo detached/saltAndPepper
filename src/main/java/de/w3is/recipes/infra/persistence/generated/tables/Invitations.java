@@ -9,8 +9,6 @@ import de.w3is.recipes.infra.persistence.generated.Public;
 import de.w3is.recipes.infra.persistence.generated.tables.records.InvitationsRecord;
 
 import java.time.OffsetDateTime;
-import java.util.Arrays;
-import java.util.List;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
@@ -104,7 +102,7 @@ public class Invitations extends TableImpl<InvitationsRecord> {
 
     @Override
     public Schema getSchema() {
-        return Public.PUBLIC;
+        return aliased() ? null : Public.PUBLIC;
     }
 
     @Override
@@ -115,11 +113,6 @@ public class Invitations extends TableImpl<InvitationsRecord> {
     @Override
     public UniqueKey<InvitationsRecord> getPrimaryKey() {
         return Keys.INVITATIONS_PKEY;
-    }
-
-    @Override
-    public List<UniqueKey<InvitationsRecord>> getKeys() {
-        return Arrays.<UniqueKey<InvitationsRecord>>asList(Keys.INVITATIONS_PKEY);
     }
 
     @Override

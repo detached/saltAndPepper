@@ -140,12 +140,12 @@ public class Recipes extends TableImpl<RecipesRecord> {
 
     @Override
     public Schema getSchema() {
-        return Public.PUBLIC;
+        return aliased() ? null : Public.PUBLIC;
     }
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.RECIPE_ID_IDX);
+        return Arrays.asList(Indexes.RECIPE_ID_IDX);
     }
 
     @Override
@@ -159,8 +159,8 @@ public class Recipes extends TableImpl<RecipesRecord> {
     }
 
     @Override
-    public List<UniqueKey<RecipesRecord>> getKeys() {
-        return Arrays.<UniqueKey<RecipesRecord>>asList(Keys.RECIPES_PKEY, Keys.RECIPES_RECIPE_ID_KEY);
+    public List<UniqueKey<RecipesRecord>> getUniqueKeys() {
+        return Arrays.asList(Keys.RECIPES_RECIPE_ID_KEY);
     }
 
     @Override

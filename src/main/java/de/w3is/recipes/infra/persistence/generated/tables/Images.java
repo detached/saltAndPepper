@@ -105,12 +105,12 @@ public class Images extends TableImpl<ImagesRecord> {
 
     @Override
     public Schema getSchema() {
-        return Public.PUBLIC;
+        return aliased() ? null : Public.PUBLIC;
     }
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.IMAGE_ID_IDX);
+        return Arrays.asList(Indexes.IMAGE_ID_IDX);
     }
 
     @Override
@@ -124,8 +124,8 @@ public class Images extends TableImpl<ImagesRecord> {
     }
 
     @Override
-    public List<UniqueKey<ImagesRecord>> getKeys() {
-        return Arrays.<UniqueKey<ImagesRecord>>asList(Keys.IMAGES_PKEY, Keys.IMAGES_IMAGE_ID_KEY);
+    public List<UniqueKey<ImagesRecord>> getUniqueKeys() {
+        return Arrays.asList(Keys.IMAGES_IMAGE_ID_KEY);
     }
 
     @Override

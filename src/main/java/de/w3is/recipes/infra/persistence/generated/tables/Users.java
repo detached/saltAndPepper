@@ -110,12 +110,12 @@ public class Users extends TableImpl<UsersRecord> {
 
     @Override
     public Schema getSchema() {
-        return Public.PUBLIC;
+        return aliased() ? null : Public.PUBLIC;
     }
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.USERNAME_IDX);
+        return Arrays.asList(Indexes.USERNAME_IDX);
     }
 
     @Override
@@ -129,8 +129,8 @@ public class Users extends TableImpl<UsersRecord> {
     }
 
     @Override
-    public List<UniqueKey<UsersRecord>> getKeys() {
-        return Arrays.<UniqueKey<UsersRecord>>asList(Keys.USERS_PKEY, Keys.USERS_USER_ID_KEY, Keys.USERS_USERNAME_KEY);
+    public List<UniqueKey<UsersRecord>> getUniqueKeys() {
+        return Arrays.asList(Keys.USERS_USER_ID_KEY, Keys.USERS_USERNAME_KEY);
     }
 
     @Override
