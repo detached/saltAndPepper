@@ -17,7 +17,7 @@
   border-color: var(--contourColor);
   border-style: solid;
   border-width: 1px;
-  height: 10em;
+  max-height: 10em;
   overflow: auto;
 }
 
