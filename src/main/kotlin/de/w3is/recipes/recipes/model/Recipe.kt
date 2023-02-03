@@ -78,7 +78,7 @@ class Recipe(
     }
 
     override fun toString(): String {
-        return "Recipe(id=$id, title='$title')"
+        return "Recipe(id=$id, title='$title', category='$category', cuisine='$cuisine', yields='$yields', ingredients='$ingredients', instructions='$instructions', modifications='$modifications', authorId=$authorId)"
     }
 }
 

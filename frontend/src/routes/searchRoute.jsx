@@ -1,13 +1,15 @@
 import { useCallback, useEffect, useReducer, useState } from "react";
 import { useTranslation } from "react-i18next";
 import RecipeList from "../components/recipeList";
-import { Page, SaltAndPepper, SearchRequest } from "../api/saltAndPepper";
+import { Page, SaltAndPepper, SearchRequest, SearchFilter, FilterKey } from "../api/saltAndPepper";
 import "./searchRoute.css";
 import Spinner from "../components/spinner";
+import {SearchFilter as SearchFilterComponent} from "../components/searchFilter";
 
 const SearchRequestActions = {
   SET_PAGE_NUMBER: "SET_PAGE_NUMBER",
   SET_QUERY: "SET_QUERY",
+  SET_FILTER: "SET_FILTER",
 };
 
 function searchRequestReducer(state, action) {
@@ -16,12 +18,23 @@ function searchRequestReducer(state, action) {
       return {
         searchQuery: state.searchQuery,
         page: new Page(state.page.size, action.pageNumber),
+        filter: state.filter,
       };
     case SearchRequestActions.SET_QUERY:
       return {
         searchQuery: action.searchQuery,
         page: state.page,
+        filter: state.filter,
       };
+    case SearchRequestActions.SET_FILTER:
+      return {
+        searchQuery: state.searchQuery,
+        page: state.page,
+        filter: new SearchFilter(
+          action.filter[FilterKey.AUTHOR],
+          action.filter[FilterKey.CATEGORY],
+          action.filter[FilterKey.CUISINE]),
+      }
     default:
       return state;
   }
@@ -35,6 +48,7 @@ export default function SearchRoute() {
     {
       searchQuery: "",
       page: new Page(20, 0),
+      filter: new SearchFilter(),
     },
     searchRequestReducer
   );
@@ -42,6 +56,7 @@ export default function SearchRoute() {
   const [searchResult, setSearchResult] = useState({
     items: [],
     page: new Page(0, 0),
+    possibleFilter: new SearchFilter()
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -76,12 +91,13 @@ export default function SearchRoute() {
     setIsLoading(true);
 
     SaltAndPepper.search(
-      new SearchRequest(searchRequest.searchQuery, searchRequest.page)
+      new SearchRequest(searchRequest.searchQuery, searchRequest.page, searchRequest.filter)
     )
       .then((result) => {
         setSearchResult({
           page: result.page,
           items: result.data,
+          possibleFilter: result.possibleFilter
         });
       })
       .finally(() => {
@@ -89,6 +105,13 @@ export default function SearchRoute() {
         setDoSearch(false);
       });
   }, [isLoading, doSearch, searchRequest, setSearchResult]);
+
+  var handleOnSelectedFilterChanged = useCallback((selectedFilter) => {
+    dispatchSearchRequest({
+      type: SearchRequestActions.SET_FILTER,
+      filter: selectedFilter,
+    });
+  }, [dispatchSearchRequest]);
 
   return (
     <div className="pure-g">
@@ -120,6 +143,7 @@ export default function SearchRoute() {
         </form>
       </div>
       <div className="pure-u-1-1">
+        <SearchFilterComponent possibleFilter={searchResult.possibleFilter} onSelectedValueChanged={handleOnSelectedFilterChanged} />
         <RecipeList
           page={searchResult.page}
           listItems={searchResult.items}

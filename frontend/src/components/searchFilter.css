@@ -1,0 +1,27 @@
+.searchfilter-menu-title {
+    margin-bottom: 0;
+}
+
+.searfilter-menu-title-selected {
+    background-color: var(--color5) !important;
+}
+
+.searfilter-menu-title-selected:hover {
+    background-color: var(--color5) !important;
+    filter: opacity(50);
+}
+
+.searchfilter-children-box {
+    padding: 1em;
+    background-color: var(--backgroundColor);
+    border-color: var(--contourColor);
+    border-style: solid;
+    border-width: 1px;
+    height: 10em;
+    overflow: auto;
+}
+
+.searchfilter-children-box li {
+    margin-bottom: 1em;
+    height: 1em;
+}

@@ -4,6 +4,17 @@ micronaut:
   server:
     cors:
       enabled: true
+      configuration:
+        web:
+          allowedOrigins:
+            - http://localhost:8080
+            - http://127.0.0.1:8080
+          allowedHeaders:
+            - Content-Type
+          allowedMethods:
+            - POST
+            - GET
+            - OPTIONS
     multipart:
       max-file-size: 5000000
   router:
