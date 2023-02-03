@@ -27,4 +27,4 @@ jobs:
           prerelease: false
           files: |
             LICENSE.md
-            build/libs/recipes-1.0.jar
+            build/libs/recipes-1.0-all.jar
