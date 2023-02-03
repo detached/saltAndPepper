@@ -1,10 +1,16 @@
 import { useCallback, useEffect, useReducer, useState } from "react";
 import { useTranslation } from "react-i18next";
 import RecipeList from "../components/recipeList";
-import { Page, SaltAndPepper, SearchRequest, SearchFilter, FilterKey } from "../api/saltAndPepper";
+import {
+  Page,
+  SaltAndPepper,
+  SearchRequest,
+  SearchFilter,
+  FilterKey,
+} from "../api/saltAndPepper";
 import "./searchRoute.css";
 import Spinner from "../components/spinner";
-import {SearchFilter as SearchFilterComponent} from "../components/searchFilter";
+import { SearchFilter as SearchFilterComponent } from "../components/searchFilter";
 
 const SearchRequestActions = {
   SET_PAGE_NUMBER: "SET_PAGE_NUMBER",
@@ -33,8 +39,9 @@ function searchRequestReducer(state, action) {
         filter: new SearchFilter(
           action.filter[FilterKey.AUTHOR],
           action.filter[FilterKey.CATEGORY],
-          action.filter[FilterKey.CUISINE]),
-      }
+          action.filter[FilterKey.CUISINE]
+        ),
+      };
     default:
       return state;
   }
@@ -56,7 +63,7 @@ export default function SearchRoute() {
   const [searchResult, setSearchResult] = useState({
     items: [],
     page: new Page(0, 0),
-    possibleFilter: new SearchFilter()
+    possibleFilter: new SearchFilter(),
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -91,13 +98,17 @@ export default function SearchRoute() {
     setIsLoading(true);
 
     SaltAndPepper.search(
-      new SearchRequest(searchRequest.searchQuery, searchRequest.page, searchRequest.filter)
+      new SearchRequest(
+        searchRequest.searchQuery,
+        searchRequest.page,
+        searchRequest.filter
+      )
     )
       .then((result) => {
         setSearchResult({
           page: result.page,
           items: result.data,
-          possibleFilter: result.possibleFilter
+          possibleFilter: result.possibleFilter,
         });
       })
       .finally(() => {
@@ -106,12 +117,15 @@ export default function SearchRoute() {
       });
   }, [isLoading, doSearch, searchRequest, setSearchResult]);
 
-  var handleOnSelectedFilterChanged = useCallback((selectedFilter) => {
-    dispatchSearchRequest({
-      type: SearchRequestActions.SET_FILTER,
-      filter: selectedFilter,
-    });
-  }, [dispatchSearchRequest]);
+  var handleOnSelectedFilterChanged = useCallback(
+    (selectedFilter) => {
+      dispatchSearchRequest({
+        type: SearchRequestActions.SET_FILTER,
+        filter: selectedFilter,
+      });
+    },
+    [dispatchSearchRequest]
+  );
 
   return (
     <div className="pure-g">
@@ -143,7 +157,10 @@ export default function SearchRoute() {
         </form>
       </div>
       <div className="pure-u-1-1">
-        <SearchFilterComponent possibleFilter={searchResult.possibleFilter} onSelectedValueChanged={handleOnSelectedFilterChanged} />
+        <SearchFilterComponent
+          possibleFilter={searchResult.possibleFilter}
+          onSelectedValueChanged={handleOnSelectedFilterChanged}
+        />
         <RecipeList
           page={searchResult.page}
           listItems={searchResult.items}

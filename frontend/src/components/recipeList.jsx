@@ -87,8 +87,18 @@ export default function RecipeList({ page, listItems, setPage }) {
               <tr key={recipe.id} onClick={() => navigateToRecipe(recipe)}>
                 <td>
                   {recipe.imageUrl ? (
-                    <img src={recipe.imageUrl} className="recipe-list-icon" alt="" />
-                  ) : <img src={saltAndPepperIcon} className="recipe-list-default-icon" alt="" />}
+                    <img
+                      src={recipe.imageUrl}
+                      className="recipe-list-icon"
+                      alt=""
+                    />
+                  ) : (
+                    <img
+                      src={saltAndPepperIcon}
+                      className="recipe-list-default-icon"
+                      alt=""
+                    />
+                  )}
                 </td>
                 <td>{recipe.title}</td>
                 <td className="desktop-only">{recipe.category}</td>
