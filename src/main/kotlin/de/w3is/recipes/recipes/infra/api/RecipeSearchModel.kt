@@ -1,13 +1,17 @@
 package de.w3is.recipes.recipes.infra.api
 
-data class SearchRequest(
+import de.w3is.recipes.recipes.model.FilterKey
+
+data class SearchRequestViewModel(
     val searchQuery: String,
-    val page: Page
+    val page: PageViewModel,
+    val filter: Map<FilterKey, List<String>>,
 )
 
-data class SearchResponse(
+data class SearchResponseViewModel(
     val data: List<SearchResponseData>,
-    val page: Page
+    val page: PageViewModel,
+    val possibleFilter: Map<FilterKey, List<FilterValueViewModel>>
 )
 
 data class SearchResponseData(
@@ -19,8 +23,13 @@ data class SearchResponseData(
     val author: String,
 )
 
-data class Page(
+data class PageViewModel(
     val size: Int,
     val number: Int,
     val maxNumber: Int?
+)
+
+data class FilterValueViewModel(
+    val value: String,
+    val label: String
 )

@@ -4,14 +4,47 @@ import { mockConfig } from "../config/mockConfig";
 import { Author, Recipe, RecipeImage } from "../model/recipe";
 import { getToken } from "../service/tokenStore";
 
+export const FilterKey = {
+  AUTHOR: "AUTHOR",
+  CATEGORY: "CATEGORY",
+  CUISINE: "CUISINE",
+};
+
+export class FilterValue {
+  /**
+   * @param value {String}
+   * @param label {String}
+   */
+  constructor(value, label) {
+    this.value = value;
+    this.label = label;
+  }
+}
+
+export class SearchFilter {
+  /**
+   *
+   * @param authors {Array<FilterValue>||Array<String>}
+   * @param categories {Array<FilterValue>||Array<String>}
+   * @param cuisine {Array<FilterValue>||Array<String>}
+   */
+  constructor(authors, categories, cuisine) {
+    this[FilterKey.AUTHOR] = authors;
+    this[FilterKey.CATEGORY] = categories;
+    this[FilterKey.CUISINE] = cuisine;
+  }
+}
+
 export class SearchRequest {
   /**
    * @param searchQuery {String}
    * @param page {Page}
+   * @param filter {SearchFilter}
    */
-  constructor(searchQuery, page) {
+  constructor(searchQuery, page, filter) {
     this.searchQuery = searchQuery;
     this.page = page;
+    this.filter = filter;
   }
 }
 
@@ -19,15 +52,18 @@ export class SearchResponse {
   /**
    * @param data {Array<SearchResponseData>}
    * @param page {Page}
+   * @param possibleFilter {SearchFilter}
    */
-  constructor(data, page) {
+  constructor(data, page, possibleFilter) {
     this.data = data;
     this.page = page;
+    this.possibleFilter = possibleFilter;
   }
 
   static assertType(object) {
     assertProperty(object, "data");
     assertProperty(object, "page");
+    assertProperty(object, "possibleFilter");
   }
 }
 
@@ -255,7 +291,31 @@ export const SaltAndPepper = {
             "Author2"
           ),
         ],
-        new Page(searchRequest.page.size, searchRequest.page.number, 10)
+        new Page(searchRequest.page.size, searchRequest.page.number, 10),
+        new SearchFilter(
+          [
+            new FilterValue("1", "Author1"),
+            new FilterValue("2", "Author2"),
+            new FilterValue("3", "Author3"),
+            new FilterValue("4", "Author4"),
+            new FilterValue("5", "Author5"),
+            new FilterValue("6", "Author6"),
+            new FilterValue("7", "Author7"),
+            new FilterValue("8", "Author8"),
+            new FilterValue("9", "Author9"),
+            new FilterValue("10", "Author10"),
+            new FilterValue("11", "Author11"),
+          ],
+          [
+            new FilterValue("TestCategory1", "TestCategory1"),
+            new FilterValue("TestCategory2", "TestCategory2"),
+            new FilterValue("TestCategory3", "TestCategory3"),
+          ],
+          [
+            new FilterValue("TestCuisine1", "TestCuisine1"),
+            new FilterValue("TestCuisine2", "TestCuisine2"),
+          ]
+        )
       );
     } else {
       const response = await doRequest("POST", "/recipe/search", searchRequest);
@@ -514,7 +574,7 @@ export const SaltAndPepper = {
    * @param recipeId {String}
    * @returns {Promise<>}
    */
-  deleteRecipe: async function(recipeId) {
+  deleteRecipe: async function (recipeId) {
     if (mockConfig.enabled) {
       console.log("deleteRecipe: " + recipeId);
     } else {

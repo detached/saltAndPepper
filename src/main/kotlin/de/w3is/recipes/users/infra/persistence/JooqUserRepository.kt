@@ -49,10 +49,16 @@ open class JooqUserRepository(private val dslContext: DSLContext) : UserReposito
     }
 
     override fun get(authorId: AuthorId): Author =
-        dslContext.selectFrom(USERS).where(USERS.USER_ID.equal(authorId.value)).fetchOne {
-            Author(
-                id = AuthorId(it.userId),
-                name = it.username
-            )
-        } ?: error("Author with id $authorId")
+        dslContext.selectFrom(USERS).where(USERS.USER_ID.equal(authorId.value))
+            .fetchOne { recordToAuthor(it) }
+            ?: error("Author with id $authorId")
+
+    override fun get(authorIds: Set<AuthorId>): Set<Author> =
+        dslContext.selectFrom(USERS).where(USERS.USER_ID.`in`(authorIds.map { it.value }))
+            .fetch { recordToAuthor(it) }.toSet()
+
+    private fun recordToAuthor(it: UsersRecord) = Author(
+        id = AuthorId(it.userId),
+        name = it.username
+    )
 }

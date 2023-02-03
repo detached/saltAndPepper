@@ -1,0 +1,31 @@
+micronaut:
+  server:
+    cors:
+      enabled: true
+      configuration:
+        web:
+          allowedOrigins:
+            - http://localhost:8080
+            - http://127.0.0.1:8080
+          allowedHeaders:
+            - Content-Type
+            - Accept
+          allowedMethods:
+            - POST
+            - PUT
+            - GET
+            - PATCH
+            - OPTIONS
+
+datasources:
+  h2:
+    url: jdbc:h2:./recipe.h2;MODE=PostgreSQL;INIT=CREATE SCHEMA IF NOT EXISTS PUBLIC;
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ''
+    sql-dialect: 'POSTGRES'
+
+flyway:
+  datasources:
+    h2:
+      enabled: true

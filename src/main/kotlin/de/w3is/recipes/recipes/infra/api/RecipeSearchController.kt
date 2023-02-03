@@ -3,7 +3,10 @@ package de.w3is.recipes.recipes.infra.api
 import de.w3is.recipes.images.infra.api.toThumbnailUrl
 import de.w3is.recipes.recipes.AuthorRepository
 import de.w3is.recipes.recipes.RecipeRepository
+import de.w3is.recipes.recipes.model.AuthorId
+import de.w3is.recipes.recipes.model.FilterKey
 import de.w3is.recipes.recipes.model.Recipe
+import de.w3is.recipes.recipes.model.SearchRequest
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Post
 import io.micronaut.security.annotation.Secured
@@ -17,34 +20,22 @@ class RecipeSearchController(
 ) {
 
     @Post
-    fun search(searchRequest: SearchRequest): SearchResponse {
+    fun search(searchRequestViewModel: SearchRequestViewModel): SearchResponseViewModel {
 
-        val limit = with(searchRequest.page.size) {
-            if (this in 1..99) {
-                this
-            } else {
-                20
-            }
+        val searchResponse = recipeRepository.search(searchRequestViewModel.toSearchRequest())
+        val possibleFilter = searchResponse.possibleFilter.toViewModel()
+
+        return with(searchResponse) {
+            SearchResponseViewModel(
+                page = PageViewModel(
+                    size = page.size,
+                    number = page.current,
+                    maxNumber = page.max,
+                ),
+                data = results.map { it.toViewModel() },
+                possibleFilter = possibleFilter
+            )
         }
-
-        val page = with(searchRequest.page.number) {
-            if (this >= 0) {
-                this
-            } else {
-                0
-            }
-        }
-
-        val searchResponse = recipeRepository.search(searchRequest.searchQuery, limit, page)
-
-        return SearchResponse(
-            page = Page(
-                size = searchResponse.page.size,
-                number = searchResponse.page.current,
-                maxNumber = searchResponse.page.max,
-            ),
-            data = searchResponse.results.map { it.toViewModel() }
-        )
     }
 
     private fun Recipe.toViewModel(): SearchResponseData {
@@ -57,4 +48,50 @@ class RecipeSearchController(
             author = authorRepository.get(this.authorId).name
         )
     }
+
+    private fun SearchRequestViewModel.toSearchRequest(): SearchRequest {
+
+        val limit = with(page.size) {
+            if (this in 1..99) {
+                this
+            } else {
+                20
+            }
+        }
+
+        val page = with(page.number) {
+            if (this >= 0) {
+                this
+            } else {
+                0
+            }
+        }
+
+        return SearchRequest(
+            query = this.searchQuery,
+            limit = limit,
+            page = page,
+            filter = this.filter
+        )
+    }
+
+    private fun Map<FilterKey, List<String>>.toViewModel(): Map<FilterKey, List<FilterValueViewModel>> {
+        return this.mapValues { (key, values) ->
+            when (key) {
+                FilterKey.AUTHOR -> values.resolveAuthorNamesAsLabels()
+                else -> values.useValueAsLabels()
+            }
+        }
+    }
+
+    private fun List<String>.resolveAuthorNamesAsLabels(): List<FilterValueViewModel> {
+
+        val authors = authorRepository.get(this.map { AuthorId(it) }.toSet())
+
+        return authors.map { author ->
+            FilterValueViewModel(value = author.id.value, label = author.name)
+        }
+    }
+
+    private fun List<String>.useValueAsLabels(): List<FilterValueViewModel> = map { FilterValueViewModel(it, it) }
 }

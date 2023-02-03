@@ -2,7 +2,7 @@ import { NavLink, Outlet } from "react-router-dom";
 import { createRef } from "react";
 import { useTranslation } from "react-i18next";
 import { ProfileProvider } from "../context/profileProvider";
-import "./rootRoute.css"
+import "./rootRoute.css";
 
 export default function RootRoute() {
   const { t } = useTranslation();

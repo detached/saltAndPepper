@@ -196,9 +196,7 @@ export default function EditRecipeForm({ titleKey, initRecipe }) {
         <form className="pure-form pure-form-stacked">
           <div className="pure-u-1 pure-u-md-1-2">
             <section className="edit-recipe-images-container">
-              <div
-                {...getRootProps({ className: "dropzone" })}
-              >
+              <div {...getRootProps({ className: "dropzone" })}>
                 <input {...getInputProps()} />
                 <p>{t("newRecipe.dropzone")}</p>
               </div>
