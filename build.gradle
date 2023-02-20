@@ -4,7 +4,7 @@ plugins {
     id "org.jetbrains.kotlin.plugin.allopen" version "1.8.10"
     id "com.github.johnrengelman.shadow" version "7.1.2"
     id "io.micronaut.application" version '3.7.0'
-    id 'org.flywaydb.flyway' version '9.14.1'
+    id 'org.flywaydb.flyway' version '9.15.0'
     id 'nu.studer.jooq' version '8.1'
     id 'com.github.node-gradle.node' version '3.5.1'
 }
