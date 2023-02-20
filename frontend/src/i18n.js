@@ -17,7 +17,7 @@ const resources = {
       "search.table.category": "Kategorie",
       "search.table.cuisine": "Küche",
       "search.table.author": "Von",
-      "search.filter.AUTHOR": "AuthorIn",
+      "search.filter.AUTHOR": "AutorIn",
       "search.filter.CATEGORY": "Kategorie",
       "search.filter.CUISINE": "Küche",
       "recipe.author": "Von",
