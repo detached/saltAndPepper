@@ -21,6 +21,21 @@ configurations {
     flywayMigration
 }
 
+ext {
+    kotlinVersion = "1.8.10"
+    postgresqlJdbcVersion = "42.5.2"
+    jooqVersion = "3.18.0"
+    nodeVersion = "18.12.0"
+    nodeNpmVersion = "8.19.2"
+    micronautVersion = "3.7.3"
+    javaxTransactionApiVersion = "1.3"
+    assertKVersion = "0.25"
+    thumbnailatorVersion = "0.4.19"
+    commonsTextVersion = "1.10.0"
+    springSecurityVersion = "6.0.1"
+    mockitoVersion = "4.1.0"
+}
+
 dependencies {
     flywayMigration("org.postgresql:postgresql:${postgresqlJdbcVersion}")
 
@@ -91,6 +106,7 @@ kapt {
 }
 
 micronaut {
+    version micronautVersion
     runtime "netty"
     testRuntime "junit5"
     processing {
