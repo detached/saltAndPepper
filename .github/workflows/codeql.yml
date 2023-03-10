@@ -38,14 +38,12 @@ jobs:
       with:
         java-version: '17'
         distribution: 'adopt'
-        languages: java
     
     - if: matrix.language == 'java'
       name: Build
       uses: gradle/gradle-build-action@6095a76664413da4c8c134ee32e8a8ae900f0f1f
       with:
         arguments: build
-        languages: java
 
     - if: matrix.language != 'java'
       name: Autobuild
