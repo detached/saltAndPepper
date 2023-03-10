@@ -157,6 +157,10 @@ jooq {
 
 tasks.register('buildFrontend', NpmTask) {
     args = ['run', 'build']
+    inputs.files('frontend/package.json', 'frontend/package-lock.json')
+    inputs.dir('frontend/src')
+    inputs.dir(fileTree('frontend/node_modules').exclude('.cache'))
+    outputs.dir('frontend/build')
 }
 
 tasks.register('copyFrontendBundle', Copy) {
