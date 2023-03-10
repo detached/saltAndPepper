@@ -2,7 +2,7 @@ package de.w3is.recipes.images.infra.persistence
 
 import de.w3is.recipes.images.ImageId
 import de.w3is.recipes.images.ImageRepository
-import de.w3is.recipes.infra.persistence.generated.Tables.IMAGES
+import de.w3is.recipes.infra.persistence.generated.tables.Images.Companion.IMAGES
 import jakarta.inject.Singleton
 import org.jooq.DSLContext
 import java.io.InputStream

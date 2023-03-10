@@ -4,7 +4,7 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.*
 import de.w3is.recipes.images.ImageId
-import de.w3is.recipes.infra.persistence.generated.Tables.RECIPES
+import de.w3is.recipes.infra.persistence.generated.tables.Recipes.Companion.RECIPES
 import de.w3is.recipes.recipes.model.*
 import de.w3is.recipes.testUser
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest

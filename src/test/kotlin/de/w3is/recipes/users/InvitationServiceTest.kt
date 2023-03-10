@@ -5,7 +5,7 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isFailure
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isSuccess
-import de.w3is.recipes.infra.persistence.generated.Tables
+import de.w3is.recipes.infra.persistence.generated.tables.Invitations.Companion.INVITATIONS
 import de.w3is.recipes.testUser
 import de.w3is.recipes.users.model.PlainPassword
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
@@ -30,7 +30,7 @@ open class InvitationServiceTest {
 
     @BeforeEach
     fun reset() {
-        dslContext.truncate(Tables.INVITATIONS).execute()
+        dslContext.truncate(INVITATIONS).execute()
     }
 
     @Test

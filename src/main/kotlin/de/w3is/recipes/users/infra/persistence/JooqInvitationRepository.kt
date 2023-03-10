@@ -1,9 +1,9 @@
 package de.w3is.recipes.users.infra.persistence
 
+import de.w3is.recipes.infra.persistence.generated.tables.Invitations.Companion.INVITATIONS
 import de.w3is.recipes.users.InvitationRepository
 import de.w3is.recipes.users.model.Invite
 import de.w3is.recipes.users.model.UserId
-import de.w3is.recipes.infra.persistence.generated.Tables.INVITATIONS
 import de.w3is.recipes.infra.persistence.generated.tables.records.InvitationsRecord
 import jakarta.inject.Singleton
 import org.jooq.DSLContext
@@ -42,8 +42,8 @@ class JooqInvitationRepository(private val dslContext: DSLContext) : InvitationR
             .fetchOne { it.toInvite() }
 
     private fun InvitationsRecord.toInvite() = Invite(
-        code = invitationCode,
-        createdOn = createdOn,
-        creator = UserId(userId)
+        code = invitationCode!!,
+        createdOn = createdOn!!,
+        creator = UserId(userId!!)
     )
 }

@@ -6,7 +6,8 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isFailure
 import assertk.assertions.isSuccess
 import de.w3is.recipes.images.ImageRepository
-import de.w3is.recipes.infra.persistence.generated.Tables
+import de.w3is.recipes.infra.persistence.generated.tables.Images.Companion.IMAGES
+import de.w3is.recipes.infra.persistence.generated.tables.Recipes.Companion.RECIPES
 import de.w3is.recipes.recipes.model.Recipe
 import de.w3is.recipes.testUser
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
@@ -29,8 +30,8 @@ class RecipeServiceTest {
 
     @BeforeEach
     fun setUp() {
-        dslContext.truncate(Tables.RECIPES).execute()
-        dslContext.truncate(Tables.IMAGES).execute()
+        dslContext.truncate(RECIPES).execute()
+        dslContext.truncate(IMAGES).execute()
     }
 
     @Test

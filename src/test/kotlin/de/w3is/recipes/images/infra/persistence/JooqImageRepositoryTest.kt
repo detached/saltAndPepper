@@ -4,7 +4,7 @@ import assertk.assertThat
 import assertk.assertions.*
 import de.w3is.recipes.images.ImageId
 import de.w3is.recipes.images.ImageRepository
-import de.w3is.recipes.infra.persistence.generated.Tables
+import de.w3is.recipes.infra.persistence.generated.tables.Images.Companion.IMAGES
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import jakarta.inject.Inject
 import org.jooq.DSLContext
@@ -22,7 +22,7 @@ class JooqImageRepositoryTest {
 
     @BeforeEach
     internal fun setUp() {
-        dslContext.truncate(Tables.IMAGES).execute()
+        dslContext.truncate(IMAGES).execute()
     }
 
     @Test
@@ -52,5 +52,5 @@ class JooqImageRepositoryTest {
         assertThat { imageRepository.get(imageId) }.isFailure()
     }
 
-    private fun givenImageData() = this.javaClass.getResourceAsStream("/images/cake.jpg")
+    private fun givenImageData() = this.javaClass.getResourceAsStream("/images/cake.jpg")!!
 }

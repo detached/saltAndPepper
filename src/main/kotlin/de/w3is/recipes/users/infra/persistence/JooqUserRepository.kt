@@ -1,7 +1,7 @@
 package de.w3is.recipes.users.infra.persistence
 
+import de.w3is.recipes.infra.persistence.generated.tables.Users.Companion.USERS
 import de.w3is.recipes.recipes.AuthorRepository
-import de.w3is.recipes.infra.persistence.generated.Tables.*
 import de.w3is.recipes.infra.persistence.generated.tables.records.UsersRecord
 import de.w3is.recipes.recipes.model.Author
 import de.w3is.recipes.recipes.model.AuthorId
@@ -25,10 +25,10 @@ open class JooqUserRepository(private val dslContext: DSLContext) : UserReposito
             .fetchOne { toUser(it) } ?: error("User for id $userId not found")
 
     private fun toUser(it: UsersRecord) = User(
-        id = UserId(it.userId),
-        name = it.username,
-        password = EncryptedPassword(it.password),
-        role = Role.valueOf(it.role)
+        id = UserId(it.userId!!),
+        name = it.username!!,
+        password = EncryptedPassword(it.password!!),
+        role = Role.valueOf(it.role!!)
     )
 
     override fun store(user: User) {
@@ -58,7 +58,7 @@ open class JooqUserRepository(private val dslContext: DSLContext) : UserReposito
             .fetch { recordToAuthor(it) }.toSet()
 
     private fun recordToAuthor(it: UsersRecord) = Author(
-        id = AuthorId(it.userId),
-        name = it.username
+        id = AuthorId(it.userId!!),
+        name = it.username!!
     )
 }

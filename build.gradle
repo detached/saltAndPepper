@@ -23,7 +23,8 @@ configurations {
 
 dependencies {
     flywayMigration("org.postgresql:postgresql:${postgresqlJdbcVersion}")
-    jooqGenerator("org.postgresql:postgresql:${postgresqlJdbcVersion}")
+
+    jooqGenerator("org.jooq:jooq-meta-extensions:${jooqVersion}")
 
     kapt("io.micronaut:micronaut-http-validation")
 
@@ -109,20 +110,28 @@ jooq {
     version = jooqVersion
     configurations {
         main {
-            generateSchemaSourceOnCompilation = false
             generationTool {
-                jdbc {
-                    url = flyway.url
-                    user = flyway.user
-                    password = flyway.password
-                }
                 generator {
+                    name = 'org.jooq.codegen.KotlinGenerator'
                     database {
-                        inputSchema = 'public'
+                        name = 'org.jooq.meta.extensions.ddl.DDLDatabase'
+                        properties {
+                            property {
+                                key = 'scripts'
+                                value = 'src/main/resources/db/migration/*.sql'
+                            }
+                            property {
+                                key = 'sort'
+                                value = 'flyway'
+                            }
+                            property {
+                                key = 'defaultNameCase'
+                                value = 'lower'
+                            }
+                        }
                     }
                     target {
                         packageName = 'de.w3is.recipes.infra.persistence.generated'
-                        directory = 'src/main/java'
                     }
                 }
             }
@@ -144,11 +153,9 @@ tasks.register('copyFrontendBundle', Copy) {
 processResources.dependsOn(copyFrontendBundle)
 
 tasks.named('generateJooq').configure {
-    dependsOn tasks.named('flywayMigrate')
     inputs.files(fileTree('src/main/resources/db/migration'))
             .withPropertyName('migrations')
             .withPathSensitivity(PathSensitivity.RELATIVE)
 
     allInputsDeclared = true
-    outputs.cacheIf { true }
 }

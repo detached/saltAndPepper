@@ -2,7 +2,7 @@ package de.w3is.recipes.recipes.infra.persistence
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import de.w3is.recipes.images.ImageId
-import de.w3is.recipes.infra.persistence.generated.Tables.RECIPES
+import de.w3is.recipes.infra.persistence.generated.tables.Recipes.Companion.RECIPES
 import de.w3is.recipes.infra.persistence.generated.tables.records.RecipesRecord
 import de.w3is.recipes.recipes.*
 import de.w3is.recipes.recipes.model.*
@@ -27,16 +27,16 @@ class JooqRecipeRepository(
 
     private val recordMapper = RecordMapper<RecipesRecord, Recipe> { record ->
         Recipe(
-            id = RecipeId(record.recipeId),
-            title = record.title,
-            category = record.category,
-            cuisine = record.cuisine,
-            yields = record.yields,
-            ingredients = record.ingredients,
-            instructions = record.instructions,
-            modifications = record.modifications,
+            id = RecipeId(record.recipeId!!),
+            title = record.title!!,
+            category = record.category!!,
+            cuisine = record.cuisine!!,
+            yields = record.yields!!,
+            ingredients = record.ingredients!!,
+            instructions = record.instructions!!,
+            modifications = record.modifications!!,
             images = objectMapper.readValue(record.images, Array<ImageId>::class.java).toMutableList(),
-            authorId = AuthorId(record.authorId)
+            authorId = AuthorId(record.authorId!!)
         )
     }
 
