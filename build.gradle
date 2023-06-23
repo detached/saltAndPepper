@@ -6,7 +6,7 @@ plugins {
     id "io.micronaut.application" version '3.7.10'
     id 'org.flywaydb.flyway' version '9.19.1'
     id 'nu.studer.jooq' version '8.2.1'
-    id 'com.github.node-gradle.node' version '3.5.1'
+    id 'com.github.node-gradle.node' version '5.0.0'
 }
 
 version "1.0"
