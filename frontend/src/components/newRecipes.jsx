@@ -7,11 +7,10 @@ import {
   SaltAndPepper,
   SearchRequest,
   SearchFilter,
-  OrderField
+  OrderField,
 } from "../api/saltAndPepper";
 
 export default function NewRecipes() {
-
   const navigateTo = useNavigate();
   const [items, setItems] = useState([]);
 
@@ -21,12 +20,11 @@ export default function NewRecipes() {
         "",
         new Page(30, 0),
         new SearchFilter([], [], []),
-        OrderField.CREATED_AT,
+        OrderField.CREATED_AT
       )
-    )
-      .then((result) => {
-        setItems(result.data);
-      });
+    ).then((result) => {
+      setItems(result.data);
+    });
   }, [setItems]);
 
   function navigateToRecipe(recipeId) {
@@ -36,12 +34,21 @@ export default function NewRecipes() {
   return (
     <div className="newrecipes-box">
       {items.map((recipe) => (
-        <div key={recipe.id} className="newrecipes-card" onClick={() => navigateToRecipe(recipe.id)}>
+        <div
+          key={recipe.id}
+          className="newrecipes-card"
+          onClick={() => navigateToRecipe(recipe.id)}
+        >
           <div id="image">
             {recipe.imageUrl ? (
               <img id="image" src={recipe.imageUrl} alt="" />
             ) : (
-              <img id="image" src={saltAndPepperIcon} className="newrecipes-default-icon" alt="" />
+              <img
+                id="image"
+                src={saltAndPepperIcon}
+                className="newrecipes-default-icon"
+                alt=""
+              />
             )}
           </div>
           <div id="content">
@@ -51,5 +58,5 @@ export default function NewRecipes() {
         </div>
       ))}
     </div>
-  )
+  );
 }

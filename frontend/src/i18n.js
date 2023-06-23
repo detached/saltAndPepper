@@ -89,7 +89,7 @@ const resources = {
       "password.error.passwordTooWeek": "Das gewählte Passwort ist zu schwach.",
       "password.error.wrongPassword": "Falsches Passwort!",
       "news.recipes": "Neuste Rezepte",
-      "news.authors": "Neu mit dabei"
+      "news.authors": "Neu mit dabei",
     },
   },
 };

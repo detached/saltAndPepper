@@ -7,7 +7,7 @@ import {
   SearchRequest,
   SearchFilter,
   FilterKey,
-  OrderField
+  OrderField,
 } from "../api/saltAndPepper";
 import "./searchRoute.css";
 import Spinner from "../components/spinner";
@@ -103,7 +103,7 @@ export default function SearchRoute() {
         searchRequest.searchQuery,
         searchRequest.page,
         searchRequest.filter,
-        OrderField.TITLE,
+        OrderField.TITLE
       )
     )
       .then((result) => {

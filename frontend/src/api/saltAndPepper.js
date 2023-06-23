@@ -12,8 +12,8 @@ export const FilterKey = {
 
 export const OrderField = {
   CREATED_AT: "CREATED_AT",
-  TITLE: "TITLE"
-}
+  TITLE: "TITLE",
+};
 
 export class FilterValue {
   /**
