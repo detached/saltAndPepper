@@ -10,6 +10,11 @@ export const FilterKey = {
   CUISINE: "CUISINE",
 };
 
+export const OrderField = {
+  CREATED_AT: "CREATED_AT",
+  TITLE: "TITLE"
+}
+
 export class FilterValue {
   /**
    * @param value {String}
@@ -40,11 +45,13 @@ export class SearchRequest {
    * @param searchQuery {String}
    * @param page {Page}
    * @param filter {SearchFilter}
+   * @param orderField {OrderField}
    */
-  constructor(searchQuery, page, filter) {
+  constructor(searchQuery, page, filter, orderField) {
     this.searchQuery = searchQuery;
     this.page = page;
     this.filter = filter;
+    this.orderField = orderField;
   }
 }
 

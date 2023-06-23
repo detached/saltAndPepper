@@ -9,6 +9,7 @@ import "./index.css";
 import "./i18n";
 
 import RootRoute from "./routes/rootRoute";
+import NewsRoute from "./routes/newsRoute";
 import SearchRoute from "./routes/searchRoute";
 import NewRecipeRoute from "./routes/newRecipeRoute";
 import ProfileRoute from "./routes/profileRoute";
@@ -25,7 +26,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <AuthProvider>
         <Routes>
           <Route path="/" element={<RootRoute />}>
-            <Route index element={<SearchRoute />} />
+            <Route index element={<NewsRoute />} />
+            <Route path="news" element={<NewsRoute />} />
             <Route path="search" element={<SearchRoute />} />
             <Route path="recipe/new" element={<NewRecipeRoute />} />
             <Route path="recipe/:recipeId/edit" element={<EditRecipeRoute />} />

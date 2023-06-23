@@ -71,7 +71,8 @@ class RecipeSearchController(
             query = this.searchQuery,
             limit = limit,
             page = page,
-            filter = this.filter
+            filter = this.filter,
+            orderField = this.orderField
         )
     }
 

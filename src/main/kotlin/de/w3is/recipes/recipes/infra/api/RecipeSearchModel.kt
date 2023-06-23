@@ -1,11 +1,13 @@
 package de.w3is.recipes.recipes.infra.api
 
 import de.w3is.recipes.recipes.model.FilterKey
+import de.w3is.recipes.recipes.model.OrderField
 
 data class SearchRequestViewModel(
     val searchQuery: String,
     val page: PageViewModel,
     val filter: Map<FilterKey, List<String>>,
+    val orderField: OrderField,
 )
 
 data class SearchResponseViewModel(

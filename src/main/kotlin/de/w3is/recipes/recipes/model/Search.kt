@@ -4,7 +4,8 @@ data class SearchRequest(
     val query: String,
     val limit: Int,
     val page: Int,
-    val filter: Map<FilterKey, List<String>>
+    val filter: Map<FilterKey, List<String>>,
+    val orderField: OrderField,
 )
 
 data class SearchResponse(
@@ -23,4 +24,9 @@ enum class FilterKey {
     AUTHOR,
     CATEGORY,
     CUISINE
+}
+
+enum class OrderField {
+    TITLE,
+    CREATED_AT
 }

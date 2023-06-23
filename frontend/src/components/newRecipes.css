@@ -1,0 +1,61 @@
+.newrecipes-box {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+.newrecipes-card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 12em;
+    margin: 0.5em;
+    background-color: var(--contourColor);
+}
+
+.newrecipes-card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.newrecipes-card #image {
+    align-content: center;
+}
+
+.newrecipes-card #image img {
+    margin: auto;
+    display: block;
+}
+
+.newrecipes-card #content {
+    padding: 0.1em 0.8em;
+    height: 4em;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.newrecipes-card #title {
+    padding: 0.3em;
+    padding-top: 0.5em;
+    color: var(--textHeaderColor);
+    font-weight: bold;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.newrecipes-card #subtitle {
+    padding: 0.3em;
+    font-size: smaller;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.newrecipes-default-icon {
+    max-width: 6em;
+    max-height: 6em;
+    background-color: var(--color5);
+    filter: opacity(40%);
+}
+  
