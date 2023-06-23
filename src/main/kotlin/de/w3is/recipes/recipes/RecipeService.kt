@@ -8,12 +8,16 @@ import de.w3is.recipes.recipes.model.Recipe
 import de.w3is.recipes.recipes.model.RecipeId
 import jakarta.inject.Singleton
 import java.io.InputStream
+import java.time.Clock
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import javax.transaction.Transactional
 
 @Singleton
 open class RecipeService(
     private val recipeRepository: RecipeRepository,
-    private val imageService: ImageService
+    private val imageService: ImageService,
+    private val clock: Clock,
 ) {
 
     fun getAll() = recipeRepository.getAll()
@@ -24,7 +28,7 @@ open class RecipeService(
     open fun createNewRecipe(content: RecipeContent, user: User): Recipe {
 
         val author = user.toAuthor()
-        val recipe = content.toRecipe(author)
+        val recipe = content.toNewRecipe(author, createdAt = OffsetDateTime.now(clock))
         recipeRepository.store(recipe)
         return recipe
     }
@@ -80,18 +84,17 @@ data class RecipeContent(
     val modifications: String,
     val images: List<ImageId>,
 ) {
-    fun toRecipe(author: Author): Recipe {
-        return Recipe(
-            id = RecipeId.new(),
-            title = title,
-            category = category,
-            cuisine = cuisine,
-            yields = yields,
-            ingredients = ingredients,
-            instructions = instructions,
-            modifications = modifications,
-            images = mutableListOf(),
-            authorId = author.id
-        )
-    }
+    fun toNewRecipe(author: Author, createdAt: OffsetDateTime) = Recipe(
+        id = RecipeId.new(),
+        title = title,
+        category = category,
+        cuisine = cuisine,
+        yields = yields,
+        ingredients = ingredients,
+        instructions = instructions,
+        modifications = modifications,
+        images = mutableListOf(),
+        authorId = author.id,
+        createdAt = createdAt
+    )
 }

@@ -44,13 +44,13 @@ export default function LoginRoute() {
 
   function isWintertime() {
     let currentMonth = new Date().getMonth();
-    return currentMonth === 11 || currentMonth === 0
+    return currentMonth === 11 || currentMonth === 0;
   }
 
   return (
     <div className="login-container">
-      { isWintertime() ? <Snowflakes /> : null }
-      
+      {isWintertime() ? <Snowflakes /> : null}
+
       <div className="login-content pure-g">
         <img className="pure-img pure-u-1" src={logo} alt="logo" />
         <form

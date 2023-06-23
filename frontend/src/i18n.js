@@ -7,6 +7,7 @@ const resources = {
       title: "Salz und Pfeffer",
       description: "Eine online Rezeptverwaltung",
       copyToClipboard: "Kopieren",
+      "menu.news": "News",
       "menu.search": "Suche",
       "menu.newRecipe": "Neues Rezept",
       "menu.import": "Import",
@@ -87,6 +88,8 @@ const resources = {
       "password.rules": "Das Passwort muss mindestens fünf Zeichen lang sein.",
       "password.error.passwordTooWeek": "Das gewählte Passwort ist zu schwach.",
       "password.error.wrongPassword": "Falsches Passwort!",
+      "news.recipes": "Neuste Rezepte",
+      "news.authors": "Neu mit dabei",
     },
   },
 };

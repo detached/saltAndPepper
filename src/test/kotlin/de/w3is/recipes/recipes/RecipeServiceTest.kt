@@ -10,11 +10,17 @@ import de.w3is.recipes.infra.persistence.generated.tables.Images.Companion.IMAGE
 import de.w3is.recipes.infra.persistence.generated.tables.Recipes.Companion.RECIPES
 import de.w3is.recipes.recipes.model.Recipe
 import de.w3is.recipes.testUser
+import io.micronaut.context.annotation.Bean
+import io.micronaut.context.annotation.Replaces
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import jakarta.inject.Inject
 import org.jooq.DSLContext
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import java.time.Clock
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 
 @MicronautTest
 class RecipeServiceTest {
@@ -27,6 +33,10 @@ class RecipeServiceTest {
 
     @Inject
     private lateinit var imageRepository: ImageRepository
+
+    @get:Bean
+    @get:Replaces(Clock::class)
+    val fixedClock: Clock = Clock.fixed(Instant.now(), ZoneOffset.UTC)
 
     @BeforeEach
     fun setUp() {
@@ -65,7 +75,8 @@ class RecipeServiceTest {
                 instructions = "instructions",
                 modifications = "modifications",
                 images = mutableListOf(),
-                authorId = testUser.toAuthor().id
+                authorId = testUser.toAuthor().id,
+                createdAt = OffsetDateTime.now(fixedClock)
             )
         )
     }

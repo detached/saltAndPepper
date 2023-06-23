@@ -7,14 +7,24 @@ import de.w3is.recipes.images.ImageId
 import de.w3is.recipes.infra.persistence.generated.tables.Recipes.Companion.RECIPES
 import de.w3is.recipes.recipes.model.*
 import de.w3is.recipes.testUser
+import io.micronaut.context.annotation.Bean
+import io.micronaut.context.annotation.Replaces
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import jakarta.inject.Inject
 import org.jooq.DSLContext
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import java.time.Clock
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 
 @MicronautTest
 class JooqRecipeRepositoryTest {
+
+    @get:Bean
+    @get:Replaces(Clock::class)
+    val fixedClock: Clock = Clock.fixed(Instant.now(), ZoneOffset.UTC)
 
     @Inject
     private lateinit var recipeRepository: JooqRecipeRepository
@@ -60,7 +70,15 @@ class JooqRecipeRepositoryTest {
         givenARecipe(title = "bar").also { recipeRepository.store(it) }
 
         val response =
-            recipeRepository.search(SearchRequest(query = "foo one", limit = 5, page = 0, filter = emptyMap()))
+            recipeRepository.search(
+                SearchRequest(
+                    query = "foo one",
+                    limit = 5,
+                    page = 0,
+                    filter = emptyMap(),
+                    orderField = OrderField.TITLE
+                )
+            )
 
         assertThat(response.results).containsExactly(fooOne)
     }
@@ -73,7 +91,15 @@ class JooqRecipeRepositoryTest {
         givenARecipe(title = "bar").also { recipeRepository.store(it) }
 
         val response =
-            recipeRepository.search(SearchRequest(query = "foo", limit = 5, page = 0, filter = emptyMap()))
+            recipeRepository.search(
+                SearchRequest(
+                    query = "foo",
+                    limit = 5,
+                    page = 0,
+                    filter = emptyMap(),
+                    orderField = OrderField.TITLE
+                )
+            )
 
         assertThat(response.results).containsExactlyInAnyOrder(fooOne, fooTwo)
     }
@@ -86,7 +112,15 @@ class JooqRecipeRepositoryTest {
         val cuisineMatch = givenARecipe(cuisine = "foo").also { recipeRepository.store(it) }
 
         val response =
-            recipeRepository.search(SearchRequest(query = "foo", limit = 5, page = 0, filter = emptyMap()))
+            recipeRepository.search(
+                SearchRequest(
+                    query = "foo",
+                    limit = 5,
+                    page = 0,
+                    filter = emptyMap(),
+                    orderField = OrderField.TITLE
+                )
+            )
 
         assertThat(response.results).containsExactlyInAnyOrder(titleMatch, categoryMatch, cuisineMatch)
     }
@@ -96,9 +130,33 @@ class JooqRecipeRepositoryTest {
 
         (1..23).map { givenARecipe() }.forEach { recipeRepository.store(it) }
 
-        val firstTen = recipeRepository.search(SearchRequest(query = "", limit = 10, page = 0, filter = emptyMap()))
-        val secondTen = recipeRepository.search(SearchRequest(query = "", limit = 10, page = 1, filter = emptyMap()))
-        val theRest = recipeRepository.search(SearchRequest(query = "", limit = 10, page = 2, filter = emptyMap()))
+        val firstTen = recipeRepository.search(
+            SearchRequest(
+                query = "",
+                limit = 10,
+                page = 0,
+                filter = emptyMap(),
+                orderField = OrderField.TITLE
+            )
+        )
+        val secondTen = recipeRepository.search(
+            SearchRequest(
+                query = "",
+                limit = 10,
+                page = 1,
+                filter = emptyMap(),
+                orderField = OrderField.TITLE
+            )
+        )
+        val theRest = recipeRepository.search(
+            SearchRequest(
+                query = "",
+                limit = 10,
+                page = 2,
+                filter = emptyMap(),
+                orderField = OrderField.TITLE
+            )
+        )
 
         assertThat(firstTen).all {
             transform { it.results }.hasSize(10)
@@ -129,7 +187,15 @@ class JooqRecipeRepositoryTest {
         val a = givenARecipe(title = "a").also { recipeRepository.store(it) }
         val c = givenARecipe(title = "c").also { recipeRepository.store(it) }
 
-        val result = recipeRepository.search(SearchRequest(query = "", limit = 10, page = 0, filter = emptyMap()))
+        val result = recipeRepository.search(
+            SearchRequest(
+                query = "",
+                limit = 10,
+                page = 0,
+                filter = emptyMap(),
+                orderField = OrderField.TITLE
+            )
+        )
 
         assertThat(result.results).containsExactly(a, b, c)
     }
@@ -140,9 +206,14 @@ class JooqRecipeRepositoryTest {
         val fooOne = givenARecipe(title = "foo", category = "one").also { recipeRepository.store(it) }
 
         val response =
-            recipeRepository.search(SearchRequest(query = "foo", limit = 5, page = 0, filter = mapOf(
-                FilterKey.CATEGORY to emptyList()
-            )))
+            recipeRepository.search(
+                SearchRequest(
+                    query = "foo", limit = 5, page = 0, filter = mapOf(
+                        FilterKey.CATEGORY to emptyList()
+                    ),
+                    orderField = OrderField.TITLE
+                )
+            )
 
         assertThat(response.results).containsExactly(fooOne)
     }
@@ -155,7 +226,15 @@ class JooqRecipeRepositoryTest {
         givenARecipe(category = "c", cuisine = "z", author = AuthorId("3")).also { recipeRepository.store(it) }
         givenARecipe(category = "c", cuisine = "z", author = AuthorId("3")).also { recipeRepository.store(it) }
 
-        val result = recipeRepository.search(SearchRequest(query = "", limit = 10, page = 0, filter = emptyMap()))
+        val result = recipeRepository.search(
+            SearchRequest(
+                query = "",
+                limit = 10,
+                page = 0,
+                filter = emptyMap(),
+                orderField = OrderField.TITLE
+            )
+        )
 
         assertThat(result.possibleFilter).containsOnly(
             FilterKey.CATEGORY to listOf("a", "b", "c"),
@@ -171,7 +250,15 @@ class JooqRecipeRepositoryTest {
         givenARecipe(category = "b", cuisine = "y", author = AuthorId("2")).also { recipeRepository.store(it) }
         givenARecipe(category = "c", cuisine = "z", author = AuthorId("3")).also { recipeRepository.store(it) }
 
-        val result = recipeRepository.search(SearchRequest(query = "a", limit = 10, page = 0, filter = emptyMap()))
+        val result = recipeRepository.search(
+            SearchRequest(
+                query = "a",
+                limit = 10,
+                page = 0,
+                filter = emptyMap(),
+                orderField = OrderField.TITLE
+            )
+        )
 
         assertThat(result.possibleFilter).containsOnly(
             FilterKey.CATEGORY to listOf("a"),
@@ -187,9 +274,14 @@ class JooqRecipeRepositoryTest {
         val b = givenARecipe(category = "b", cuisine = "y", author = AuthorId("2")).also { recipeRepository.store(it) }
         givenARecipe(category = "c", cuisine = "z", author = AuthorId("3")).also { recipeRepository.store(it) }
 
-        val result = recipeRepository.search(SearchRequest(query = "", limit = 10, page = 0, filter = mapOf(
-            FilterKey.CATEGORY to listOf("a", "b")
-        )))
+        val result = recipeRepository.search(
+            SearchRequest(
+                query = "", limit = 10, page = 0, filter = mapOf(
+                    FilterKey.CATEGORY to listOf("a", "b")
+                ),
+                orderField = OrderField.TITLE
+            )
+        )
 
         assertThat(result.results).containsExactlyInAnyOrder(a, b)
 
@@ -207,9 +299,13 @@ class JooqRecipeRepositoryTest {
         val b = givenARecipe(category = "b", cuisine = "y", author = AuthorId("2")).also { recipeRepository.store(it) }
         givenARecipe(category = "c", cuisine = "z", author = AuthorId("3")).also { recipeRepository.store(it) }
 
-        val result = recipeRepository.search(SearchRequest(query = "", limit = 10, page = 0, filter = mapOf(
-            FilterKey.CUISINE to listOf("x", "y")
-        )))
+        val result = recipeRepository.search(
+            SearchRequest(
+                query = "", limit = 10, page = 0, filter = mapOf(
+                    FilterKey.CUISINE to listOf("x", "y")
+                ), orderField = OrderField.TITLE
+            )
+        )
 
         assertThat(result.results).containsExactlyInAnyOrder(a, b)
 
@@ -227,9 +323,13 @@ class JooqRecipeRepositoryTest {
         val b = givenARecipe(category = "b", cuisine = "y", author = AuthorId("2")).also { recipeRepository.store(it) }
         givenARecipe(category = "c", cuisine = "z", author = AuthorId("3")).also { recipeRepository.store(it) }
 
-        val result = recipeRepository.search(SearchRequest(query = "", limit = 10, page = 0, filter = mapOf(
-            FilterKey.AUTHOR to listOf("1", "2")
-        )))
+        val result = recipeRepository.search(
+            SearchRequest(
+                query = "", limit = 10, page = 0, filter = mapOf(
+                    FilterKey.AUTHOR to listOf("1", "2")
+                ), orderField = OrderField.TITLE
+            )
+        )
 
         assertThat(result.results).containsExactlyInAnyOrder(a, b)
 
@@ -248,9 +348,13 @@ class JooqRecipeRepositoryTest {
         givenARecipe(title = "recipe3", category = "b").also { recipeRepository.store(it) }
         givenARecipe(title = "another", category = "a").also { recipeRepository.store(it) }
 
-        val result = recipeRepository.search(SearchRequest(query = "recipe", limit = 10, page = 0, filter = mapOf(
-            FilterKey.CATEGORY to listOf("a")
-        )))
+        val result = recipeRepository.search(
+            SearchRequest(
+                query = "recipe", limit = 10, page = 0, filter = mapOf(
+                    FilterKey.CATEGORY to listOf("a")
+                ), orderField = OrderField.TITLE
+            )
+        )
 
         assertThat(result.results).containsExactlyInAnyOrder(recipe1, recipe2)
     }
@@ -271,6 +375,7 @@ class JooqRecipeRepositoryTest {
             instructions = "instructions",
             modifications = "modifications",
             images = mutableListOf(ImageId.new()),
-            authorId = author
+            authorId = author,
+            createdAt = OffsetDateTime.now(fixedClock)
         )
 }

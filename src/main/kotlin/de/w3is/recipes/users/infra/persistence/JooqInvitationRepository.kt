@@ -7,11 +7,15 @@ import de.w3is.recipes.users.model.UserId
 import de.w3is.recipes.infra.persistence.generated.tables.records.InvitationsRecord
 import jakarta.inject.Singleton
 import org.jooq.DSLContext
+import java.time.Clock
 import java.time.Duration
 import java.time.OffsetDateTime
 
 @Singleton
-class JooqInvitationRepository(private val dslContext: DSLContext) : InvitationRepository {
+class JooqInvitationRepository(
+    private val dslContext: DSLContext,
+    private val clock: Clock
+) : InvitationRepository {
 
     override fun store(invite: Invite) {
         dslContext.newRecord(INVITATIONS).apply {
@@ -23,7 +27,7 @@ class JooqInvitationRepository(private val dslContext: DSLContext) : InvitationR
 
     override fun deleteAllOlderThan(duration: Duration) {
         dslContext.deleteFrom(INVITATIONS)
-            .where(INVITATIONS.CREATED_ON.lessThan(OffsetDateTime.now().minus(duration)))
+            .where(INVITATIONS.CREATED_ON.lessThan(OffsetDateTime.now(clock).minus(duration)))
             .execute()
     }
 

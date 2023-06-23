@@ -53,6 +53,7 @@ export default function RootRoute() {
       <div id="menu" ref={menuRef} onClick={toggleMenu}>
         <div className="pure-menu">
           <ul className="pure-menu-list">
+            {menuItem("news", t("menu.news"))}
             {menuItem("search", t("menu.search"))}
             {menuItem("recipe/new", t("menu.newRecipe"))}
             {menuItem("profile", t("menu.profile"))}

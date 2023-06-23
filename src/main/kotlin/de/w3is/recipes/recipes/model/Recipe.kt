@@ -2,6 +2,7 @@ package de.w3is.recipes.recipes.model
 
 import de.w3is.recipes.images.ImageId
 import de.w3is.recipes.recipes.RecipeContent
+import java.time.OffsetDateTime
 import java.util.*
 
 class Recipe(
@@ -14,9 +15,9 @@ class Recipe(
     val instructions: String,
     val modifications: String,
     val authorId: AuthorId,
+    val createdAt: OffsetDateTime,
     images: List<ImageId>,
 ) {
-
     private val mutableImages: MutableList<ImageId> = images.toMutableList()
 
     fun getImages(): List<ImageId> = mutableImages
@@ -24,6 +25,7 @@ class Recipe(
         assertIsAuthoredBy(author)
         mutableImages.add(imageId)
     }
+
     fun removeImage(imageId: ImageId, author: Author) {
         assertIsAuthoredBy(author)
         mutableImages.remove(imageId)
@@ -44,6 +46,7 @@ class Recipe(
             ingredients = content.ingredients,
             instructions = content.instructions,
             modifications = content.modifications,
+            createdAt = createdAt,
         )
     }
 

@@ -11,18 +11,27 @@ import org.jooq.Condition
 import org.jooq.DSLContext
 import org.jooq.RecordMapper
 import org.jooq.impl.DSL
+import java.time.Clock
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import kotlin.math.ceil
 
 @Singleton
 class JooqRecipeRepository(
     private val dslContext: DSLContext,
-    private val objectMapper: ObjectMapper
+    private val objectMapper: ObjectMapper,
+    private val clock: Clock,
 ) : RecipeRepository {
 
     private val filterKeysToColumns = mapOf(
         FilterKey.AUTHOR to RECIPES.AUTHOR_ID,
         FilterKey.CUISINE to RECIPES.CUISINE,
         FilterKey.CATEGORY to RECIPES.CATEGORY
+    )
+
+    private val orderFieldToColumn = mapOf(
+        OrderField.TITLE to RECIPES.TITLE,
+        OrderField.CREATED_AT to RECIPES.CREATED_AT
     )
 
     private val recordMapper = RecordMapper<RecipesRecord, Recipe> { record ->
@@ -36,7 +45,8 @@ class JooqRecipeRepository(
             instructions = record.instructions!!,
             modifications = record.modifications!!,
             images = objectMapper.readValue(record.images, Array<ImageId>::class.java).toMutableList(),
-            authorId = AuthorId(record.authorId!!)
+            authorId = AuthorId(record.authorId!!),
+            createdAt = record.createdAt!!
         )
     }
 
@@ -55,6 +65,7 @@ class JooqRecipeRepository(
                 ingredients = recipe.ingredients
                 images = objectMapper.writeValueAsString(recipe.getImages().toTypedArray())
                 authorId = recipe.authorId.value
+                createdAt = recipe.createdAt
             }.store()
         } else {
             existingRecord.apply {
@@ -67,6 +78,7 @@ class JooqRecipeRepository(
                 ingredients = recipe.ingredients
                 images = objectMapper.writeValueAsString(recipe.getImages().toTypedArray())
                 authorId = recipe.authorId.value
+                modifiedAt = OffsetDateTime.now(clock)
             }.store()
         }
     }
@@ -107,7 +119,7 @@ class JooqRecipeRepository(
             val maxResults = dslContext.selectFrom(RECIPES).where(searchConditions).count()
             val possibleFilter = findPossibleFilterValues(searchConditions)
             val results = dslContext.selectFrom(RECIPES).where(searchConditions)
-                .orderBy(RECIPES.TITLE.asc())
+                .orderBy(orderFieldToColumn[orderField]!!.asc())
                 .limit(limit)
                 .offset(page * limit)
                 .fetch(recordMapper)
