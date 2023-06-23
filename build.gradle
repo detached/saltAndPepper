@@ -34,6 +34,7 @@ ext {
     commonsTextVersion = "1.10.0"
     springSecurityVersion = "6.0.2"
     mockitoVersion = "4.1.0"
+    h2Version = "2.1.214"
 }
 
 dependencies {
@@ -67,7 +68,7 @@ dependencies {
 
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
-    runtimeOnly("com.h2database:h2")
+    runtimeOnly("com.h2database:h2:${h2Version}")
     runtimeOnly("org.postgresql:postgresql:${postgresqlJdbcVersion}")
 
     kaptTest("io.micronaut:micronaut-inject-java")
