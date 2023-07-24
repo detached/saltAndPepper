@@ -32,7 +32,7 @@ ext {
     assertKVersion = "0.25"
     thumbnailatorVersion = "0.4.19"
     commonsTextVersion = "1.10.0"
-    springSecurityVersion = "6.0.2"
+    springSecurityVersion = "6.1.2"
     mockitoVersion = "4.1.0"
     h2Version = "2.1.214"
 }
