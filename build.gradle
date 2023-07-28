@@ -22,7 +22,7 @@ configurations {
 }
 
 ext {
-    kotlinVersion = "1.8.10"
+    kotlinVersion = "1.8.22"
     postgresqlJdbcVersion = "42.6.0"
     jooqVersion = "3.18.4"
     nodeVersion = "18.12.0"
