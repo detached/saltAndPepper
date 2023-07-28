@@ -1,10 +1,9 @@
 package de.w3is.recipes.users
 
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import assertk.assertions.isFailure
 import assertk.assertions.isNotEmpty
-import assertk.assertions.isSuccess
 import de.w3is.recipes.infra.persistence.generated.tables.Invitations.Companion.INVITATIONS
 import de.w3is.recipes.testUser
 import de.w3is.recipes.users.model.PlainPassword
@@ -45,10 +44,10 @@ open class InvitationServiceTest {
     @Test
     fun `when a user has created a invitation then she can't create another one`() {
 
-        assertThat {
+        assertFailure {
             invitationService.createInvite(testUser)
             invitationService.createInvite(testUser)
-        }.isFailure()
+        }
     }
 
     @Test
@@ -60,7 +59,7 @@ open class InvitationServiceTest {
 
         invitationService.createUserByInvite(invite.code, userName, PlainPassword("password"))
 
-        assertThat { userService.getUserFor(userName) }.isSuccess()
+        assertThat(userService.getUserFor(userName))
     }
 
     @Test
@@ -69,15 +68,15 @@ open class InvitationServiceTest {
         val invite = invitationService.createInvite(testUser)
 
         invitationService.createUserByInvite(invite.code, "a", PlainPassword("password"))
-        assertThat {
+        assertFailure {
             invitationService.createUserByInvite(invite.code, "b", PlainPassword("password"))
-        }.isFailure()
+        }
     }
 
     @Test
     fun `can't create user with non existing invite code`() {
-        assertThat {
+        assertFailure {
             invitationService.createUserByInvite("xyz", "a", PlainPassword("password"))
-        }.isFailure()
+        }
     }
 }
