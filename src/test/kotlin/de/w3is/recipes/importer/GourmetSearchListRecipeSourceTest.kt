@@ -30,24 +30,24 @@ class GourmetSearchListRecipeSourceTest {
 
         val recipeSource = GourmetRecipeSource(collection)
 
-        assertThat{
-            recipeSource.forEachRemaining {  }
-        }.isSuccess()
+        assertThat(
+            recipeSource.forEachRemaining { }
+        )
     }
 
     private fun givenSingleRecipe() = ImportRecipe(
-            title = "This is a title",
-            category = "A category",
-            cuisine = "german",
-            yields = "4 meals",
-            image = null,
-            ingredients = "A ingredient",
-            instructions = """
+        title = "This is a title",
+        category = "A category",
+        cuisine = "german",
+        yields = "4 meals",
+        image = null,
+        ingredients = "A ingredient",
+        instructions = """
                 This is
                 a
                 multiline
                 instruction.
             """.trimIndent(),
-            modifications = "Maybe do it different!"
+        modifications = "Maybe do it different!"
     )
 }

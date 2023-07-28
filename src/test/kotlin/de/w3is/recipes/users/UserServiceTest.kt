@@ -1,5 +1,6 @@
 package de.w3is.recipes.users
 
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.*
 import de.w3is.recipes.testUser
@@ -21,23 +22,23 @@ class UserServiceTest {
 
         val userName = "a"
         whenever(userRepository.findUser(userName)).thenReturn(testUser)
-        assertThat { userService.createNewUser(userName, PlainPassword("12345")) }.isFailure()
+        assertFailure { userService.createNewUser(userName, PlainPassword("12345")) }
     }
 
     @Test
     fun `can't create user with empty username`() {
-        assertThat { userService.createNewUser(" ", PlainPassword("12345")) }.isFailure()
+        assertFailure { userService.createNewUser(" ", PlainPassword("12345")) }
     }
 
     @Test
     fun `can't create user with empty password`() {
-        assertThat { userService.createNewUser("abc", PlainPassword(" ")) }.isFailure()
+        assertFailure { userService.createNewUser("abc", PlainPassword(" ")) }
     }
 
     @Test
     fun `passwords have to be longer than limit`() {
-        assertThat { userService.createNewUser("abc", PlainPassword("1234")) }.isFailure()
-        assertThat { userService.createNewUser("abc", PlainPassword("12345")) }.isSuccess()
+        assertFailure { userService.createNewUser("abc", PlainPassword("1234")) }
+        assertThat(userService.createNewUser("abc", PlainPassword("12345")))
     }
 
     @Test
@@ -78,13 +79,13 @@ class UserServiceTest {
         val newPassword = PlainPassword("67")
         val user = givenUser("abc", oldPassword)
 
-        assertThat {
+        assertFailure {
             userService.changePassword(user, oldPassword, newPassword)
-        }.isFailure()
+        }
 
-        assertThat {
+        assertFailure {
             userService.changePassword(user, oldPassword, PlainPassword(""))
-        }.isFailure()
+        }
     }
 
     @Test
@@ -94,9 +95,9 @@ class UserServiceTest {
         val newPassword = PlainPassword("67890")
         val user = givenUser("abc", oldPassword)
 
-        assertThat {
+        assertFailure {
             userService.changePassword(user, PlainPassword("aWrongOne"), newPassword)
-        }.isFailure()
+        }
     }
 
     private fun givenUser(username: String, password: PlainPassword): User =

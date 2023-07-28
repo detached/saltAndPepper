@@ -1,10 +1,9 @@
 package de.w3is.recipes.recipes
 
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
-import assertk.assertions.isFailure
-import assertk.assertions.isSuccess
 import de.w3is.recipes.images.ImageRepository
 import de.w3is.recipes.infra.persistence.generated.tables.Images.Companion.IMAGES
 import de.w3is.recipes.infra.persistence.generated.tables.Recipes.Companion.RECIPES
@@ -93,7 +92,7 @@ class RecipeServiceTest {
         val imageIdFromRecipe = recipe.getImages()[0]
 
         assertThat(imageId).isEqualTo(imageIdFromRecipe)
-        assertThat { imageRepository.get(imageId) }.isSuccess()
+        assertThat(imageRepository.get(imageId))
     }
 
     @Test
@@ -104,14 +103,14 @@ class RecipeServiceTest {
 
         val imageId = recipeService.addImageToRecipe(recipeId, imageData, testUser)
 
-        assertThat { imageRepository.get(imageId) }.isSuccess()
+        assertThat(imageRepository.get(imageId))
 
         recipeService.deleteImageFromRecipe(recipeId, imageId, testUser)
 
         val recipe = recipeService.get(recipeId)
 
         assertThat(recipe.getImages()).isEmpty()
-        assertThat { imageRepository.get(imageId) }.isFailure()
+        assertFailure { imageRepository.get(imageId) }
     }
 
     private fun newRecipeContent() = RecipeContent(

@@ -1,5 +1,6 @@
 package de.w3is.recipes.images.infra.persistence
 
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.*
 import de.w3is.recipes.images.ImageId
@@ -45,11 +46,11 @@ class JooqImageRepositoryTest {
 
         imageRepository.store(imageId, data, thumbnail)
 
-        assertThat { imageRepository.get(imageId) }.isSuccess()
+        assertThat(imageRepository.get(imageId))
 
         imageRepository.delete(imageId)
 
-        assertThat { imageRepository.get(imageId) }.isFailure()
+        assertFailure { imageRepository.get(imageId) }
     }
 
     private fun givenImageData() = this.javaClass.getResourceAsStream("/images/cake.jpg")!!
