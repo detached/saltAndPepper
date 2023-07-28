@@ -14,8 +14,7 @@ data class Invite(
         fun createNew(creator: User): Invite = Invite(
             code = UUID.randomUUID().toString(),
             createdOn = OffsetDateTime.now(),
-            creator = creator.id
+            creator = creator.id,
         )
     }
 }
-

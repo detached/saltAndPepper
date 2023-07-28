@@ -1,11 +1,19 @@
 package de.w3is.recipes.recipes.infra.persistence
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import de.w3is.recipes.images.ImageId
+import de.w3is.recipes.images.model.ImageId
 import de.w3is.recipes.infra.persistence.generated.tables.Recipes.Companion.RECIPES
 import de.w3is.recipes.infra.persistence.generated.tables.records.RecipesRecord
-import de.w3is.recipes.recipes.*
-import de.w3is.recipes.recipes.model.*
+import de.w3is.recipes.recipes.RecipeRepository
+import de.w3is.recipes.recipes.model.AuthorId
+import de.w3is.recipes.recipes.model.FilterKey
+import de.w3is.recipes.recipes.model.OrderField
+import de.w3is.recipes.recipes.model.Page
+import de.w3is.recipes.recipes.model.Recipe
+import de.w3is.recipes.recipes.model.RecipeId
+import de.w3is.recipes.recipes.model.SearchRequest
+import de.w3is.recipes.recipes.model.SearchResponse
+import de.w3is.recipes.recipes.model.SortDir
 import jakarta.inject.Singleton
 import org.jooq.Condition
 import org.jooq.DSLContext
@@ -26,12 +34,12 @@ class JooqRecipeRepository(
     private val filterKeysToColumns = mapOf(
         FilterKey.AUTHOR to RECIPES.AUTHOR_ID,
         FilterKey.CUISINE to RECIPES.CUISINE,
-        FilterKey.CATEGORY to RECIPES.CATEGORY
+        FilterKey.CATEGORY to RECIPES.CATEGORY,
     )
 
     private val orderFieldToColumn = mapOf(
         OrderField.TITLE to RECIPES.TITLE,
-        OrderField.CREATED_AT to RECIPES.CREATED_AT
+        OrderField.CREATED_AT to RECIPES.CREATED_AT,
     )
 
     private val recordMapper = RecordMapper<RecipesRecord, Recipe> { record ->
@@ -46,7 +54,7 @@ class JooqRecipeRepository(
             modifications = record.modifications!!,
             images = objectMapper.readValue(record.images, Array<ImageId>::class.java).toMutableList(),
             authorId = AuthorId(record.authorId!!),
-            createdAt = record.createdAt!!
+            createdAt = record.createdAt!!,
         )
     }
 
@@ -93,7 +101,6 @@ class JooqRecipeRepository(
 
     override fun search(searchRequest: SearchRequest): SearchResponse =
         with(searchRequest) {
-
             var searchConditions = if (query.isBlank()) {
                 DSL.trueCondition()
             } else {
@@ -129,33 +136,32 @@ class JooqRecipeRepository(
                 page = Page(
                     current = page,
                     max = ceil(maxResults.toDouble() / limit).toInt() - 1,
-                    size = results.size
+                    size = results.size,
                 ),
-                possibleFilter = possibleFilter
+                possibleFilter = possibleFilter,
             )
         }
 
     private fun findPossibleFilterValues(
-        searchConditions: Condition
+        searchConditions: Condition,
     ): Map<FilterKey, List<String>> {
-
         val result = dslContext.select(
             DSL.arrayAggDistinct(RECIPES.AUTHOR_ID).`as`(FilterKey.AUTHOR.name),
             DSL.arrayAggDistinct(RECIPES.CATEGORY.cast(String::class.java)).`as`(FilterKey.CATEGORY.name),
-            DSL.arrayAggDistinct(RECIPES.CUISINE.cast(String::class.java)).`as`(FilterKey.CUISINE.name)
+            DSL.arrayAggDistinct(RECIPES.CUISINE.cast(String::class.java)).`as`(FilterKey.CUISINE.name),
         ).from(RECIPES).where(searchConditions)
             .fetchOne() ?: return emptyMap()
 
         return mapOf(
             FilterKey.AUTHOR to result.get(FilterKey.AUTHOR.name, Array<String>::class.java).toList(),
             FilterKey.CUISINE to result.get(FilterKey.CUISINE.name, Array<String>::class.java).toList(),
-            FilterKey.CATEGORY to result.get(FilterKey.CATEGORY.name, Array<String>::class.java).toList()
+            FilterKey.CATEGORY to result.get(FilterKey.CATEGORY.name, Array<String>::class.java).toList(),
         )
     }
 
     private fun OrderField.toColumn() = orderFieldToColumn[this]!!
 
-    private fun SortDir.toSortOrder(): SortOrder = when(this) {
+    private fun SortDir.toSortOrder(): SortOrder = when (this) {
         SortDir.ASC -> SortOrder.ASC
         SortDir.DESC -> SortOrder.DESC
     }

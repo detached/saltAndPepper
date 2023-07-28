@@ -1,5 +1,6 @@
 package de.w3is.recipes.images
 
+import de.w3is.recipes.images.model.ImageId
 import java.io.InputStream
 
 interface ImageRepository {

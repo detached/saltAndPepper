@@ -22,7 +22,7 @@ open class InvitationService(
     private val logger = LoggerFactory.getLogger(InvitationService::class.java)
 
     fun findExistingInvite(creator: User): Invite? {
-        if(!isAllowedToInvite(creator)) {
+        if (!isAllowedToInvite(creator)) {
             return null
         }
 
@@ -31,7 +31,6 @@ open class InvitationService(
 
     @Transactional
     open fun createInvite(creator: User): Invite {
-
         if (!isAllowedToInvite(creator)) {
             throw NotAllowedToInviteException()
         }
@@ -60,7 +59,6 @@ open class InvitationService(
 
     @Transactional
     open fun createUserByInvite(code: String, name: String, plainPassword: PlainPassword): User {
-
         val invite = getInviteByCode(code)
         val user = userService.createNewUser(name, plainPassword)
         invitationRepository.invalidate(invite)

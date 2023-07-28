@@ -7,6 +7,7 @@ plugins {
     id 'org.flywaydb.flyway' version '9.20.0'
     id 'nu.studer.jooq' version '8.2.1'
     id 'com.github.node-gradle.node' version '5.0.0'
+    id "org.jlleitschuh.gradle.ktlint" version "11.5.0"
 }
 
 version "1.0"
@@ -153,6 +154,16 @@ jooq {
                 }
             }
         }
+    }
+}
+
+ktlint {
+    version = "0.50.0"
+    verbose = true
+    outputToConsole = true
+    filter {
+        exclude("**/generated/**")
+        include("**/kotlin/**")
     }
 }
 

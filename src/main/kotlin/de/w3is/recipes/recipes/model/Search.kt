@@ -11,7 +11,7 @@ data class SearchRequest(
 data class SearchResponse(
     val results: List<Recipe>,
     val page: Page,
-    val possibleFilter: Map<FilterKey, List<String>>
+    val possibleFilter: Map<FilterKey, List<String>>,
 )
 
 data class Page(
@@ -23,20 +23,20 @@ data class Page(
 enum class FilterKey {
     AUTHOR,
     CATEGORY,
-    CUISINE
+    CUISINE,
 }
 
 data class Order(
     val field: OrderField,
-    val direction: SortDir
+    val direction: SortDir,
 )
 
 enum class OrderField {
     TITLE,
-    CREATED_AT
+    CREATED_AT,
 }
 
 enum class SortDir {
     ASC,
-    DESC
+    DESC,
 }

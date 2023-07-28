@@ -45,7 +45,6 @@ class RecipeServiceTest {
 
     @Test
     fun `when storing new recipe it can be fetched`() {
-
         val newRecipe = recipeService.createNewRecipe(
             RecipeContent(
                 title = "title",
@@ -55,9 +54,9 @@ class RecipeServiceTest {
                 ingredients = "ingredients",
                 instructions = "instructions",
                 modifications = "modifications",
-                images = emptyList()
+                images = emptyList(),
             ),
-            user = testUser
+            user = testUser,
         )
 
         val fetchedRecipe = recipeService.get(newRecipe.id)
@@ -75,14 +74,13 @@ class RecipeServiceTest {
                 modifications = "modifications",
                 images = mutableListOf(),
                 authorId = testUser.toAuthor().id,
-                createdAt = OffsetDateTime.now(fixedClock)
-            )
+                createdAt = OffsetDateTime.now(fixedClock),
+            ),
         )
     }
 
     @Test
     fun `when adding to recipe it can be fetched`() {
-
         val recipeId = recipeService.createNewRecipe(newRecipeContent(), testUser).id
         val imageData = givenImageData()
 
@@ -97,7 +95,6 @@ class RecipeServiceTest {
 
     @Test
     fun `when removing image from recipe it is gone`() {
-
         val recipeId = recipeService.createNewRecipe(newRecipeContent(), testUser).id
         val imageData = givenImageData()
 
@@ -121,7 +118,7 @@ class RecipeServiceTest {
         ingredients = "ingredients",
         instructions = "instructions",
         modifications = "modifications",
-        images = emptyList()
+        images = emptyList(),
     )
 
     private fun givenImageData() = this.javaClass.getResourceAsStream("/images/cake.jpg")!!

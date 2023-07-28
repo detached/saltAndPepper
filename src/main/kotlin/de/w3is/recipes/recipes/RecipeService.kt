@@ -1,16 +1,15 @@
 package de.w3is.recipes.recipes
 
-import de.w3is.recipes.images.ImageId
-import de.w3is.recipes.users.model.User
 import de.w3is.recipes.images.ImageService
+import de.w3is.recipes.images.model.ImageId
 import de.w3is.recipes.recipes.model.Author
 import de.w3is.recipes.recipes.model.Recipe
 import de.w3is.recipes.recipes.model.RecipeId
+import de.w3is.recipes.users.model.User
 import jakarta.inject.Singleton
 import java.io.InputStream
 import java.time.Clock
 import java.time.OffsetDateTime
-import java.time.ZoneOffset
 import javax.transaction.Transactional
 
 @Singleton
@@ -26,7 +25,6 @@ open class RecipeService(
 
     @Transactional
     open fun createNewRecipe(content: RecipeContent, user: User): Recipe {
-
         val author = user.toAuthor()
         val recipe = content.toNewRecipe(author, createdAt = OffsetDateTime.now(clock))
         recipeRepository.store(recipe)
@@ -35,7 +33,6 @@ open class RecipeService(
 
     @Transactional
     open fun updateRecipe(id: RecipeId, content: RecipeContent, user: User): Recipe {
-
         val author = user.toAuthor()
         val recipe = recipeRepository.get(id)
         val updatedRecipe = recipe.updateWith(content, author)
@@ -45,7 +42,6 @@ open class RecipeService(
 
     @Transactional
     open fun addImageToRecipe(recipeId: RecipeId, imageData: InputStream, user: User): ImageId {
-
         val recipe = recipeRepository.get(recipeId)
         val newImage = imageService.convertAndStoreImage(imageData)
         recipe.addImage(newImage, user.toAuthor())
@@ -55,7 +51,6 @@ open class RecipeService(
 
     @Transactional
     open fun deleteImageFromRecipe(recipeId: RecipeId, imageId: ImageId, user: User) {
-
         val recipe = recipeRepository.get(recipeId)
         recipe.removeImage(imageId, user.toAuthor())
         recipeRepository.store(recipe)
@@ -63,7 +58,6 @@ open class RecipeService(
     }
 
     fun deleteRecipe(recipeId: RecipeId, user: User) {
-
         val author = user.toAuthor()
         val recipe = recipeRepository.get(recipeId)
         recipe.assertIsAuthoredBy(author)
@@ -95,6 +89,6 @@ data class RecipeContent(
         modifications = modifications,
         images = mutableListOf(),
         authorId = author.id,
-        createdAt = createdAt
+        createdAt = createdAt,
     )
 }

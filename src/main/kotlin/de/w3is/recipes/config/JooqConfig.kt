@@ -20,5 +20,4 @@ class JooqConfig {
     fun h2Settings() = Settings()
         .withRenderNameCase(RenderNameCase.UPPER)
         .withRenderSchema(false)
-
 }

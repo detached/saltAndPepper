@@ -7,14 +7,14 @@ data class NewRecipeRequest(
     val yields: String,
     val ingredients: String,
     val instructions: String,
-    val modifications: String
+    val modifications: String,
 )
 
 data class NewRecipeResponse(
-    val id: String
+    val id: String,
 )
 
-data class RecipeViewModel (
+data class RecipeViewModel(
     val id: String,
     val author: AuthorViewModel,
     val title: String,
@@ -27,13 +27,13 @@ data class RecipeViewModel (
     val images: List<ImageViewModel>,
 )
 
-data class AuthorViewModel (
+data class AuthorViewModel(
     val id: String,
-    val name: String
+    val name: String,
 )
 
 data class ImageViewModel(
     val id: String,
     val url: String?,
-    val thumbnailUrl: String?
+    val thumbnailUrl: String?,
 )

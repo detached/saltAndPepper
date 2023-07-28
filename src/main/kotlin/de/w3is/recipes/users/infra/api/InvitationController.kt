@@ -55,7 +55,7 @@ class InvitationController(
         val invite = invitationService.getInviteByCode(inviteCode)
         val invitingUser = userService.getUser(invite.creator)
         return InvitationInfoResponse(
-            invitingUser = invitingUser.name
+            invitingUser = invitingUser.name,
         )
     }
 
@@ -68,7 +68,7 @@ class InvitationController(
         invitationService.createUserByInvite(
             inviteCode,
             invitationRequest.username,
-            PlainPassword(invitationRequest.password)
+            PlainPassword(invitationRequest.password),
         )
     }
 }

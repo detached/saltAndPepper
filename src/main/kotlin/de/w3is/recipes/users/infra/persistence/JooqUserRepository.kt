@@ -1,11 +1,11 @@
 package de.w3is.recipes.users.infra.persistence
 
 import de.w3is.recipes.infra.persistence.generated.tables.Users.Companion.USERS
-import de.w3is.recipes.recipes.AuthorRepository
 import de.w3is.recipes.infra.persistence.generated.tables.records.UsersRecord
+import de.w3is.recipes.recipes.AuthorRepository
 import de.w3is.recipes.recipes.model.Author
 import de.w3is.recipes.recipes.model.AuthorId
-import de.w3is.recipes.users.*
+import de.w3is.recipes.users.UserRepository
 import de.w3is.recipes.users.model.EncryptedPassword
 import de.w3is.recipes.users.model.Role
 import de.w3is.recipes.users.model.User
@@ -28,7 +28,7 @@ open class JooqUserRepository(private val dslContext: DSLContext) : UserReposito
         id = UserId(it.userId!!),
         name = it.username!!,
         password = EncryptedPassword(it.password!!),
-        role = Role.valueOf(it.role!!)
+        role = Role.valueOf(it.role!!),
     )
 
     override fun store(user: User) {
@@ -59,6 +59,6 @@ open class JooqUserRepository(private val dslContext: DSLContext) : UserReposito
 
     private fun recordToAuthor(it: UsersRecord) = Author(
         id = AuthorId(it.userId!!),
-        name = it.username!!
+        name = it.username!!,
     )
 }

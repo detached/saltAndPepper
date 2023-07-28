@@ -1,14 +1,18 @@
 package de.w3is.recipes.users
 
 import de.w3is.recipes.users.infra.PasswordValidator
-import de.w3is.recipes.users.model.*
+import de.w3is.recipes.users.model.EncryptedPassword
+import de.w3is.recipes.users.model.PlainPassword
+import de.w3is.recipes.users.model.Role
+import de.w3is.recipes.users.model.User
+import de.w3is.recipes.users.model.UserId
 import jakarta.inject.Singleton
 import java.lang.RuntimeException
 
 @Singleton
 class UserService(
     private val userRepository: UserRepository,
-    private val passwordValidator: PasswordValidator
+    private val passwordValidator: PasswordValidator,
 ) {
 
     fun getUserFor(username: String): User =
@@ -17,7 +21,6 @@ class UserService(
     fun getUser(userId: UserId): User = userRepository.getUser(userId)
 
     fun createNewUser(name: String, plainPassword: PlainPassword): User {
-
         validateUsername(name)
         validatePassword(name, plainPassword)
 
@@ -27,7 +30,6 @@ class UserService(
     }
 
     fun changePassword(user: User, oldPassword: PlainPassword, newPassword: PlainPassword) {
-
         if (!user.authenticate(oldPassword)) {
             throw WrongPasswordException()
         }

@@ -15,11 +15,9 @@ class GourmetRecipeSource(inputStream: InputStream) : ImportCommandProvider {
     override fun hasNext() = reader.findElement("recipe")
 
     override fun next(): ImportRecipe {
-
         val builder = ImportRecipeBuilder()
 
         reader.readUntil({ it.isEndElement("recipe") }) {
-
             if (it.isStartElement) {
                 builder.appendInfoFrom(it)
             }
@@ -42,9 +40,8 @@ class GourmetRecipeSource(inputStream: InputStream) : ImportCommandProvider {
     }
 
     private fun parseImage(): InputStream {
-
         val encodedImage = StringBuilder()
-        reader.readUntil({ it.isEndElement("image")}) {event ->
+        reader.readUntil({ it.isEndElement("image") }) { event ->
             encodedImage.append(event.asCharacters().toString().trim())
         }
 
@@ -60,7 +57,6 @@ class GourmetRecipeSource(inputStream: InputStream) : ImportCommandProvider {
     }
 
     private fun parseIngredients(): String {
-
         val ingredients = java.lang.StringBuilder()
 
         reader.readUntil({ it.isEndElement("ingredient-list") }) { event ->
@@ -74,13 +70,11 @@ class GourmetRecipeSource(inputStream: InputStream) : ImportCommandProvider {
     }
 
     private fun parseIngredient(reader: XMLEventReader): String {
-
         var item = ""
         var unit = ""
         var amount = ""
 
         reader.readUntil({ it.isEndElement("ingredient") }) {
-
             if (it.isStartElement) {
                 when (it.asStartElement().name()) {
                     "item" -> item = reader.nextAsString()
@@ -104,7 +98,6 @@ class GourmetRecipeSource(inputStream: InputStream) : ImportCommandProvider {
     }
 
     private fun XMLEventReader.findElement(element: String): Boolean {
-
         while (this.hasNext()) {
             with(nextEvent()) {
                 if (this.isStartElement(element)) {
@@ -121,7 +114,6 @@ class GourmetRecipeSource(inputStream: InputStream) : ImportCommandProvider {
     private fun XMLEventReader.nextAsString() = nextEvent().asCharacters().toString().trim()
     private fun StartElement.name() = name.localPart.lowercase()
     private fun EndElement.name() = name.localPart.lowercase()
-
 }
 
 class ImportRecipeBuilder {
@@ -135,13 +127,13 @@ class ImportRecipeBuilder {
     var modifications: String? = null
 
     fun build() = ImportRecipe(
-            title = title!!,
-            category = category.orEmpty(),
-            cuisine = cuisine.orEmpty(),
-            yields = yields.orEmpty(),
-            image = image,
-            ingredients = ingredients.orEmpty(),
-            instructions = instructions.orEmpty(),
-            modifications = modifications.orEmpty()
+        title = title!!,
+        category = category.orEmpty(),
+        cuisine = cuisine.orEmpty(),
+        yields = yields.orEmpty(),
+        image = image,
+        ingredients = ingredients.orEmpty(),
+        instructions = instructions.orEmpty(),
+        modifications = modifications.orEmpty(),
     )
 }

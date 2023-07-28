@@ -1,7 +1,7 @@
 package de.w3is.recipes.images.infra.api
 
-import de.w3is.recipes.images.ImageId
 import de.w3is.recipes.images.ImageRepository
+import de.w3is.recipes.images.model.ImageId
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.MediaType
 import io.micronaut.http.MutableHttpResponse

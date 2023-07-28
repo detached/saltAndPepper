@@ -2,7 +2,11 @@ package de.w3is.recipes.users
 
 import assertk.assertFailure
 import assertk.assertThat
-import assertk.assertions.*
+import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
+import assertk.assertions.isInstanceOf
+import assertk.assertions.isNotEqualTo
+import assertk.assertions.isTrue
 import de.w3is.recipes.testUser
 import de.w3is.recipes.users.infra.SimplePasswordValidator
 import de.w3is.recipes.users.model.EncryptedPassword
@@ -10,7 +14,10 @@ import de.w3is.recipes.users.model.PlainPassword
 import de.w3is.recipes.users.model.Role
 import de.w3is.recipes.users.model.User
 import org.junit.jupiter.api.Test
-import org.mockito.kotlin.*
+import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 
 class UserServiceTest {
 
@@ -19,7 +26,6 @@ class UserServiceTest {
 
     @Test
     fun `a username can't be used again if it is already taken`() {
-
         val userName = "a"
         whenever(userRepository.findUser(userName)).thenReturn(testUser)
         assertFailure { userService.createNewUser(userName, PlainPassword("12345")) }
@@ -43,7 +49,6 @@ class UserServiceTest {
 
     @Test
     fun `test create user`() {
-
         val user = userService.createNewUser("abc", PlainPassword("12345"))
 
         verify(userRepository).store(user)
@@ -56,7 +61,6 @@ class UserServiceTest {
 
     @Test
     fun `test change password`() {
-
         val oldPassword = PlainPassword("12345")
         val newPassword = PlainPassword("67890")
         val user = givenUser("abc", oldPassword)
@@ -74,7 +78,6 @@ class UserServiceTest {
 
     @Test
     fun `when changing password then enforce password rules`() {
-
         val oldPassword = PlainPassword("12345")
         val newPassword = PlainPassword("67")
         val user = givenUser("abc", oldPassword)
@@ -90,7 +93,6 @@ class UserServiceTest {
 
     @Test
     fun `when changing password and user provides wrong old password than throw error`() {
-
         val oldPassword = PlainPassword("12345")
         val newPassword = PlainPassword("67890")
         val user = givenUser("abc", oldPassword)

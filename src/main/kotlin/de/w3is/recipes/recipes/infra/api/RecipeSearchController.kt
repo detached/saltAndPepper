@@ -21,7 +21,6 @@ class RecipeSearchController(
 
     @Post
     fun search(searchRequestViewModel: SearchRequestViewModel): SearchResponseViewModel {
-
         val searchResponse = recipeRepository.search(searchRequestViewModel.toSearchRequest())
         val possibleFilter = searchResponse.possibleFilter.toViewModel()
 
@@ -33,7 +32,7 @@ class RecipeSearchController(
                     maxNumber = page.max,
                 ),
                 data = results.map { it.toViewModel() },
-                possibleFilter = possibleFilter
+                possibleFilter = possibleFilter,
             )
         }
     }
@@ -45,12 +44,11 @@ class RecipeSearchController(
             title = this.title,
             category = this.category,
             cuisine = this.cuisine,
-            author = authorRepository.get(this.authorId).name
+            author = authorRepository.get(this.authorId).name,
         )
     }
 
     private fun SearchRequestViewModel.toSearchRequest(): SearchRequest {
-
         val limit = with(page.size) {
             if (this in 1..99) {
                 this
@@ -72,7 +70,7 @@ class RecipeSearchController(
             limit = limit,
             page = page,
             filter = this.filter,
-            order = this.order
+            order = this.order,
         )
     }
 
@@ -86,7 +84,6 @@ class RecipeSearchController(
     }
 
     private fun List<String>.resolveAuthorNamesAsLabels(): List<FilterValueViewModel> {
-
         val authors = authorRepository.get(this.map { AuthorId(it) }.toSet())
 
         return authors.map { author ->

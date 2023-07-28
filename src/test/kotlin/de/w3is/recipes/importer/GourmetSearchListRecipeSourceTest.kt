@@ -2,14 +2,16 @@ package de.w3is.recipes.importer
 
 import assertk.all
 import assertk.assertThat
-import assertk.assertions.*
+import assertk.assertions.isEqualToIgnoringGivenProperties
+import assertk.assertions.isFalse
+import assertk.assertions.isNotNull
+import assertk.assertions.isTrue
 import org.junit.jupiter.api.Test
 
 class GourmetSearchListRecipeSourceTest {
 
     @Test
     fun `importing single recipe`() {
-
         val singleXml = this.javaClass.classLoader.getResourceAsStream("gourmet/single.xml")!!
         val expected = givenSingleRecipe()
 
@@ -25,13 +27,12 @@ class GourmetSearchListRecipeSourceTest {
 
     @Test
     fun `import whole recipe collection`() {
-
         val collection = this.javaClass.classLoader.getResourceAsStream("gourmet/Rezepte.xml")!!
 
         val recipeSource = GourmetRecipeSource(collection)
 
         assertThat(
-            recipeSource.forEachRemaining { }
+            recipeSource.forEachRemaining { },
         )
     }
 
@@ -47,7 +48,7 @@ class GourmetSearchListRecipeSourceTest {
                 a
                 multiline
                 instruction.
-            """.trimIndent(),
-        modifications = "Maybe do it different!"
+        """.trimIndent(),
+        modifications = "Maybe do it different!",
     )
 }

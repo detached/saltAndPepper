@@ -10,7 +10,7 @@ data class ImportRecipe(
     val image: InputStream?,
     val ingredients: String,
     val instructions: String,
-    val modifications: String
+    val modifications: String,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

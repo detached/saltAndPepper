@@ -13,7 +13,7 @@ data class UserId(val value: String) {
 
 enum class Role {
     ADMIN,
-    USER
+    USER,
 }
 
 data class PlainPassword(val value: String) {
@@ -32,7 +32,7 @@ data class User(
     val id: UserId,
     val name: String,
     val password: EncryptedPassword,
-    val role: Role
+    val role: Role,
 ) {
     companion object {
         fun createNew(name: String, password: PlainPassword, role: Role = Role.USER): User {
@@ -40,7 +40,7 @@ data class User(
                 id = UserId.new(),
                 name = name,
                 password = EncryptedPassword.fromPlain(password),
-                role = role
+                role = role,
             )
         }
     }

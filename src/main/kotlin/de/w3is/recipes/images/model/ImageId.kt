@@ -1,4 +1,4 @@
-package de.w3is.recipes.images
+package de.w3is.recipes.images.model
 
 import java.util.*
 

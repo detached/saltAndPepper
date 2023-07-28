@@ -1,9 +1,12 @@
 package de.w3is.recipes.config
 
-import de.w3is.recipes.users.model.PlainPassword
 import de.w3is.recipes.users.UserRepository
+import de.w3is.recipes.users.model.PlainPassword
 import io.micronaut.http.HttpRequest
-import io.micronaut.security.authentication.*
+import io.micronaut.security.authentication.AuthenticationFailureReason
+import io.micronaut.security.authentication.AuthenticationProvider
+import io.micronaut.security.authentication.AuthenticationRequest
+import io.micronaut.security.authentication.AuthenticationResponse
 import jakarta.inject.Singleton
 import org.reactivestreams.Publisher
 import org.slf4j.LoggerFactory
@@ -16,7 +19,7 @@ class DatabaseAuthenticationProvider(private val userRepository: UserRepository)
 
     override fun authenticate(
         httpRequest: HttpRequest<*>?,
-        authenticationRequest: AuthenticationRequest<*, *>
+        authenticationRequest: AuthenticationRequest<*, *>,
     ): Publisher<AuthenticationResponse> = Mono.create { emitter ->
 
         val username = authenticationRequest.identity as String
@@ -29,8 +32,8 @@ class DatabaseAuthenticationProvider(private val userRepository: UserRepository)
                 emitter.success(
                     AuthenticationResponse.success(
                         user.id.value,
-                        listOf(user.role.name)
-                    )
+                        listOf(user.role.name),
+                    ),
                 )
             } else {
                 logger.warn("Login failed: Password incorrect for $username")

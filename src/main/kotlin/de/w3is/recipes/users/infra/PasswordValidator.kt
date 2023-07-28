@@ -11,11 +11,11 @@ interface PasswordValidator {
 // TODO: implement with passay
 @Singleton
 class SimplePasswordValidator(
-    @Property(name = "application.minPasswordLength") private val minPasswordLength: Int
+    @Property(name = "application.minPasswordLength") private val minPasswordLength: Int,
 ) : PasswordValidator {
 
     override fun isPasswordValid(name: String, plainPassword: PlainPassword): Boolean =
-        plainPassword.value.isNotBlank()
-                && plainPassword.value.length >= minPasswordLength
-                && plainPassword.value.trim() != name
+        plainPassword.value.isNotBlank() &&
+            plainPassword.value.length >= minPasswordLength &&
+            plainPassword.value.trim() != name
 }

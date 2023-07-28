@@ -2,9 +2,9 @@ package de.w3is.recipes.images.infra.persistence
 
 import assertk.assertFailure
 import assertk.assertThat
-import assertk.assertions.*
-import de.w3is.recipes.images.ImageId
+import assertk.assertions.isEqualTo
 import de.w3is.recipes.images.ImageRepository
+import de.w3is.recipes.images.model.ImageId
 import de.w3is.recipes.infra.persistence.generated.tables.Images.Companion.IMAGES
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import jakarta.inject.Inject
@@ -28,7 +28,6 @@ class JooqImageRepositoryTest {
 
     @Test
     fun `store and get image`() {
-
         val imageId = ImageId.new()
 
         imageRepository.store(imageId, givenImageData(), givenImageData())
@@ -39,7 +38,6 @@ class JooqImageRepositoryTest {
 
     @Test
     fun `delete image`() {
-
         val imageId = ImageId.new()
         val data = givenImageData()
         val thumbnail = givenImageData()

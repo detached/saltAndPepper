@@ -1,6 +1,6 @@
 package de.w3is.recipes.recipes.model
 
-import de.w3is.recipes.images.ImageId
+import de.w3is.recipes.images.model.ImageId
 import de.w3is.recipes.recipes.RecipeContent
 import java.time.OffsetDateTime
 import java.util.*
@@ -32,7 +32,6 @@ class Recipe(
     }
 
     fun updateWith(content: RecipeContent, author: Author): Recipe {
-
         assertIsAuthoredBy(author)
 
         return Recipe(

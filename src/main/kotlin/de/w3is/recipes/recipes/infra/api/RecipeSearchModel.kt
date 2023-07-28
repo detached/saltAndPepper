@@ -13,7 +13,7 @@ data class SearchRequestViewModel(
 data class SearchResponseViewModel(
     val data: List<SearchResponseData>,
     val page: PageViewModel,
-    val possibleFilter: Map<FilterKey, List<FilterValueViewModel>>
+    val possibleFilter: Map<FilterKey, List<FilterValueViewModel>>,
 )
 
 data class SearchResponseData(
@@ -28,10 +28,10 @@ data class SearchResponseData(
 data class PageViewModel(
     val size: Int,
     val number: Int,
-    val maxNumber: Int?
+    val maxNumber: Int?,
 )
 
 data class FilterValueViewModel(
     val value: String,
-    val label: String
+    val label: String,
 )

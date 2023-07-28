@@ -1,8 +1,8 @@
 package de.w3is.recipes.importer.infra.api
 
 import de.w3is.recipes.common.getUser
-import de.w3is.recipes.importer.ImportService
 import de.w3is.recipes.importer.GourmetRecipeSource
+import de.w3is.recipes.importer.ImportService
 import de.w3is.recipes.users.UserService
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.MediaType
@@ -20,14 +20,13 @@ import java.io.File
 @Secured(SecurityRule.IS_AUTHENTICATED)
 class ImportController(
     private val userService: UserService,
-    private val importService: ImportService
+    private val importService: ImportService,
 ) {
     @Post("/gourmet", consumes = [MediaType.MULTIPART_FORM_DATA])
     fun importGourmetXml(
         file: StreamingFileUpload,
-        authentication: Authentication
+        authentication: Authentication,
     ): Mono<HttpResponse<*>> {
-
         val user = with(userService) { authentication.getUser() }
 
         return Mono.fromCallable { File.createTempFile("upload", "temp") }

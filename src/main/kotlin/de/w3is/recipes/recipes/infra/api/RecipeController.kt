@@ -1,9 +1,9 @@
 package de.w3is.recipes.recipes.infra.api
 
 import de.w3is.recipes.common.getUser
-import de.w3is.recipes.images.ImageId
 import de.w3is.recipes.images.infra.api.toImageUrl
 import de.w3is.recipes.images.infra.api.toThumbnailUrl
+import de.w3is.recipes.images.model.ImageId
 import de.w3is.recipes.recipes.AuthorRepository
 import de.w3is.recipes.recipes.RecipeContent
 import de.w3is.recipes.recipes.RecipeService
@@ -12,7 +12,13 @@ import de.w3is.recipes.recipes.model.RecipeId
 import de.w3is.recipes.users.UserService
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.MediaType
-import io.micronaut.http.annotation.*
+import io.micronaut.http.annotation.Body
+import io.micronaut.http.annotation.Controller
+import io.micronaut.http.annotation.Delete
+import io.micronaut.http.annotation.Get
+import io.micronaut.http.annotation.PathVariable
+import io.micronaut.http.annotation.Post
+import io.micronaut.http.annotation.Put
 import io.micronaut.http.multipart.StreamingFileUpload
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.authentication.Authentication
@@ -41,8 +47,9 @@ class RecipeController(
                 ingredients = request.ingredients,
                 instructions = request.instructions,
                 modifications = request.modifications,
-                images = emptyList()
-            ), user
+                images = emptyList(),
+            ),
+            user,
         )
 
         return NewRecipeResponse(recipe.id.recipeId)
@@ -63,7 +70,7 @@ class RecipeController(
     fun updateRecipe(
         @PathVariable("id") recipeId: String,
         @Body request: RecipeViewModel,
-        authentication: Authentication
+        authentication: Authentication,
     ): RecipeViewModel {
         val user = with(userService) { authentication.getUser() }
         val content = RecipeContent(
@@ -74,7 +81,7 @@ class RecipeController(
             ingredients = request.ingredients,
             instructions = request.instructions,
             modifications = request.modifications,
-            images = request.images.map { ImageId(it.id) }
+            images = request.images.map { ImageId(it.id) },
         )
         return recipeService.updateRecipe(RecipeId(recipeId), content, user).toModel()
     }
@@ -85,7 +92,6 @@ class RecipeController(
         file: StreamingFileUpload,
         authentication: Authentication,
     ): Mono<HttpResponse<*>> {
-
         val user = with(userService) { authentication.getUser() }
 
         return Mono.fromCallable { File.createTempFile("upload", "temp") }
@@ -109,7 +115,7 @@ class RecipeController(
             id = this.id.recipeId,
             author = AuthorViewModel(
                 id = this.authorId.value,
-                name = authorRepository.get(this.authorId).name
+                name = authorRepository.get(this.authorId).name,
             ),
             title = this.title,
             category = this.category,
@@ -118,7 +124,7 @@ class RecipeController(
             ingredients = this.ingredients,
             instructions = this.instructions,
             modifications = this.modifications,
-            images = this.getImages().map { it.toImageViewModel() }
+            images = this.getImages().map { it.toImageViewModel() },
         )
     }
 

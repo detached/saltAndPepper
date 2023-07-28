@@ -22,12 +22,11 @@ import jakarta.inject.Singleton
 @Secured(SecurityRule.IS_AUTHENTICATED)
 class ProfileController(
     private val invitationService: InvitationService,
-    private val userService: UserService
+    private val userService: UserService,
 ) {
 
     @Get
     fun getProfile(authentication: Authentication): Profile {
-
         val user = with(userService) { authentication.getUser() }
 
         val allowedToInvite = invitationService.isAllowedToInvite(user)
@@ -42,7 +41,6 @@ class ProfileController(
 
     @Patch("/password")
     fun changePassword(@Body request: ChangePasswordRequest, authentication: Authentication): HttpResponse<Unit> {
-
         val user = with(userService) { authentication.getUser() }
 
         return try {

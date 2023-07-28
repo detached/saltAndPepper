@@ -34,7 +34,6 @@ open class InvitationServiceTest {
 
     @Test
     fun `when creating a invite then the creating user is recorded as creator`() {
-
         val invite = invitationService.createInvite(testUser)
 
         assertThat(invite.creator).isEqualTo(testUser.id)
@@ -43,7 +42,6 @@ open class InvitationServiceTest {
 
     @Test
     fun `when a user has created a invitation then she can't create another one`() {
-
         assertFailure {
             invitationService.createInvite(testUser)
             invitationService.createInvite(testUser)
@@ -52,7 +50,6 @@ open class InvitationServiceTest {
 
     @Test
     fun `when a person is invited than a user can be created`() {
-
         val userName = "newUser"
 
         val invite = invitationService.createInvite(testUser)
@@ -64,7 +61,6 @@ open class InvitationServiceTest {
 
     @Test
     fun `when a invite was used it can't be used again`() {
-
         val invite = invitationService.createInvite(testUser)
 
         invitationService.createUserByInvite(invite.code, "a", PlainPassword("password"))
