@@ -72,7 +72,7 @@ class RecipeSearchController(
             limit = limit,
             page = page,
             filter = this.filter,
-            orderField = this.orderField
+            order = this.order
         )
     }
 

@@ -15,6 +15,11 @@ export const OrderField = {
   TITLE: "TITLE",
 };
 
+export const SortDir = {
+  ASC: "ASC",
+  DESC: "DESC",
+};
+
 export class FilterValue {
   /**
    * @param value {String}
@@ -40,18 +45,30 @@ export class SearchFilter {
   }
 }
 
+export class Order {
+  /**
+   *
+   * @param field {OrderField}
+   * @param direction {SortDir}
+   */
+  constructor(field, direction) {
+    this.field = field;
+    this.direction = direction;
+  }
+}
+
 export class SearchRequest {
   /**
    * @param searchQuery {String}
    * @param page {Page}
    * @param filter {SearchFilter}
-   * @param orderField {OrderField}
+   * @param order {Order}
    */
-  constructor(searchQuery, page, filter, orderField) {
+  constructor(searchQuery, page, filter, order) {
     this.searchQuery = searchQuery;
     this.page = page;
     this.filter = filter;
-    this.orderField = orderField;
+    this.order = order;
   }
 }
 

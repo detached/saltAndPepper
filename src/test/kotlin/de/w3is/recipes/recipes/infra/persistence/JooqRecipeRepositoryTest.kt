@@ -76,7 +76,7 @@ class JooqRecipeRepositoryTest {
                     limit = 5,
                     page = 0,
                     filter = emptyMap(),
-                    orderField = OrderField.TITLE
+                    order = Order(field = OrderField.TITLE, direction = SortDir.DESC)
                 )
             )
 
@@ -97,7 +97,7 @@ class JooqRecipeRepositoryTest {
                     limit = 5,
                     page = 0,
                     filter = emptyMap(),
-                    orderField = OrderField.TITLE
+                    order = Order(field = OrderField.TITLE, direction = SortDir.DESC)
                 )
             )
 
@@ -118,7 +118,7 @@ class JooqRecipeRepositoryTest {
                     limit = 5,
                     page = 0,
                     filter = emptyMap(),
-                    orderField = OrderField.TITLE
+                    order = Order(field = OrderField.TITLE, direction = SortDir.DESC)
                 )
             )
 
@@ -136,7 +136,7 @@ class JooqRecipeRepositoryTest {
                 limit = 10,
                 page = 0,
                 filter = emptyMap(),
-                orderField = OrderField.TITLE
+                order = Order(field = OrderField.TITLE, direction = SortDir.DESC)
             )
         )
         val secondTen = recipeRepository.search(
@@ -145,7 +145,7 @@ class JooqRecipeRepositoryTest {
                 limit = 10,
                 page = 1,
                 filter = emptyMap(),
-                orderField = OrderField.TITLE
+                order = Order(field = OrderField.TITLE, direction = SortDir.DESC)
             )
         )
         val theRest = recipeRepository.search(
@@ -154,7 +154,7 @@ class JooqRecipeRepositoryTest {
                 limit = 10,
                 page = 2,
                 filter = emptyMap(),
-                orderField = OrderField.TITLE
+                order = Order(field = OrderField.TITLE, direction = SortDir.DESC)
             )
         )
 
@@ -181,7 +181,7 @@ class JooqRecipeRepositoryTest {
     }
 
     @Test
-    fun `search results should be ordered alphabetically by title`() {
+    fun `search results should be ordered alphabetically by title asc`() {
 
         val b = givenARecipe(title = "b").also { recipeRepository.store(it) }
         val a = givenARecipe(title = "a").also { recipeRepository.store(it) }
@@ -193,7 +193,85 @@ class JooqRecipeRepositoryTest {
                 limit = 10,
                 page = 0,
                 filter = emptyMap(),
-                orderField = OrderField.TITLE
+                order = Order(field = OrderField.TITLE, direction = SortDir.ASC)
+            )
+        )
+
+        assertThat(result.results).containsExactly(a, b, c)
+    }
+
+    @Test
+    fun `search results should be ordered alphabetically by title desc`() {
+
+        val b = givenARecipe(title = "b").also { recipeRepository.store(it) }
+        val a = givenARecipe(title = "a").also { recipeRepository.store(it) }
+        val c = givenARecipe(title = "c").also { recipeRepository.store(it) }
+
+        val result = recipeRepository.search(
+            SearchRequest(
+                query = "",
+                limit = 10,
+                page = 0,
+                filter = emptyMap(),
+                order = Order(field = OrderField.TITLE, direction = SortDir.DESC)
+            )
+        )
+
+        assertThat(result.results).containsExactly(c, b, a)
+    }
+
+    @Test
+    fun `search results should be ordered by date desc`() {
+
+        val b = givenARecipe(
+            title = "b",
+            createdAt = OffsetDateTime.of(2023, 7, 5, 0, 0, 0, 0, ZoneOffset.UTC)
+        ).also { recipeRepository.store(it) }
+        val a = givenARecipe(
+            title = "a",
+            createdAt = OffsetDateTime.of(2023, 7, 1, 0, 0, 0, 0, ZoneOffset.UTC)
+        ).also { recipeRepository.store(it) }
+        val c = givenARecipe(
+            title = "c",
+            createdAt = OffsetDateTime.of(2023, 7, 9, 0, 0, 0, 0, ZoneOffset.UTC)
+        ).also { recipeRepository.store(it) }
+
+        val result = recipeRepository.search(
+            SearchRequest(
+                query = "",
+                limit = 10,
+                page = 0,
+                filter = emptyMap(),
+                order = Order(field = OrderField.CREATED_AT, direction = SortDir.DESC)
+            )
+        )
+
+        assertThat(result.results).containsExactly(c, b, a)
+    }
+
+    @Test
+    fun `search results should be ordered by date asc`() {
+
+        val b = givenARecipe(
+            title = "b",
+            createdAt = OffsetDateTime.of(2023, 7, 5, 0, 0, 0, 0, ZoneOffset.UTC)
+        ).also { recipeRepository.store(it) }
+        val a = givenARecipe(
+            title = "a",
+            createdAt = OffsetDateTime.of(2023, 7, 1, 0, 0, 0, 0, ZoneOffset.UTC)
+        ).also { recipeRepository.store(it) }
+        val c = givenARecipe(
+            title = "c",
+            createdAt = OffsetDateTime.of(2023, 7, 9, 0, 0, 0, 0, ZoneOffset.UTC)
+        ).also { recipeRepository.store(it) }
+
+        val result = recipeRepository.search(
+            SearchRequest(
+                query = "",
+                limit = 10,
+                page = 0,
+                filter = emptyMap(),
+                order = Order(field = OrderField.CREATED_AT, direction = SortDir.ASC)
             )
         )
 
@@ -211,7 +289,7 @@ class JooqRecipeRepositoryTest {
                     query = "foo", limit = 5, page = 0, filter = mapOf(
                         FilterKey.CATEGORY to emptyList()
                     ),
-                    orderField = OrderField.TITLE
+                    order = Order(field = OrderField.TITLE, direction = SortDir.DESC)
                 )
             )
 
@@ -232,7 +310,7 @@ class JooqRecipeRepositoryTest {
                 limit = 10,
                 page = 0,
                 filter = emptyMap(),
-                orderField = OrderField.TITLE
+                order = Order(field = OrderField.TITLE, direction = SortDir.DESC)
             )
         )
 
@@ -256,7 +334,7 @@ class JooqRecipeRepositoryTest {
                 limit = 10,
                 page = 0,
                 filter = emptyMap(),
-                orderField = OrderField.TITLE
+                order = Order(field = OrderField.TITLE, direction = SortDir.DESC)
             )
         )
 
@@ -279,7 +357,7 @@ class JooqRecipeRepositoryTest {
                 query = "", limit = 10, page = 0, filter = mapOf(
                     FilterKey.CATEGORY to listOf("a", "b")
                 ),
-                orderField = OrderField.TITLE
+                order = Order(field = OrderField.TITLE, direction = SortDir.DESC)
             )
         )
 
@@ -303,7 +381,8 @@ class JooqRecipeRepositoryTest {
             SearchRequest(
                 query = "", limit = 10, page = 0, filter = mapOf(
                     FilterKey.CUISINE to listOf("x", "y")
-                ), orderField = OrderField.TITLE
+                ),
+                order = Order(field = OrderField.TITLE, direction = SortDir.DESC)
             )
         )
 
@@ -327,7 +406,8 @@ class JooqRecipeRepositoryTest {
             SearchRequest(
                 query = "", limit = 10, page = 0, filter = mapOf(
                     FilterKey.AUTHOR to listOf("1", "2")
-                ), orderField = OrderField.TITLE
+                ),
+                order = Order(field = OrderField.TITLE, direction = SortDir.DESC)
             )
         )
 
@@ -352,7 +432,8 @@ class JooqRecipeRepositoryTest {
             SearchRequest(
                 query = "recipe", limit = 10, page = 0, filter = mapOf(
                     FilterKey.CATEGORY to listOf("a")
-                ), orderField = OrderField.TITLE
+                ),
+                order = Order(field = OrderField.TITLE, direction = SortDir.DESC)
             )
         )
 
@@ -363,7 +444,8 @@ class JooqRecipeRepositoryTest {
         title: String = "title",
         category: String = "category",
         cuisine: String = "cuisine",
-        author: AuthorId = testUser.toAuthor().id
+        author: AuthorId = testUser.toAuthor().id,
+        createdAt: OffsetDateTime = OffsetDateTime.now(fixedClock)
     ) =
         Recipe(
             id = RecipeId.new(),
@@ -376,6 +458,6 @@ class JooqRecipeRepositoryTest {
             modifications = "modifications",
             images = mutableListOf(ImageId.new()),
             authorId = author,
-            createdAt = OffsetDateTime.now(fixedClock)
+            createdAt = createdAt
         )
 }

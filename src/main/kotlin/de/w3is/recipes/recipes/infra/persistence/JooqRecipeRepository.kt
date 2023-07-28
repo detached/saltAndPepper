@@ -10,10 +10,10 @@ import jakarta.inject.Singleton
 import org.jooq.Condition
 import org.jooq.DSLContext
 import org.jooq.RecordMapper
+import org.jooq.SortOrder
 import org.jooq.impl.DSL
 import java.time.Clock
 import java.time.OffsetDateTime
-import java.time.ZoneOffset
 import kotlin.math.ceil
 
 @Singleton
@@ -91,8 +91,8 @@ class JooqRecipeRepository(
 
     override fun getAll(): List<Recipe> = dslContext.selectFrom(RECIPES).fetch(recordMapper)
 
-    override fun search(searchRequest: SearchRequest): SearchResponse {
-        return with(searchRequest) {
+    override fun search(searchRequest: SearchRequest): SearchResponse =
+        with(searchRequest) {
 
             var searchConditions = if (query.isBlank()) {
                 DSL.trueCondition()
@@ -119,7 +119,7 @@ class JooqRecipeRepository(
             val maxResults = dslContext.selectFrom(RECIPES).where(searchConditions).count()
             val possibleFilter = findPossibleFilterValues(searchConditions)
             val results = dslContext.selectFrom(RECIPES).where(searchConditions)
-                .orderBy(orderFieldToColumn[orderField]!!.asc())
+                .orderBy(order.field.toColumn().sort(order.direction.toSortOrder()))
                 .limit(limit)
                 .offset(page * limit)
                 .fetch(recordMapper)
@@ -134,7 +134,6 @@ class JooqRecipeRepository(
                 possibleFilter = possibleFilter
             )
         }
-    }
 
     private fun findPossibleFilterValues(
         searchConditions: Condition
@@ -152,6 +151,13 @@ class JooqRecipeRepository(
             FilterKey.CUISINE to result.get(FilterKey.CUISINE.name, Array<String>::class.java).toList(),
             FilterKey.CATEGORY to result.get(FilterKey.CATEGORY.name, Array<String>::class.java).toList()
         )
+    }
+
+    private fun OrderField.toColumn() = orderFieldToColumn[this]!!
+
+    private fun SortDir.toSortOrder(): SortOrder = when(this) {
+        SortDir.ASC -> SortOrder.ASC
+        SortDir.DESC -> SortOrder.DESC
     }
 
     override fun delete(recipe: Recipe) {

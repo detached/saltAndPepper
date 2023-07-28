@@ -7,7 +7,9 @@ import {
   SaltAndPepper,
   SearchRequest,
   SearchFilter,
+  Order,
   OrderField,
+  SortDir,
 } from "../api/saltAndPepper";
 
 export default function NewRecipes() {
@@ -20,7 +22,7 @@ export default function NewRecipes() {
         "",
         new Page(30, 0),
         new SearchFilter([], [], []),
-        OrderField.CREATED_AT
+        new Order(OrderField.CREATED_AT, SortDir.DESC)
       )
     ).then((result) => {
       setItems(result.data);
