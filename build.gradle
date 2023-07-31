@@ -31,7 +31,7 @@ ext {
     micronautVersion = "3.7.4"
     javaxTransactionApiVersion = "1.3"
     assertKVersion = "0.26.1"
-    thumbnailatorVersion = "0.4.19"
+    thumbnailatorVersion = "0.4.20"
     commonsTextVersion = "1.10.0"
     springSecurityVersion = "6.1.2"
     mockitoVersion = "4.1.0"
