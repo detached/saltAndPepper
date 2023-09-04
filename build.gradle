@@ -35,7 +35,7 @@ ext {
     commonsTextVersion = "1.10.0"
     springSecurityVersion = "6.1.2"
     mockitoVersion = "4.1.0"
-    h2Version = "2.1.214"
+    h2Version = "2.2.222"
 }
 
 dependencies {
