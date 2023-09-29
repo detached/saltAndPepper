@@ -1,52 +1,77 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, useCallback, useContext, useEffect } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
-import { getToken, removeToken, storeToken } from "../service/tokenStore";
+import {
+  getRefreshToken,
+  removeRefreshToken,
+  storeRefreshToken,
+  getAccessToken,
+  removeAccessToken,
+  storeAccessToken,
+} from "../service/tokenStore";
+import { SaltAndPepper } from "../api/saltAndPepper";
 import { saltAndPepperClient } from "../config/axiosConfig";
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState(getToken());
   const location = useLocation();
   const navigateTo = useNavigate();
   const unauthenticatedPaths = ["/login", "/invite"];
 
-  const handleLogin = (token) => {
-    storeToken(token);
-    setToken(token);
+  const handleLogin = (authResponse) => {
+    storeRefreshToken(authResponse.refreshToken);
+    storeAccessToken(authResponse.accessToken);
     navigateTo("/");
   };
 
   const handleLogout = useCallback(() => {
-    removeToken();
-    setToken("");
+    removeAccessToken();
+    removeRefreshToken();
     navigateTo("/");
-  }, [setToken, navigateTo]);
+  }, [navigateTo]);
 
   function isLoggedIn() {
-    return token !== "";
+    return getAccessToken() !== "";
   }
 
-  useEffect(() => {
-    saltAndPepperClient.interceptors.response.clear();
-    saltAndPepperClient.interceptors.response.use(
-      (response) => {
-        return response;
-      },
+  const addErrorHandlerInterceptor = useCallback(() => {
+    const refreshInterceptor = saltAndPepperClient.interceptors.response.use(
+      (response) => response,
       (error) => {
-        if (error.config.url !== "/login" && error.response.status === 401) {
-          handleLogout();
+        const config = error?.config;
+
+        if (
+          error?.config?.url !== "/login" &&
+          error?.response?.status === 401 &&
+          !config?.sent
+        ) {
+          config.sent = true;
+          saltAndPepperClient.interceptors.response.eject(refreshInterceptor);
+
+          return SaltAndPepper.refreshToken(getRefreshToken())
+            .then((authResponse) => {
+              storeAccessToken(authResponse.accessToken);
+              storeRefreshToken(authResponse.refreshToken);
+
+              error.response.config.headers["Authorization"] =
+                "Bearer " + authResponse.accessToken;
+              return saltAndPepperClient(error.response.config);
+            })
+            .catch((refreshError) => {
+              handleLogout();
+              return Promise.reject(refreshError);
+            })
+            .finally(addErrorHandlerInterceptor);
         }
         return Promise.reject(error);
       }
     );
   }, [handleLogout]);
+
+  useEffect(() => {
+    saltAndPepperClient.interceptors.response.clear();
+    addErrorHandlerInterceptor();
+  }, [addErrorHandlerInterceptor]);
 
   const value = {
     isLoggedIn: isLoggedIn(),

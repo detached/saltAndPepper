@@ -41,4 +41,7 @@ micronaut:
           secret:
             generator:
               secret: 'cGxlYXNlQ2hhbmdlVGhpc1NlY3JldEZvckFOZXdPbmU='
+        generator:
+          refresh-token:
+            secret: 'cGxlYXNlQ2hhbmdlVGhpc1NlY3JldEZvckFOZXdPbmU='
 ```

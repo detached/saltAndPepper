@@ -21,6 +21,11 @@ micronaut:
       jwt:
         bearer:
           enabled: true
+        generator:
+          access-token:
+            expiration: 60
+          refresh-token:
+            secret: 'cGxlYXNlQ2hhbmdlVGhpc1NlY3JldEZvckFOZXdPbmU='
         signatures:
           secret:
             generator:
@@ -35,6 +40,9 @@ micronaut:
         path: /api/login
       logout:
         enabled: false
+      oauth:
+        path: /api/token
+        enabled: true
     intercept-url-map:
       - pattern: /api/login
         access:
