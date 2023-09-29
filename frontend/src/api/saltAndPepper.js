@@ -2,7 +2,7 @@ import { saltAndPepperClient } from "../config/axiosConfig";
 import assertProperty from "../utils/assertProperty";
 import { mockConfig } from "../config/mockConfig";
 import { Author, Recipe, RecipeImage } from "../model/recipe";
-import { getToken } from "../service/tokenStore";
+import { getAccessToken } from "../service/tokenStore";
 
 export const FilterKey = {
   AUTHOR: "AUTHOR",
@@ -224,12 +224,24 @@ export class InvitationInfoResponse {
   }
 }
 
+export class AuthResponse {
+  constructor(accessToken, refreshToken) {
+    this.accessToken = accessToken;
+    this.refreshToken = refreshToken;
+  }
+
+  static assertType(object) {
+    assertProperty(object, "accessToken");
+    assertProperty(object, "refreshToken");
+  }
+}
+
 function doRequest(method, url, data, headers) {
-  const token = getToken();
+  const token = getAccessToken();
   let headersAndAuth = { ...headers };
 
   if (token) {
-    headersAndAuth.Authorization = `Bearer ${getToken()}`;
+    headersAndAuth.Authorization = `Bearer ${token}`;
   }
 
   return saltAndPepperClient.request({
@@ -623,7 +635,35 @@ export const SaltAndPepper = {
         username,
         password,
       });
-      return response.data["access_token"];
+      return new AuthResponse(
+        response.data["access_token"],
+        response.data["refresh_token"]
+      );
+    }
+  },
+
+  /**
+   * @param refreshToken {String}
+   * @returns {Promise<AuthResponse>}
+   */
+  refreshToken: async function (refreshToken) {
+    if (mockConfig.enabled) {
+      console.log("refreshToken " + refreshToken);
+      return "1234";
+    } else {
+      const response = await doRequest("POST", "/token", {
+        grant_type: "refresh_token",
+        refresh_token: refreshToken,
+      });
+
+      if (response.status !== 200) {
+        throw Error(response.statusText);
+      }
+
+      return new AuthResponse(
+        response.data["access_token"],
+        response.data["refresh_token"]
+      );
     }
   },
 };

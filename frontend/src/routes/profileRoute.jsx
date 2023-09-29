@@ -1,20 +1,16 @@
 import { useTranslation } from "react-i18next";
 import ProfileInfoForm from "../components/profileInfoForm";
 import ChangePasswordForm from "../components/changePasswordForm";
-import { useContext } from "react";
 import InvitationForm from "../components/invitationForm";
 import XmlImportForm from "../components/xmlImportForm";
-import { ProfileContext } from "../context/profileProvider";
+import { useProfile } from "../context/profileProvider";
 
 export default function ProfileRoute() {
   const { t } = useTranslation();
-  const profile = useContext(ProfileContext);
+  const profile = useProfile();
 
-  return (
-    <>
-      <div className="header">
-        <h1>{t("profile.title")}</h1>
-      </div>
+  const content = () => {
+    return (
       <div className="content">
         <div className="content-section">
           <ProfileInfoForm profile={profile} />
@@ -33,6 +29,15 @@ export default function ProfileRoute() {
           <XmlImportForm />
         </div>
       </div>
+    );
+  };
+
+  return (
+    <>
+      <div className="header">
+        <h1>{t("profile.title")}</h1>
+      </div>
+      {profile ? content() : null}
     </>
   );
 }
