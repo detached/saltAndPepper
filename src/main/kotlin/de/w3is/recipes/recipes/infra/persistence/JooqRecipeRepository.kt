@@ -17,6 +17,7 @@ import de.w3is.recipes.recipes.model.SortDir
 import jakarta.inject.Singleton
 import org.jooq.Condition
 import org.jooq.DSLContext
+import org.jooq.Record3
 import org.jooq.RecordMapper
 import org.jooq.SortOrder
 import org.jooq.impl.DSL
@@ -153,9 +154,9 @@ class JooqRecipeRepository(
             .fetchOne() ?: return emptyMap()
 
         return mapOf(
-            FilterKey.AUTHOR to result.get(FilterKey.AUTHOR.name, Array<String>::class.java).toList(),
-            FilterKey.CUISINE to result.get(FilterKey.CUISINE.name, Array<String>::class.java).toList(),
-            FilterKey.CATEGORY to result.get(FilterKey.CATEGORY.name, Array<String>::class.java).toList(),
+            FilterKey.AUTHOR to result.getList(FilterKey.AUTHOR),
+            FilterKey.CUISINE to result.getList(FilterKey.CUISINE),
+            FilterKey.CATEGORY to result.getList(FilterKey.CATEGORY),
         )
     }
 
@@ -170,3 +171,6 @@ class JooqRecipeRepository(
         dslContext.deleteFrom(RECIPES).where(RECIPES.RECIPE_ID.eq(recipe.id.recipeId)).execute()
     }
 }
+
+private fun Record3<Array<String?>, Array<String>, Array<String>>.getList(column: FilterKey) =
+    get(column.name, Array<String>::class.java)?.toList() ?: emptyList()
