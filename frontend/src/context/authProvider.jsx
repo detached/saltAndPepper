@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect } from "react";
+import { createContext, useCallback, useContext } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import {
   getRefreshToken,
