@@ -38,6 +38,7 @@ export const AuthProvider = ({ children }) => {
     const refreshInterceptor = saltAndPepperClient.interceptors.response.use(
       (response) => response,
       (error) => {
+        console.log("errorInterceptor");
         const config = error?.config;
 
         if (
@@ -68,11 +69,6 @@ export const AuthProvider = ({ children }) => {
     );
   }, [handleLogout]);
 
-  useEffect(() => {
-    saltAndPepperClient.interceptors.response.clear();
-    addErrorHandlerInterceptor();
-  }, [addErrorHandlerInterceptor]);
-
   const value = {
     isLoggedIn: isLoggedIn(),
     onLogin: handleLogin,
@@ -87,6 +83,9 @@ export const AuthProvider = ({ children }) => {
     }
     return false;
   }
+
+  saltAndPepperClient.interceptors.response.clear();
+  addErrorHandlerInterceptor();
 
   if (doesntNeedAuthentication(location.pathname) || isLoggedIn()) {
     return (
