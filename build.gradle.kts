@@ -11,7 +11,7 @@ plugins {
     id("org.flywaydb.flyway") version "9.20.0"
     id("nu.studer.jooq") version "8.2.1"
     id("com.github.node-gradle.node") version "5.0.0"
-    id("org.jlleitschuh.gradle.ktlint") version "11.5.0"
+    id("org.jlleitschuh.gradle.ktlint") version "11.6.1"
 }
 
 version = "1.0"
@@ -24,7 +24,7 @@ val jooqVersion = "3.18.5"
 val nodeVersion = "18.12.0"
 val nodeNpmVersion = "8.19.2"
 val javaxTransactionApiVersion = "1.3"
-val assertKVersion = "0.26.1"
+val assertKVersion = "0.27.0"
 val thumbnailatorVersion = "0.4.20"
 val commonsTextVersion = "1.10.0"
 val springSecurityVersion = "6.1.2"
