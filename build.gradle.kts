@@ -8,7 +8,6 @@ plugins {
     id("org.jetbrains.kotlin.plugin.allopen") version "1.9.10"
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("io.micronaut.application") version "3.7.10"
-    id("org.flywaydb.flyway") version "9.20.0"
     id("nu.studer.jooq") version "8.2.1"
     id("com.github.node-gradle.node") version "5.0.0"
     id("org.jlleitschuh.gradle.ktlint") version "11.6.1"
@@ -120,12 +119,6 @@ micronaut {
     }
 }
 
-flyway {
-    url = "jdbc:postgresql://localhost:5432/recipe"
-    user = "user"
-    password = "password"
-}
-
 jooq {
     version.set(jooqVersion)
 
@@ -182,7 +175,6 @@ tasks.named("processResources") {
 }
 
 tasks.named<JooqGenerate>("generateJooq") {
-    dependsOn("flywayMigrate")
     inputs.files(fileTree("src/main/resources/db/migration"))
         .withPropertyName("migrations")
         .withPathSensitivity(PathSensitivity.RELATIVE)
