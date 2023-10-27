@@ -9,7 +9,7 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("io.micronaut.application") version "3.7.10"
     id("nu.studer.jooq") version "8.2.1"
-    id("com.github.node-gradle.node") version "5.0.0"
+    id("com.github.node-gradle.node") version "7.0.1"
     id("org.jlleitschuh.gradle.ktlint") version "11.6.1"
 }
 
