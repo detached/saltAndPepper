@@ -27,7 +27,7 @@ val assertKVersion = "0.27.0"
 val thumbnailatorVersion = "0.4.20"
 val commonsTextVersion = "1.11.0"
 val springSecurityVersion = "6.1.2"
-val mockitoVersion = "4.1.0"
+val mockitoVersion = "5.1.0"
 val h2Version = "2.2.224"
 
 repositories {
