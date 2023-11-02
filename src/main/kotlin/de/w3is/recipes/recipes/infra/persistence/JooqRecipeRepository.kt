@@ -98,8 +98,6 @@ class JooqRecipeRepository(
     override fun get(recipeId: RecipeId): Recipe = queryRecipe(recipeId).fetchOne(recordMapper)
         ?: error("No Recipe found for $recipeId")
 
-    override fun getAll(): List<Recipe> = dslContext.selectFrom(RECIPES).fetch(recordMapper)
-
     override fun search(searchRequest: SearchRequest): SearchResponse =
         with(searchRequest) {
             var searchConditions = if (query.isBlank()) {

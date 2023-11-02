@@ -59,19 +59,6 @@ class JooqRecipeRepositoryTest {
     }
 
     @Test
-    fun storeAndGetAll() {
-        val expected = (1..5).map { givenARecipe() }
-
-        expected.forEach {
-            recipeRepository.store(it)
-        }
-
-        val actual = recipeRepository.getAll().toList()
-
-        assertThat(actual).containsOnly(*expected.toTypedArray())
-    }
-
-    @Test
     fun `when search for two words then connect them with and`() {
         val fooOne = givenARecipe(title = "foo", category = "one").also { recipeRepository.store(it) }
         givenARecipe(title = "foo", category = "two").also { recipeRepository.store(it) }

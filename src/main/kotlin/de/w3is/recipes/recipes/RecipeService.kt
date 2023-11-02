@@ -19,8 +19,6 @@ open class RecipeService(
     private val clock: Clock,
 ) {
 
-    fun getAll() = recipeRepository.getAll()
-
     fun get(recipeId: RecipeId) = recipeRepository.get(recipeId)
 
     @Transactional
@@ -57,6 +55,7 @@ open class RecipeService(
         imageService.delete(imageId)
     }
 
+    @Transactional
     fun deleteRecipe(recipeId: RecipeId, user: User) {
         val author = user.toAuthor()
         val recipe = recipeRepository.get(recipeId)
