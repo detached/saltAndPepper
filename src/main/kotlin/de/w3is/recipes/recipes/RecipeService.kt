@@ -7,10 +7,10 @@ import de.w3is.recipes.recipes.model.Recipe
 import de.w3is.recipes.recipes.model.RecipeId
 import de.w3is.recipes.users.model.User
 import jakarta.inject.Singleton
+import jakarta.transaction.Transactional
 import java.io.InputStream
 import java.time.Clock
 import java.time.OffsetDateTime
-import javax.transaction.Transactional
 
 @Singleton
 open class RecipeService(

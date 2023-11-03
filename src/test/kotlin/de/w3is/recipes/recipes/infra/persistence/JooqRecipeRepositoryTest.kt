@@ -18,8 +18,6 @@ import de.w3is.recipes.recipes.model.RecipeId
 import de.w3is.recipes.recipes.model.SearchRequest
 import de.w3is.recipes.recipes.model.SortDir
 import de.w3is.recipes.testUser
-import io.micronaut.context.annotation.Bean
-import io.micronaut.context.annotation.Replaces
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import jakarta.inject.Inject
 import org.jooq.DSLContext
@@ -33,9 +31,7 @@ import java.time.ZoneOffset
 @MicronautTest
 class JooqRecipeRepositoryTest {
 
-    @get:Bean
-    @get:Replaces(Clock::class)
-    val fixedClock: Clock = Clock.fixed(Instant.now(), ZoneOffset.UTC)
+    private val fixedClock: Clock = Clock.fixed(Instant.now(), ZoneOffset.UTC)
 
     @Inject
     private lateinit var recipeRepository: JooqRecipeRepository

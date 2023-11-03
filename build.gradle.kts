@@ -4,10 +4,11 @@ import org.jooq.meta.jaxb.Property
 
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.9.10"
-    id("org.jetbrains.kotlin.kapt") version "1.9.10"
     id("org.jetbrains.kotlin.plugin.allopen") version "1.9.10"
+    id("com.google.devtools.ksp") version "1.9.10-1.0.13"
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("io.micronaut.application") version "3.7.10"
+    id("io.micronaut.application") version "4.1.2"
+    id("io.micronaut.aot") version "4.1.2"
     id("nu.studer.jooq") version "8.2.1"
     id("com.github.node-gradle.node") version "7.0.1"
     id("org.jlleitschuh.gradle.ktlint") version "11.6.1"
@@ -17,12 +18,11 @@ version = "1.0"
 group = "de.w3is"
 
 val kotlinVersion = "1.9.10"
-val micronautVersion = "3.7.4"
+val micronautVersion = "4.1.6"
 val postgresqlJdbcVersion = "42.6.0"
 val jooqVersion = "3.18.7"
 val nodeVersion = "18.12.0"
 val nodeNpmVersion = "8.19.2"
-val javaxTransactionApiVersion = "1.3"
 val assertKVersion = "0.27.0"
 val thumbnailatorVersion = "0.4.20"
 val commonsTextVersion = "1.11.0"
@@ -37,17 +37,14 @@ repositories {
 dependencies {
     jooqGenerator("org.jooq:jooq-meta-extensions:$jooqVersion")
 
-    kapt("io.micronaut:micronaut-http-validation")
+    ksp("io.micronaut.serde:micronaut-serde-processor")
 
     implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
-    implementation("jakarta.annotation:jakarta.annotation-api")
-    implementation("javax.transaction:javax.transaction-api:$javaxTransactionApiVersion")
+    implementation("jakarta.transaction:jakarta.transaction-api")
 
     implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
-    implementation("io.micronaut:micronaut-http-client")
-    implementation("io.micronaut:micronaut-jackson-databind")
-    implementation("io.micronaut:micronaut-validation")
+    implementation("io.micronaut.serde:micronaut-serde-jackson")
     implementation("io.micronaut.security:micronaut-security")
     implementation("io.micronaut.security:micronaut-security-jwt")
     implementation("io.micronaut.security:micronaut-security-annotations")
@@ -61,12 +58,10 @@ dependencies {
     implementation("net.coobird:thumbnailator:$thumbnailatorVersion")
     implementation("org.apache.commons:commons-text:$commonsTextVersion")
 
+    runtimeOnly("org.yaml:snakeyaml")
     runtimeOnly("ch.qos.logback:logback-classic")
-    runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
     runtimeOnly("com.h2database:h2:$h2Version")
     runtimeOnly("org.postgresql:postgresql:$postgresqlJdbcVersion")
-
-    kaptTest("io.micronaut:micronaut-inject-java")
     testImplementation("com.willowtreeapps.assertk:assertk:$assertKVersion")
     testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoVersion")
 }
@@ -100,14 +95,7 @@ tasks {
     }
 }
 
-kapt {
-    arguments {
-        arg("micronaut.processing.incremental", true)
-        arg("micronaut.processing.annotations", "de.w3is.recipes.*")
-    }
-}
-
-graalvmNative.toolchainDetection.set(false)
+graalvmNative.toolchainDetection.set(true)
 
 micronaut {
     version(micronautVersion)
@@ -116,6 +104,18 @@ micronaut {
     processing {
         incremental(true)
         annotations("de.w3is.recipes.*")
+    }
+    aot {
+        optimizeServiceLoading.set(true)
+        convertYamlToJava.set(true)
+        replaceLogbackXml.set(true)
+        precomputeOperations.set(true)
+        cacheEnvironment.set(true)
+        optimizeClassLoading.set(true)
+        deduceEnvironment.set(true)
+        optimizeNetty.set(true)
+        possibleEnvironments.set(listOf("h2", "h2-local", "postgres"))
+        targetEnvironments.set(listOf("h2", "postgres"))
     }
 }
 
@@ -138,6 +138,7 @@ jooq {
                     target.apply {
                         packageName = "de.w3is.recipes.infra.persistence.generated"
                     }
+                    generate.withJpaAnnotations(true)
                 }
             }
         }

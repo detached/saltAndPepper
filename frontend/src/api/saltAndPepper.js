@@ -517,7 +517,7 @@ export const SaltAndPepper = {
           },
         }
       );
-      if (result.status !== 202) {
+      if (result.status !== 204) {
         throw Error(result.statusText);
       }
     }
