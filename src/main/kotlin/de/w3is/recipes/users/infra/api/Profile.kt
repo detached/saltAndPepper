@@ -1,5 +1,8 @@
 package de.w3is.recipes.users.infra.api
 
+import io.micronaut.serde.annotation.Serdeable
+
+@Serdeable
 data class Profile(
     val id: String,
     val name: String,
@@ -7,6 +10,7 @@ data class Profile(
     val isAllowedToInvite: Boolean,
 )
 
+@Serdeable
 data class ChangePasswordRequest(
     val oldPassword: String,
     val newPassword: String,

@@ -7,6 +7,7 @@ import de.w3is.recipes.recipes.model.AuthorId
 import de.w3is.recipes.recipes.model.FilterKey
 import de.w3is.recipes.recipes.model.Recipe
 import de.w3is.recipes.recipes.model.SearchRequest
+import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Post
 import io.micronaut.security.annotation.Secured
@@ -20,7 +21,7 @@ class RecipeSearchController(
 ) {
 
     @Post
-    fun search(searchRequestViewModel: SearchRequestViewModel): SearchResponseViewModel {
+    fun search(@Body searchRequestViewModel: SearchRequestViewModel): SearchResponseViewModel {
         val searchResponse = recipeRepository.search(searchRequestViewModel.toSearchRequest())
         val possibleFilter = searchResponse.possibleFilter.toViewModel()
 

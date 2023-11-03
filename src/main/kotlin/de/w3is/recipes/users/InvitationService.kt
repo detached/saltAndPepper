@@ -6,10 +6,10 @@ import de.w3is.recipes.users.model.User
 import io.micronaut.context.annotation.Property
 import io.micronaut.scheduling.annotation.Scheduled
 import jakarta.inject.Singleton
+import jakarta.transaction.Transactional
 import org.slf4j.LoggerFactory
-import java.lang.RuntimeException
-import java.time.Duration
-import javax.transaction.Transactional
+import java.time.Clock
+import java.time.OffsetDateTime
 
 @Singleton
 open class InvitationService(
@@ -17,6 +17,7 @@ open class InvitationService(
     private val userService: UserService,
     @Property(name = "application.allowInvitationFor")
     private val allowInvitationForRole: List<String>,
+    private val clock: Clock,
 ) {
 
     private val logger = LoggerFactory.getLogger(InvitationService::class.java)
@@ -48,14 +49,15 @@ open class InvitationService(
     @Scheduled(fixedDelay = "1h")
     fun deleteOldInvitations() {
         logger.debug("Delete old invites")
-        invitationRepository.deleteAllOlderThan(Duration.ofDays(1))
+        invitationRepository.deleteAllOlderThan(OffsetDateTime.now(clock).minusDays(1))
     }
 
     fun isAllowedToInvite(user: User): Boolean {
         return user.role.name in allowInvitationForRole
     }
 
-    fun getInviteByCode(code: String): Invite = invitationRepository.findByCode(code) ?: throw InvitationNotFoundException()
+    fun getInviteByCode(code: String): Invite =
+        invitationRepository.findByCode(code) ?: throw InvitationNotFoundException()
 
     @Transactional
     open fun createUserByInvite(code: String, name: String, plainPassword: PlainPassword): User {

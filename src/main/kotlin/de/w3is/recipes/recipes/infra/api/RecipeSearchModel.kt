@@ -2,7 +2,9 @@ package de.w3is.recipes.recipes.infra.api
 
 import de.w3is.recipes.recipes.model.FilterKey
 import de.w3is.recipes.recipes.model.Order
+import io.micronaut.serde.annotation.Serdeable
 
+@Serdeable
 data class SearchRequestViewModel(
     val searchQuery: String,
     val page: PageViewModel,
@@ -10,12 +12,14 @@ data class SearchRequestViewModel(
     val order: Order,
 )
 
+@Serdeable
 data class SearchResponseViewModel(
     val data: List<SearchResponseData>,
     val page: PageViewModel,
     val possibleFilter: Map<FilterKey, List<FilterValueViewModel>>,
 )
 
+@Serdeable
 data class SearchResponseData(
     val id: String,
     val imageUrl: String,
@@ -25,12 +29,14 @@ data class SearchResponseData(
     val author: String,
 )
 
+@Serdeable
 data class PageViewModel(
     val size: Int,
     val number: Int,
     val maxNumber: Int?,
 )
 
+@Serdeable
 data class FilterValueViewModel(
     val value: String,
     val label: String,

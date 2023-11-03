@@ -8,13 +8,12 @@ import de.w3is.recipes.users.model.UserId
 import jakarta.inject.Singleton
 import org.jooq.DSLContext
 import java.time.Clock
-import java.time.Duration
 import java.time.OffsetDateTime
 
 @Singleton
 class JooqInvitationRepository(
-    private val dslContext: DSLContext,
     private val clock: Clock,
+    private val dslContext: DSLContext,
 ) : InvitationRepository {
 
     override fun store(invite: Invite) {
@@ -25,9 +24,9 @@ class JooqInvitationRepository(
         }.store()
     }
 
-    override fun deleteAllOlderThan(duration: Duration) {
+    override fun deleteAllOlderThan(dateTime: OffsetDateTime) {
         dslContext.deleteFrom(INVITATIONS)
-            .where(INVITATIONS.CREATED_ON.lessThan(OffsetDateTime.now(clock).minus(duration)))
+            .where(INVITATIONS.CREATED_ON.lessThan(dateTime))
             .execute()
     }
 

@@ -13,7 +13,8 @@ import org.slf4j.LoggerFactory
 import reactor.core.publisher.Mono
 
 @Singleton
-class DatabaseAuthenticationProvider(private val userRepository: UserRepository) : AuthenticationProvider {
+class DatabaseAuthenticationProvider(private val userRepository: UserRepository) :
+    AuthenticationProvider<HttpRequest<*>> {
 
     private val logger = LoggerFactory.getLogger(DatabaseAuthenticationProvider::class.java)
 

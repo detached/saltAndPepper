@@ -1,6 +1,9 @@
 micronaut:
   application:
     name: recipes
+  serde:
+    serialization:
+      inclusion: ALWAYS
   server:
     cors:
       enabled: true

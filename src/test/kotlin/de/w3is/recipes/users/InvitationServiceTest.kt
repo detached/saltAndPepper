@@ -9,10 +9,10 @@ import de.w3is.recipes.testUser
 import de.w3is.recipes.users.model.PlainPassword
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import jakarta.inject.Inject
+import jakarta.transaction.Transactional
 import org.jooq.DSLContext
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import javax.transaction.Transactional
 
 @MicronautTest
 @Transactional
