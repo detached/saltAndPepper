@@ -10,17 +10,23 @@ import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.PathVariable
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 
 @Controller("/api/images")
 @Secured(SecurityRule.IS_ANONYMOUS)
 class ImagesController(private val imageRepository: ImageRepository) {
 
     @Get("/{id}", produces = [MediaType.IMAGE_PNG])
-    fun getImage(@PathVariable id: String): HttpResponse<ByteArray> =
+    @Operation(summary = "Get image by id", operationId = "getImage")
+    @Tag(name = "images")
+    fun getImage(@PathVariable("id") id: String): HttpResponse<ByteArray> =
         HttpResponse.ok(imageRepository.get(ImageId(id)).readAllBytes()).cacheControl(31536000)
 
     @Get("/{id}/thumbnail", produces = [MediaType.IMAGE_PNG])
-    fun getThumbnail(@PathVariable id: String): HttpResponse<ByteArray> =
+    @Operation(summary = "Get thumbnail by id", operationId = "getThumbnail")
+    @Tag(name = "images")
+    fun getThumbnail(@PathVariable("id") id: String): HttpResponse<ByteArray> =
         HttpResponse.ok(imageRepository.getThumbnail(ImageId(id)).readAllBytes()).cacheControl(31536000)
 }
 
