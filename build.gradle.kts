@@ -17,7 +17,7 @@ plugins {
 version = "1.0"
 group = "de.w3is"
 
-val kotlinVersion = "1.9.20"
+val kotlinVersion = "1.9.21"
 val micronautVersion = "4.1.6"
 val postgresqlJdbcVersion = "42.6.0"
 val jooqVersion = "3.18.7"
