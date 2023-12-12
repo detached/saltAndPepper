@@ -15,6 +15,8 @@ import io.micronaut.http.annotation.Patch
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.authentication.Authentication
 import io.micronaut.security.rules.SecurityRule
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.inject.Singleton
 
 @Singleton
@@ -26,6 +28,8 @@ class ProfileController(
 ) {
 
     @Get
+    @Operation(summary = "Get own profile", operationId = "getProfile")
+    @Tag(name = "profile")
     fun getProfile(authentication: Authentication): Profile {
         val user = with(userService) { authentication.getUser() }
 
@@ -40,6 +44,8 @@ class ProfileController(
     }
 
     @Patch("/password")
+    @Operation(summary = "Change own password", operationId = "changePassword")
+    @Tag(name = "profile")
     fun changePassword(@Body request: ChangePasswordRequest, authentication: Authentication): HttpResponse<Unit> {
         val user = with(userService) { authentication.getUser() }
 

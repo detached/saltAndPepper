@@ -12,6 +12,8 @@ import io.micronaut.http.multipart.StreamingFileUpload
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.authentication.Authentication
 import io.micronaut.security.rules.SecurityRule
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import reactor.core.publisher.Mono
 import reactor.core.scheduler.Schedulers
 import java.io.File
@@ -23,6 +25,8 @@ class ImportController(
     private val importService: ImportService,
 ) {
     @Post("/gourmet", consumes = [MediaType.MULTIPART_FORM_DATA])
+    @Operation(summary = "Import XML files, exported by gourmet", operationId = "importGourmetXml")
+    @Tag(name = "import")
     fun importGourmetXml(
         file: StreamingFileUpload,
         authentication: Authentication,

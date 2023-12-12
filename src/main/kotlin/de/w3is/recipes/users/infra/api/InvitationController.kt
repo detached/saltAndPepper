@@ -14,6 +14,8 @@ import io.micronaut.http.annotation.Put
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.authentication.Authentication
 import io.micronaut.security.rules.SecurityRule
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.inject.Singleton
 
 @Singleton
@@ -25,6 +27,8 @@ class InvitationController(
 
     @Get
     @Secured(SecurityRule.IS_AUTHENTICATED)
+    @Operation(summary = "Get own invite code if any", operationId = "getExistingInviteCode")
+    @Tag(name = "invitations")
     fun getExistingInviteCode(
         authentication: Authentication,
     ): HttpResponse<InvitationCodeResponse> {
@@ -40,6 +44,8 @@ class InvitationController(
 
     @Post
     @Secured(SecurityRule.IS_AUTHENTICATED)
+    @Operation(summary = "Create new invite link", operationId = "createInviteLink")
+    @Tag(name = "invitations")
     fun createInviteLink(
         authentication: Authentication,
     ): InvitationCodeResponse {
@@ -51,6 +57,8 @@ class InvitationController(
 
     @Get("/{code}")
     @Secured(SecurityRule.IS_ANONYMOUS)
+    @Operation(summary = "Get invite information by code", operationId = "getInvitationInfo")
+    @Tag(name = "invitations")
     fun getInvitationInfo(@PathVariable("code") inviteCode: String): InvitationInfoResponse {
         val invite = invitationService.getInviteByCode(inviteCode)
         val invitingUser = userService.getUser(invite.creator)
@@ -61,6 +69,8 @@ class InvitationController(
 
     @Put("/{code}")
     @Secured(SecurityRule.IS_ANONYMOUS)
+    @Operation(summary = "Create new user by invitation code", operationId = "useInvitation")
+    @Tag(name = "invitations")
     fun useInvitation(
         @PathVariable("code") inviteCode: String,
         @Body invitationRequest: InvitationRequest,

@@ -35,9 +35,11 @@ repositories {
 }
 
 dependencies {
+    compileOnly("io.micronaut.openapi:micronaut-openapi-annotations")
     jooqGenerator("org.jooq:jooq-meta-extensions:$jooqVersion")
 
     ksp("io.micronaut.serde:micronaut-serde-processor")
+    ksp("io.micronaut.openapi:micronaut-openapi")
 
     implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
@@ -78,7 +80,7 @@ node {
 }
 
 application {
-    mainClass.set("de.w3is.recipes.ApplicationKt")
+    mainClass.set("de.w3is.recipes.Application")
 }
 
 tasks {
