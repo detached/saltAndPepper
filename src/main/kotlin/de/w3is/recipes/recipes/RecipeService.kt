@@ -65,6 +65,8 @@ open class RecipeService(
             imageService.delete(it)
         }
     }
+
+    fun exists(recipeId: RecipeId): Boolean = recipeRepository.existsById(recipeId)
 }
 
 data class RecipeContent(
