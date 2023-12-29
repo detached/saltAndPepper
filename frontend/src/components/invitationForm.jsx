@@ -41,7 +41,7 @@ export default function InvitationForm() {
           setIsLoading(false);
         });
     },
-    [isLoading, setInvitationLink, setIsLoading]
+    [isLoading, setInvitationLink, setIsLoading],
   );
 
   function copyLinkToClipboard(e) {

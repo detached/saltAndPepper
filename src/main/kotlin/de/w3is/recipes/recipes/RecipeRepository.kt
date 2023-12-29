@@ -10,4 +10,5 @@ interface RecipeRepository {
     fun get(recipeId: RecipeId): Recipe
     fun search(searchRequest: SearchRequest): SearchResponse
     fun delete(recipe: Recipe)
+    fun existsById(recipeId: RecipeId): Boolean
 }

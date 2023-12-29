@@ -1,4 +1,5 @@
-import { NewRecipeRequest, SaltAndPepper } from "../api/saltAndPepper";
+import { SaltAndPepper } from "../api/saltAndPepper";
+import { NewRecipeRequest } from "../api/model";
 
 /**
  * @param recipe {Recipe}
@@ -19,22 +20,22 @@ export async function storeRecipe(recipe) {
  */
 async function addNewRecipe(recipe) {
   let createdRecipe = await SaltAndPepper.newRecipe(
-    new NewRecipeRequest(
-      recipe.title,
-      recipe.category,
-      recipe.cuisine,
-      recipe.yields,
-      recipe.ingredients,
-      recipe.instructions,
-      recipe.modifications
-    )
+    new NewRecipeRequest({
+      title: recipe.title,
+      category: recipe.category,
+      cuisine: recipe.cuisine,
+      yields: recipe.yields,
+      ingredients: recipe.ingredients,
+      instructions: recipe.instructions,
+      modifications: recipe.modifications,
+    }),
   );
 
   if (recipe.newImages !== undefined) {
     await Promise.all(
       recipe.newImages.map((image) =>
-        SaltAndPepper.addImageToRecipe(createdRecipe.id, image)
-      )
+        SaltAndPepper.addImageToRecipe(createdRecipe.id, image),
+      ),
     );
   }
 
@@ -50,8 +51,8 @@ async function updateRecipe(recipe) {
   if (recipe.newImages !== undefined) {
     newlyAddedImages = await Promise.all(
       recipe.newImages.map((image) =>
-        SaltAndPepper.addImageToRecipe(recipe.id, image)
-      )
+        SaltAndPepper.addImageToRecipe(recipe.id, image),
+      ),
     );
   }
 

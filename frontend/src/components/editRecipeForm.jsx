@@ -93,11 +93,11 @@ export default function EditRecipeForm({ titleKey, initRecipe }) {
   const [recipe, recipeDispatcher] = useReducer(
     recipeReducer,
     initRecipe,
-    recipeReducer
+    recipeReducer,
   );
 
   const [images, setImages] = useState(
-    initRecipe.images ? initRecipe.images : []
+    initRecipe.images ? initRecipe.images : [],
   );
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -110,7 +110,7 @@ export default function EditRecipeForm({ titleKey, initRecipe }) {
         Object.assign(file, {
           isNew: true,
           thumbnailUrl: URL.createObjectURL(file),
-        })
+        }),
       );
       setImages(images.concat(newImages));
       recipeDispatcher({
@@ -183,7 +183,7 @@ export default function EditRecipeForm({ titleKey, initRecipe }) {
           setIsLoading(false);
         });
     },
-    [recipe, isLoading, navigateTo]
+    [recipe, isLoading, navigateTo],
   );
 
   return (

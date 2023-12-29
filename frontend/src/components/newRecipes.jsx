@@ -2,15 +2,15 @@ import "./newRecipes.css";
 import saltAndPepperIcon from "../res/saltAndPepper.png";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { SaltAndPepper } from "../api/saltAndPepper";
 import {
   Page,
-  SaltAndPepper,
   SearchRequest,
   SearchFilter,
   Order,
   OrderField,
   SortDir,
-} from "../api/saltAndPepper";
+} from "../api/model";
 
 export default function NewRecipes() {
   const navigateTo = useNavigate();
@@ -18,12 +18,15 @@ export default function NewRecipes() {
 
   useEffect(() => {
     SaltAndPepper.search(
-      new SearchRequest(
-        "",
-        new Page(30, 0),
-        new SearchFilter([], [], []),
-        new Order(OrderField.CREATED_AT, SortDir.DESC)
-      )
+      new SearchRequest({
+        searchQuery: "",
+        page: new Page({ size: 30, number: 0 }),
+        filter: new SearchFilter(),
+        order: new Order({
+          field: OrderField.CREATED_AT,
+          direction: SortDir.DESC,
+        }),
+      }),
     ).then((result) => {
       setItems(result.data);
     });

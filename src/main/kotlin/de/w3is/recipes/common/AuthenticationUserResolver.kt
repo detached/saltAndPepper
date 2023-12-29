@@ -7,5 +7,9 @@ import io.micronaut.security.authentication.Authentication
 
 context(UserService)
 fun Authentication.getUser(): User {
-    return getUser(UserId(name))
+    return getUser(toUserId())
+}
+
+fun Authentication.toUserId(): UserId {
+    return UserId(name)
 }

@@ -43,7 +43,7 @@ export default function InviteRoute() {
           setIsLoading(false);
         });
     },
-    [code, username, password, isLoading, setIsLoading, setIsRegistered]
+    [code, username, password, isLoading, setIsLoading, setIsRegistered],
   );
 
   function successMessage() {

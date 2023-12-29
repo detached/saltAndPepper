@@ -1,19 +1,19 @@
 import { useCallback, useEffect, useReducer, useState } from "react";
 import { useTranslation } from "react-i18next";
 import RecipeList from "../components/recipeList";
-import {
-  Page,
-  SaltAndPepper,
-  SearchRequest,
-  SearchFilter,
-  FilterKey,
-  Order,
-  OrderField,
-  SortDir,
-} from "../api/saltAndPepper";
+import { SaltAndPepper } from "../api/saltAndPepper";
 import "./searchRoute.css";
 import Spinner from "../components/spinner";
 import { SearchFilter as SearchFilterComponent } from "../components/searchFilter";
+import {
+  FilterKey,
+  Order,
+  OrderField,
+  Page,
+  SearchFilter,
+  SearchRequest,
+  SortDir,
+} from "../api/model";
 
 const SearchRequestActions = {
   SET_PAGE_NUMBER: "SET_PAGE_NUMBER",
@@ -26,7 +26,7 @@ function searchRequestReducer(state, action) {
     case SearchRequestActions.SET_PAGE_NUMBER:
       return {
         searchQuery: state.searchQuery,
-        page: new Page(state.page.size, action.pageNumber),
+        page: new Page({ size: state.page.size, number: action.pageNumber }),
         filter: state.filter,
       };
     case SearchRequestActions.SET_QUERY:
@@ -39,11 +39,11 @@ function searchRequestReducer(state, action) {
       return {
         searchQuery: state.searchQuery,
         page: state.page,
-        filter: new SearchFilter(
-          action.filter[FilterKey.AUTHOR],
-          action.filter[FilterKey.CATEGORY],
-          action.filter[FilterKey.CUISINE]
-        ),
+        filter: new SearchFilter({
+          AUTHOR: action.filter[FilterKey.AUTHOR],
+          CATEGORY: action.filter[FilterKey.CATEGORY],
+          CUISINE: action.filter[FilterKey.CUISINE],
+        }),
       };
     default:
       return state;
@@ -57,15 +57,15 @@ export default function SearchRoute() {
     searchRequestReducer,
     {
       searchQuery: "",
-      page: new Page(20, 0),
+      page: new Page({ size: 20, number: 0 }),
       filter: new SearchFilter(),
     },
-    searchRequestReducer
+    searchRequestReducer,
   );
 
   const [searchResult, setSearchResult] = useState({
     items: [],
-    page: new Page(0, 0),
+    page: new Page({ size: 0, number: 0 }),
     possibleFilter: new SearchFilter(),
   });
 
@@ -79,7 +79,7 @@ export default function SearchRoute() {
         setDoSearch(true);
       }
     },
-    [doSearch]
+    [doSearch],
   );
 
   const switchPage = useCallback(
@@ -90,7 +90,7 @@ export default function SearchRoute() {
       });
       setDoSearch(true);
     },
-    [dispatchSearchRequest, setDoSearch]
+    [dispatchSearchRequest, setDoSearch],
   );
 
   useEffect(() => {
@@ -101,12 +101,12 @@ export default function SearchRoute() {
     setIsLoading(true);
 
     SaltAndPepper.search(
-      new SearchRequest(
-        searchRequest.searchQuery,
-        searchRequest.page,
-        searchRequest.filter,
-        new Order(OrderField.TITLE, SortDir.ASC)
-      )
+      new SearchRequest({
+        searchQuery: searchRequest.searchQuery,
+        page: searchRequest.page,
+        filter: searchRequest.filter,
+        order: new Order({ field: OrderField.TITLE, direction: SortDir.ASC }),
+      }),
     )
       .then((result) => {
         setSearchResult({
@@ -121,14 +121,14 @@ export default function SearchRoute() {
       });
   }, [isLoading, doSearch, searchRequest, setSearchResult]);
 
-  var handleOnSelectedFilterChanged = useCallback(
+  const handleOnSelectedFilterChanged = useCallback(
     (selectedFilter) => {
       dispatchSearchRequest({
         type: SearchRequestActions.SET_FILTER,
         filter: selectedFilter,
       });
     },
-    [dispatchSearchRequest]
+    [dispatchSearchRequest],
   );
 
   return (

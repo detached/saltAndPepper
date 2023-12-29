@@ -44,6 +44,7 @@ dependencies {
     implementation("jakarta.transaction:jakarta.transaction-api")
 
     implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
+    implementation("io.micronaut.kotlin:micronaut-kotlin-extension-functions")
     implementation("io.micronaut.serde:micronaut-serde-jackson")
     implementation("io.micronaut.security:micronaut-security")
     implementation("io.micronaut.security:micronaut-security-jwt")
@@ -62,6 +63,7 @@ dependencies {
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("com.h2database:h2:$h2Version")
     runtimeOnly("org.postgresql:postgresql:$postgresqlJdbcVersion")
+    testImplementation("io.micronaut:micronaut-http-client")
     testImplementation("com.willowtreeapps.assertk:assertk:$assertKVersion")
     testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoVersion")
 }
@@ -138,7 +140,9 @@ jooq {
                     target.apply {
                         packageName = "de.w3is.recipes.infra.persistence.generated"
                     }
-                    generate.withJpaAnnotations(true)
+                    generate
+                        .withJpaAnnotations(true)
+                        .withDaos(true)
                 }
             }
         }
@@ -153,6 +157,18 @@ ktlint {
         exclude("**/generated/**")
         include("**/kotlin/**")
     }
+}
+
+tasks.register<NpmTask>("testFrontend") {
+    dependsOn("npmInstall")
+    args.addAll("run", "test")
+    inputs.files("frontend/package.json", "frontend/package-lock.json")
+    inputs.dir("frontend/src")
+    inputs.dir(fileTree("frontend/node_modules").exclude(".cache"))
+}
+
+tasks.withType<Test> {
+    dependsOn("testFrontend")
 }
 
 tasks.register<NpmTask>("buildFrontend") {
