@@ -23,7 +23,7 @@ export default function ChangePasswordForm() {
       setPasswordChangeState(OperationState.NONE);
 
       SaltAndPepper.changePassword(
-        new ChangePasswordRequest(oldPassword, newPassword)
+        new ChangePasswordRequest({oldPassword, newPassword})
       )
         .then(() => {
           setPasswordChangeState(OperationState.SUCCESSFUL);

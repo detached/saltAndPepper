@@ -1,66 +1,48 @@
-export class Recipe {
-  id;
-  author;
-  title;
-  category;
-  cuisine;
-  yields;
-  ingredients;
-  instructions;
-  modifications;
-  images;
+import {ArrayModel, Model} from "objectmodel";
 
-  constructor(
-    title,
-    category,
-    cuisine,
-    yields,
-    ingredients,
-    instructions,
-    modifications
-  ) {
-    this.title = title;
-    this.category = category;
-    this.cuisine = cuisine;
-    this.yields = yields;
-    this.ingredients = ingredients;
-    this.instructions = instructions;
-    this.modifications = modifications;
-  }
+export class RecipeImage extends Model({
+    id: String,
+    url: String,
+    thumbnailUrl: String
+}) {
+}
 
-  addNewImages(images) {
-    if (this.newImages === undefined) {
-      this.newImages = [];
+export class Author extends Model({
+        id: String,
+        name: String
     }
-    this.newImages = this.newImages.concat(images);
-  }
-  removeNewImage(imageFile) {
-    if (this.newImages === undefined) {
-      return;
+) {
+}
+
+export class Recipe extends Model({
+    id: [String],
+    author: [Author],
+    title: String,
+    category: String,
+    cuisine: String,
+    yields: String,
+    ingredients: String,
+    instructions: String,
+    modifications: String,
+    images: [ArrayModel(RecipeImage)],
+    newImages: [ArrayModel(RecipeImage)]
+}) {
+    addNewImages(images) {
+        if (this.newImages === undefined) {
+            this.newImages = [];
+        }
+        this.newImages = this.newImages.concat(images);
     }
-    this.newImages = this.newImages.filter((image) => image !== imageFile);
-  }
 
-  removeExistingImage(imageId) {
-    this.images = this.images.filter((image) => image.id !== imageId);
-  }
+    removeNewImage(imageFile) {
+        if (this.newImages === undefined) {
+            return;
+        }
+        this.newImages = this.newImages.filter((image) => image !== imageFile);
+    }
+
+    removeExistingImage(imageId) {
+        this.images = this.images.filter((image) => image.id !== imageId);
+    }
 }
 
-export class RecipeImage {
-  id;
-  url;
-  thumbnailUrl;
-
-  constructor(id, url, thumbnailUrl) {
-    this.id = id;
-    this.url = url;
-    this.thumbnailUrl = thumbnailUrl;
-  }
-}
-
-export class Author {
-  constructor(id, name) {
-    this.id = id;
-    this.name = name;
-  }
-}
