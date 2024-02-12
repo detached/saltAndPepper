@@ -8,7 +8,7 @@ plugins {
     id("com.google.devtools.ksp") version "1.9.20-1.0.14"
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("io.micronaut.application") version "4.2.0"
-    id("io.micronaut.aot") version "4.1.2"
+    id("io.micronaut.aot") version "4.3.2"
     id("nu.studer.jooq") version "8.2.1"
     id("com.github.node-gradle.node") version "7.0.1"
     id("org.jlleitschuh.gradle.ktlint") version "11.6.1"
