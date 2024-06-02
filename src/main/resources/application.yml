@@ -54,7 +54,7 @@ micronaut:
         http-method: GET
         access:
           - isAnonymous()
-      - pattern: /static/**
+      - pattern: /assets/**
         http-method: GET
         access:
           - isAnonymous()

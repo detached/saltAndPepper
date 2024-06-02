@@ -178,12 +178,12 @@ tasks.register<NpmTask>("buildFrontend") {
     inputs.files("frontend/package.json", "frontend/package-lock.json")
     inputs.dir("frontend/src")
     inputs.dir(fileTree("frontend/node_modules").exclude(".cache"))
-    outputs.dir("frontend/build")
+    outputs.dir("frontend/dist")
 }
 
 tasks.register<Copy>("copyFrontendBundle") {
     dependsOn("buildFrontend")
-    from(file("frontend/build/"))
+    from(file("frontend/dist/"))
     include("**/*")
     into("build/resources/main/public/")
 }
