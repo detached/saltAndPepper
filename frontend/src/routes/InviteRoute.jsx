@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useCallback, useEffect, useState } from "react";
-import { SaltAndPepper } from "../api/saltAndPepper";
 import { useNavigate, useParams } from "react-router-dom";
+import { SaltAndPepper } from "../api/saltAndPepper.js";
 import "./inviteRoute.css";
 
 export default function InviteRoute() {

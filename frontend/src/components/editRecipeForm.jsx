@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { useCallback, useEffect, useReducer, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { FaTrashAlt } from "react-icons/fa";
-import { storeRecipe } from "../service/storeRecipeService";
+import Spinner from "./spinner.jsx";
+import { storeRecipe } from "../service/storeRecipeService.js";
 import "./editRecipeForm.css";
 import "./dropzone.css";
-import Spinner from "./spinner";
 
 const EditRecipeActions = {
   SET_TITLE: "SET_TITLE",

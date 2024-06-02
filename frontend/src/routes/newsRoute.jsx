@@ -1,6 +1,6 @@
 import "./newsRoute.css";
 import { useTranslation } from "react-i18next";
-import NewRecipes from "../components/newRecipes";
+import NewRecipes from "../components/newRecipes.jsx";
 
 export default function NewsRoute() {
   const { t } = useTranslation();

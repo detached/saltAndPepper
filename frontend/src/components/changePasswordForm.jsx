@@ -1,8 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { useCallback, useState } from "react";
-import { SaltAndPepper } from "../api/saltAndPepper";
-import { OperationState } from "../model/operationState";
-import { ChangePasswordRequest } from "../api/model";
+import { SaltAndPepper } from "../api/saltAndPepper.js";
+import { OperationState } from "../model/operationState.js";
+import { ChangePasswordRequest } from "../api/model.js";
 
 export default function ChangePasswordForm() {
   const { t } = useTranslation();

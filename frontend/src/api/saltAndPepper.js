@@ -1,8 +1,7 @@
-import { saltAndPepperClient } from "../config/axiosConfig";
-import { mockConfig } from "../config/mockConfig";
-import { Author, Recipe, RecipeImage } from "../model/recipe";
-import { getAccessToken } from "../service/tokenStore";
-import "./model";
+import { saltAndPepperClient } from "../config/axiosConfig.js";
+import { mockConfig } from "../config/mockConfig.js";
+import { Author, Recipe, RecipeImage } from "../model/recipe.js";
+import { getAccessToken } from "../service/tokenStore.js";
 import {
   AuthResponse,
   CommentAuthor,
@@ -17,7 +16,7 @@ import {
   SearchFilter,
   SearchResponse,
   SearchResponseData,
-} from "./model";
+} from "./model.js";
 
 function doRequest(method, url, data, headers) {
   const token = getAccessToken();

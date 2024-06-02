@@ -1,5 +1,5 @@
-import EditRecipeForm from "../components/editRecipeForm";
-import { Recipe } from "../model/recipe";
+import EditRecipeForm from "../components/editRecipeForm.jsx";
+import { Recipe } from "../model/recipe.js";
 
 export default function NewRecipeRoute() {
   return (

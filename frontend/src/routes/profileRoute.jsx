@@ -1,9 +1,9 @@
 import { useTranslation } from "react-i18next";
-import ProfileInfoForm from "../components/profileInfoForm";
-import ChangePasswordForm from "../components/changePasswordForm";
-import InvitationForm from "../components/invitationForm";
-import XmlImportForm from "../components/xmlImportForm";
-import { useProfile } from "../context/profileProvider";
+import ProfileInfoForm from "../components/profileInfoForm.jsx";
+import ChangePasswordForm from "../components/changePasswordForm.jsx";
+import InvitationForm from "../components/invitationForm.jsx";
+import XmlImportForm from "../components/xmlImportForm.jsx";
+import { useProfile } from "../context/profileProvider.jsx";
 
 export default function ProfileRoute() {
   const { t } = useTranslation();

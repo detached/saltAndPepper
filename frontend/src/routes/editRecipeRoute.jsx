@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { SaltAndPepper } from "../api/saltAndPepper";
-import EditRecipeForm from "../components/editRecipeForm";
+import { SaltAndPepper } from "../api/saltAndPepper.js";
+import EditRecipeForm from "../components/editRecipeForm.jsx";
 
 export default function EditRecipeRoute() {
   const { recipeId } = useParams();

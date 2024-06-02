@@ -1,10 +1,10 @@
 import { useTranslation } from "react-i18next";
 import { useCallback, useState } from "react";
-import { SaltAndPepper } from "../api/saltAndPepper";
-import "./loginRoute.css";
-import { useAuth } from "../context/authProvider";
+import { SaltAndPepper } from "../api/saltAndPepper.js";
+import { useAuth } from "../context/authProvider.jsx";
+import Snowflakes from "../components/snowflakes.jsx";
 import logo from "../res/saltAndPepper.png";
-import Snowflakes from "../components/snowflakes";
+import "./loginRoute.css";
 
 export default function LoginRoute() {
   const { t } = useTranslation();

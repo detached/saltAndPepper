@@ -1,8 +1,6 @@
-import "./newRecipes.css";
-import saltAndPepperIcon from "../res/saltAndPepper.png";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { SaltAndPepper } from "../api/saltAndPepper";
+import { SaltAndPepper } from "../api/saltAndPepper.js";
 import {
   Page,
   SearchRequest,
@@ -10,7 +8,9 @@ import {
   Order,
   OrderField,
   SortDir,
-} from "../api/model";
+} from "../api/model.js";
+import saltAndPepperIcon from "../res/saltAndPepper.png";
+import "./newRecipes.css";
 
 export default function NewRecipes() {
   const navigateTo = useNavigate();

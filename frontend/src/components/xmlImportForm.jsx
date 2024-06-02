@@ -1,10 +1,10 @@
 import { useTranslation } from "react-i18next";
 import { useDropzone } from "react-dropzone";
-import "./xmlImportForm.css";
-import "./dropzone.css";
 import { useCallback, useState } from "react";
-import { SaltAndPepper } from "../api/saltAndPepper";
-import { OperationState } from "../model/operationState";
+import { SaltAndPepper } from "../api/saltAndPepper.js";
+import { OperationState } from "../model/operationState.js";
+import "./dropzone.css";
+import "./xmlImportForm.css";
 
 export default function XmlImportForm() {
   const { t } = useTranslation();

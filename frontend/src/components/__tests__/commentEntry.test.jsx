@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
-import CommentEntry from "../commentEntry";
-import { CommentAuthor, CommentResponse } from "../../api/model";
+import CommentEntry from "../commentEntry.jsx";
+import { CommentAuthor, CommentResponse } from "../../api/model.js";
 
 describe("commentEntry snapshot tests", () => {
   test("with delete button", () => {

@@ -1,12 +1,12 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import ImageGallery from "../components/imageGallery";
-import { SaltAndPepper } from "../api/saltAndPepper";
-import { useProfile } from "../context/profileProvider";
-import Modal from "../components/modal";
-import "./recipeRoute.css";
+import ImageGallery from "../components/imageGallery.jsx";
+import { useProfile } from "../context/profileProvider.jsx";
+import Modal from "../components/modal.jsx";
 import Comments from "../components/comments.jsx";
+import { SaltAndPepper } from "../api/saltAndPepper.js";
+import "./recipeRoute.css";
 
 export default function RecipeRoute() {
   const { t } = useTranslation();

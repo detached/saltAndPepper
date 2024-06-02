@@ -1,9 +1,9 @@
 import { useTranslation } from "react-i18next";
 import { FaRegCommentAlt, FaRegTrashAlt } from "react-icons/fa";
-import "./commentEntry.css";
 import { useCallback, useState } from "react";
-import { SaltAndPepper } from "../api/saltAndPepper";
-import Modal from "./modal";
+import Modal from "./modal.jsx";
+import { SaltAndPepper } from "../api/saltAndPepper.js";
+import "./commentEntry.css";
 
 /**
  * @param recipeId {String}

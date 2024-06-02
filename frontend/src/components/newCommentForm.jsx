@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
-import { SaltAndPepper } from "../api/saltAndPepper";
 import { useTranslation } from "react-i18next";
+import { SaltAndPepper } from "../api/saltAndPepper.js";
 import "./newCommentForm.css";
 
 export default function NewCommentForm({ recipeId, onNew }) {

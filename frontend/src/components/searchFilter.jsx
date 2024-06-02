@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
-import { FilterKey } from "../api/model";
 import { useState, useCallback, useReducer, useEffect } from "react";
+import { FilterKey } from "../api/model.js";
 import "./searchFilter.css";
 
 const FilterStatesAction = {

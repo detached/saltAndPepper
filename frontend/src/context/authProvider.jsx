@@ -7,9 +7,9 @@ import {
   getAccessToken,
   removeAccessToken,
   storeAccessToken,
-} from "../service/tokenStore";
-import { SaltAndPepper } from "../api/saltAndPepper";
-import { saltAndPepperClient } from "../config/axiosConfig";
+} from "../service/tokenStore.js";
+import { SaltAndPepper } from "../api/saltAndPepper.js";
+import { saltAndPepperClient } from "../config/axiosConfig.js";
 
 const AuthContext = createContext(null);
 

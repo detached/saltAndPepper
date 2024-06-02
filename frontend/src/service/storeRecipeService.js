@@ -1,5 +1,5 @@
-import { SaltAndPepper } from "../api/saltAndPepper";
-import { NewRecipeRequest } from "../api/model";
+import { SaltAndPepper } from "../api/saltAndPepper.js";
+import { NewRecipeRequest } from "../api/model.js";
 
 /**
  * @param recipe {Recipe}

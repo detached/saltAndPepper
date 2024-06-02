@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import { SaltAndPepper } from "../api/saltAndPepper";
-import CommentEntry from "./commentEntry";
-import NewCommentForm from "./newCommentForm";
+import CommentEntry from "./commentEntry.jsx";
+import NewCommentForm from "./newCommentForm.jsx";
+import { SaltAndPepper } from "../api/saltAndPepper.js";
 import "./comments.css";
 
 export default function Comments({ recipeId }) {

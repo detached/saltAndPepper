@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { SaltAndPepper } from "../api/saltAndPepper";
+import { SaltAndPepper } from "../api/saltAndPepper.js";
 
 export const ProfileContext = createContext({});
 

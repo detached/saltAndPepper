@@ -1,5 +1,5 @@
-import "./imageGallery.css";
 import { useState } from "react";
+import "./imageGallery.css";
 
 export default function ImageGallery({ images }) {
   const [showLightbox, setShowLightbox] = useState(false);

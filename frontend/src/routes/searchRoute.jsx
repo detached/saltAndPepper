@@ -1,10 +1,8 @@
 import { useCallback, useEffect, useReducer, useState } from "react";
 import { useTranslation } from "react-i18next";
-import RecipeList from "../components/recipeList";
-import { SaltAndPepper } from "../api/saltAndPepper";
-import "./searchRoute.css";
-import Spinner from "../components/spinner";
-import { SearchFilter as SearchFilterComponent } from "../components/searchFilter";
+import RecipeList from "../components/recipeList.jsx";
+import Spinner from "../components/spinner.jsx";
+import { SearchFilter as SearchFilterComponent } from "../components/searchFilter.jsx";
 import {
   FilterKey,
   Order,
@@ -13,7 +11,9 @@ import {
   SearchFilter,
   SearchRequest,
   SortDir,
-} from "../api/model";
+} from "../api/model.js";
+import { SaltAndPepper } from "../api/saltAndPepper.js";
+import "./searchRoute.css";
 
 const SearchRequestActions = {
   SET_PAGE_NUMBER: "SET_PAGE_NUMBER",

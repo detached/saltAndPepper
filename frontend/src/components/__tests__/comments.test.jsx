@@ -1,10 +1,9 @@
 import { render, screen } from "@testing-library/react";
-import Comments from "../comments";
 import { userEvent } from "@testing-library/user-event";
-import { act } from "react";
 import { http, HttpResponse } from "msw";
-import { server } from "../../../mocks/node";
-import { postComment } from "../../../mocks/resolver/comments";
+import Comments from "../comments.jsx";
+import { server } from "../../../mocks/node.js";
+import { postComment } from "../../../mocks/resolver/comments.js";
 
 describe("comments integration test", () => {
   test("should render fetched comments", async () => {
@@ -35,9 +34,9 @@ describe("comments integration test", () => {
     mockServerReturnsComment(recipeId, newComment);
 
     const commentInput = screen.getByRole("textbox");
-    await act(() => user.type(commentInput, newComment));
+    await user.type(commentInput, newComment);
     expect(commentInput).toHaveValue(newComment);
-    await act(() => user.click(screen.getByRole("button")));
+    await user.click(screen.getByRole("button"));
 
     expect(
       await screen.findByText(newComment, {}, { timeout: 2000 }),

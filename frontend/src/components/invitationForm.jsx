@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { useCallback, useEffect, useState } from "react";
-import { SaltAndPepper } from "../api/saltAndPepper";
+import { SaltAndPepper } from "../api/saltAndPepper.js";
 
 export default function InvitationForm() {
   const { t } = useTranslation();
