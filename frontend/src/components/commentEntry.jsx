@@ -5,7 +5,6 @@ import Modal from "./modal.jsx";
 import { SaltAndPepper } from "../api/saltAndPepper.js";
 import "./commentEntry.css";
 import PropTypes from "prop-types";
-import { CommentResponse } from "../api/model.js";
 
 /**
  * @param recipeId {String}
@@ -70,6 +69,6 @@ export default function CommentEntry({ recipeId, comment, onDelete }) {
 }
 CommentEntry.propTypes = {
   recipeId: PropTypes.string,
-  comment: PropTypes.instanceOf(CommentResponse),
+  comment: PropTypes.object,
   onDelete: PropTypes.func,
 };
