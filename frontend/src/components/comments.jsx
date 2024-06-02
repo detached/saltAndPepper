@@ -3,6 +3,7 @@ import CommentEntry from "./commentEntry.jsx";
 import NewCommentForm from "./newCommentForm.jsx";
 import { SaltAndPepper } from "../api/saltAndPepper.js";
 import "./comments.css";
+import PropTypes from "prop-types";
 
 export default function Comments({ recipeId }) {
   const [comments, setComments] = useState([]);
@@ -33,3 +34,6 @@ export default function Comments({ recipeId }) {
     </div>
   );
 }
+Comments.propTypes = {
+  recipeId: PropTypes.string,
+};

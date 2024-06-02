@@ -1,4 +1,6 @@
 import { useTranslation } from "react-i18next";
+import PropTypes from "prop-types";
+import { Profile } from "../api/model.js";
 
 export default function ProfileInfoForm({ profile }) {
   const { t } = useTranslation();
@@ -30,3 +32,6 @@ export default function ProfileInfoForm({ profile }) {
     </form>
   );
 }
+ProfileInfoForm.propTypes = {
+  profile: PropTypes.instanceOf(Profile),
+};

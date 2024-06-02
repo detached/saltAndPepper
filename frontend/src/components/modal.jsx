@@ -1,4 +1,5 @@
 import "./modal.css";
+import PropTypes from "prop-types";
 
 export default function Modal({
   headerText,
@@ -30,3 +31,11 @@ export default function Modal({
     </div>
   );
 }
+Modal.propTypes = {
+  headerText: PropTypes.string,
+  contentText: PropTypes.string,
+  buttonOneText: PropTypes.string,
+  buttonTwoText: PropTypes.string,
+  buttonOneCallback: PropTypes.func,
+  buttonTwoCallback: PropTypes.func,
+};

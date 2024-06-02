@@ -10,6 +10,7 @@ import {
 } from "../service/tokenStore.js";
 import { SaltAndPepper } from "../api/saltAndPepper.js";
 import { saltAndPepperClient } from "../config/axiosConfig.js";
+import PropTypes from "prop-types";
 
 const AuthContext = createContext(null);
 
@@ -94,6 +95,9 @@ export const AuthProvider = ({ children }) => {
   } else {
     return <Navigate to="/login" />;
   }
+};
+AuthProvider.propTypes = {
+  children: PropTypes.any,
 };
 
 export const useAuth = () => {

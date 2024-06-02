@@ -1,7 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { useState, useCallback, useReducer, useEffect } from "react";
-import { FilterKey } from "../api/model.js";
+import { SearchFilter as SearchFilterModel, FilterKey } from "../api/model.js";
 import "./searchFilter.css";
+import PropTypes from "prop-types";
 
 const FilterStatesAction = {
   NEW_FILTER_VALUES: "NEW_FILTER_VALUES",
@@ -30,7 +31,7 @@ function filterStatesReducer(state, action) {
   };
 
   switch (action?.type) {
-    case FilterStatesAction.NEW_FILTER_VALUES:
+    case FilterStatesAction.NEW_FILTER_VALUES: {
       let newFilterValueStates = {};
       newFilterValueStates[FilterKey.AUTHOR] =
         mapPossibleFilterToCheckboxStates(FilterKey.AUTHOR);
@@ -39,13 +40,15 @@ function filterStatesReducer(state, action) {
       newFilterValueStates[FilterKey.CUISINE] =
         mapPossibleFilterToCheckboxStates(FilterKey.CUISINE);
       return newFilterValueStates;
-    case FilterStatesAction.SET_STATE:
+    }
+    case FilterStatesAction.SET_STATE: {
       let newState = {};
       newState[FilterKey.AUTHOR] = state[FilterKey.AUTHOR];
       newState[FilterKey.CATEGORY] = state[FilterKey.CATEGORY];
       newState[FilterKey.CUISINE] = state[FilterKey.CUISINE];
       newState[action.key][action.value].checked = action.checked;
       return newState;
+    }
     default:
       return state;
   }
@@ -76,6 +79,7 @@ export function SearchFilter({ possibleFilter, onSelectedValueChanged }) {
         return [];
       }
     }
+
     let selectedValues = {};
     selectedValues[FilterKey.AUTHOR] = filterOnlySelectedValues(
       filterStates[FilterKey.AUTHOR],
@@ -171,3 +175,7 @@ export function SearchFilter({ possibleFilter, onSelectedValueChanged }) {
     </div>
   );
 }
+SearchFilter.propTypes = {
+  possibleFilter: PropTypes.instanceOf(SearchFilterModel),
+  onSelectedValueChanged: PropTypes.func,
+};

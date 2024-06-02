@@ -7,6 +7,8 @@ import Spinner from "./spinner.jsx";
 import { storeRecipe } from "../service/storeRecipeService.js";
 import "./editRecipeForm.css";
 import "./dropzone.css";
+import PropTypes from "prop-types";
+import { Recipe } from "../model/recipe.js";
 
 const EditRecipeActions = {
   SET_TITLE: "SET_TITLE",
@@ -329,3 +331,7 @@ export default function EditRecipeForm({ titleKey, initRecipe }) {
     </>
   );
 }
+EditRecipeForm.propTypes = {
+  titleKey: PropTypes.string,
+  initRecipe: PropTypes.instanceOf(Recipe),
+};

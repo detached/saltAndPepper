@@ -1,5 +1,7 @@
 import { useState } from "react";
 import "./imageGallery.css";
+import PropTypes from "prop-types";
+import { RecipeImage } from "../model/recipe.js";
 
 export default function ImageGallery({ images }) {
   const [showLightbox, setShowLightbox] = useState(false);
@@ -44,3 +46,6 @@ export default function ImageGallery({ images }) {
     </>
   );
 }
+ImageGallery.propTypes = {
+  images: PropTypes.arrayOf(PropTypes.instanceOf(RecipeImage)),
+};

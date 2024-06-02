@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import "./spinner.css";
 
 /**
@@ -17,3 +18,7 @@ export default function Spinner({ fixedCentered }) {
     </div>
   );
 }
+
+Spinner.propTypes = {
+  fixedCentered: PropTypes.bool,
+};

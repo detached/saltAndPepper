@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SaltAndPepper } from "../api/saltAndPepper.js";
 import "./newCommentForm.css";
+import PropTypes from "prop-types";
 
 export default function NewCommentForm({ recipeId, onNew }) {
   const { t } = useTranslation();
@@ -65,3 +66,7 @@ export default function NewCommentForm({ recipeId, onNew }) {
     </form>
   );
 }
+NewCommentForm.propTypes = {
+  recipeId: PropTypes.string,
+  onNew: PropTypes.func,
+};

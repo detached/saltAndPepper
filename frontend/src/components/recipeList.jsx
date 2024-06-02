@@ -2,6 +2,8 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import saltAndPepperIcon from "../res/saltAndPepper.png";
 import "./recipeList.css";
+import PropTypes from "prop-types";
+import { Page, SearchResponseData } from "../api/model.js";
 
 export default function RecipeList({ page, listItems, setPage }) {
   const { t } = useTranslation();
@@ -120,3 +122,8 @@ export default function RecipeList({ page, listItems, setPage }) {
     </>
   );
 }
+RecipeList.propTypes = {
+  page: PropTypes.instanceOf(Page),
+  listItems: PropTypes.arrayOf(PropTypes.instanceOf(SearchResponseData)),
+  setPage: PropTypes.func,
+};
