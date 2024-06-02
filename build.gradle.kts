@@ -4,30 +4,30 @@ import org.jooq.meta.jaxb.Property
 
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.9.22"
-    id("org.jetbrains.kotlin.plugin.allopen") version "1.9.20"
-    id("com.google.devtools.ksp") version "1.9.20-1.0.14"
+    id("org.jetbrains.kotlin.plugin.allopen") version "1.9.22"
+    id("com.google.devtools.ksp") version "1.9.22-1.0.18"
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("io.micronaut.application") version "4.2.0"
-    id("io.micronaut.aot") version "4.3.2"
-    id("nu.studer.jooq") version "8.2.1"
-    id("com.github.node-gradle.node") version "7.0.1"
-    id("org.jlleitschuh.gradle.ktlint") version "11.6.1"
+    id("io.micronaut.application") version "4.4.0"
+    id("io.micronaut.aot") version "4.4.0"
+    id("nu.studer.jooq") version "9.0"
+    id("com.github.node-gradle.node") version "7.0.2"
+    id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
 }
 
 version = "1.0"
 group = "de.w3is"
 
-val kotlinVersion = "1.9.21"
-val micronautVersion = "4.1.6"
+val kotlinVersion = "1.9.22"
+val micronautVersion = "4.4.3"
 val postgresqlJdbcVersion = "42.7.1"
-val jooqVersion = "3.18.7"
+val jooqVersion = "3.19.9"
 val nodeVersion = "21.2.0"
 val nodeNpmVersion = "10.2.3"
-val assertKVersion = "0.27.0"
+val assertKVersion = "0.28.1"
 val thumbnailatorVersion = "0.4.20"
-val commonsTextVersion = "1.11.0"
-val springSecurityVersion = "6.2.2"
-val mockitoVersion = "5.1.0"
+val commonsTextVersion = "1.12.0"
+val springSecurityVersion = "6.3.0"
+val mockitoVersion = "5.3.1"
 val h2Version = "2.2.224"
 
 repositories {
@@ -69,7 +69,7 @@ dependencies {
 }
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(21)
 }
 
 node {
@@ -131,11 +131,12 @@ jooq {
                     name = "org.jooq.codegen.KotlinGenerator"
                     database.apply {
                         name = "org.jooq.meta.extensions.ddl.DDLDatabase"
-                        properties = listOf(
-                            Property().withKey("scripts").withValue("src/main/resources/db/migration/*.sql"),
-                            Property().withKey("sort").withValue("flyway"),
-                            Property().withKey("defaultNameCase").withValue("lower"),
-                        )
+                        properties =
+                            listOf(
+                                Property().withKey("scripts").withValue("src/main/resources/db/migration/*.sql"),
+                                Property().withKey("sort").withValue("flyway"),
+                                Property().withKey("defaultNameCase").withValue("lower"),
+                            )
                     }
                     target.apply {
                         packageName = "de.w3is.recipes.infra.persistence.generated"
@@ -150,7 +151,7 @@ jooq {
 }
 
 ktlint {
-    version.set("0.50.0")
+    version.set("1.2.1")
     verbose.set(true)
     outputToConsole.set(true)
     filter {
