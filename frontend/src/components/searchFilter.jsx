@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { FilterKey } from "../api/saltAndPepper";
+import { FilterKey } from "../api/model";
 import { useState, useCallback, useReducer, useEffect } from "react";
 import "./searchFilter.css";
 
@@ -56,7 +56,7 @@ export function SearchFilter({ possibleFilter, onSelectedValueChanged }) {
   const [activeMenu, setActiveMenu] = useState("");
   const [filterStates, dispatchFilterStates] = useReducer(
     filterStatesReducer,
-    {}
+    {},
   );
 
   useEffect(() => {
@@ -78,13 +78,13 @@ export function SearchFilter({ possibleFilter, onSelectedValueChanged }) {
     }
     let selectedValues = {};
     selectedValues[FilterKey.AUTHOR] = filterOnlySelectedValues(
-      filterStates[FilterKey.AUTHOR]
+      filterStates[FilterKey.AUTHOR],
     );
     selectedValues[FilterKey.CATEGORY] = filterOnlySelectedValues(
-      filterStates[FilterKey.CATEGORY]
+      filterStates[FilterKey.CATEGORY],
     );
     selectedValues[FilterKey.CUISINE] = filterOnlySelectedValues(
-      filterStates[FilterKey.CUISINE]
+      filterStates[FilterKey.CUISINE],
     );
     onSelectedValueChanged(selectedValues);
   }, [filterStates, onSelectedValueChanged]);
@@ -97,7 +97,7 @@ export function SearchFilter({ possibleFilter, onSelectedValueChanged }) {
         setActiveMenu(key);
       }
     },
-    [activeMenu, setActiveMenu]
+    [activeMenu, setActiveMenu],
   );
 
   const toggleCheckbox = useCallback(
@@ -109,7 +109,7 @@ export function SearchFilter({ possibleFilter, onSelectedValueChanged }) {
         checked,
       });
     },
-    [dispatchFilterStates]
+    [dispatchFilterStates],
   );
 
   function isItemInMenuSelected(key) {

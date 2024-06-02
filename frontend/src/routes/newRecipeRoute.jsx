@@ -5,7 +5,17 @@ export default function NewRecipeRoute() {
   return (
     <EditRecipeForm
       titelKey="newRecipe.title"
-      initRecipe={new Recipe("", "", "", "", "", "", "")}
+      initRecipe={
+        new Recipe({
+          title: "",
+          category: "",
+          cuisine: "",
+          yields: "",
+          ingredients: "",
+          instructions: "",
+          modifications: "",
+        })
+      }
     />
   );
 }

@@ -65,7 +65,7 @@ export const AuthProvider = ({ children }) => {
             .finally(addErrorHandlerInterceptor);
         }
         return Promise.reject(error);
-      }
+      },
     );
   }, [handleLogout]);
 

@@ -168,6 +168,9 @@ class JooqRecipeRepository(
     override fun delete(recipe: Recipe) {
         dslContext.deleteFrom(RECIPES).where(RECIPES.RECIPE_ID.eq(recipe.id.recipeId)).execute()
     }
+
+    override fun existsById(recipeId: RecipeId) =
+        dslContext.fetchExists(RECIPES.where(RECIPES.RECIPE_ID.eq(recipeId.recipeId)))
 }
 
 private fun Record3<Array<String?>, Array<String>, Array<String>>.getList(column: FilterKey) =

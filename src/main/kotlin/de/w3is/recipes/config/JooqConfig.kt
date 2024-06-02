@@ -1,8 +1,10 @@
 package de.w3is.recipes.config
 
+import de.w3is.recipes.infra.persistence.generated.tables.daos.CommentsDao
 import io.micronaut.context.annotation.Factory
 import jakarta.inject.Named
 import jakarta.inject.Singleton
+import org.jooq.Configuration
 import org.jooq.conf.RenderNameCase
 import org.jooq.conf.Settings
 
@@ -20,4 +22,7 @@ class JooqConfig {
     fun h2Settings() = Settings()
         .withRenderNameCase(RenderNameCase.UPPER)
         .withRenderSchema(false)
+
+    @Singleton
+    fun commentsDao(configuration: Configuration) = CommentsDao(configuration)
 }

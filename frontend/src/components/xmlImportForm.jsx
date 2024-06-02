@@ -36,7 +36,7 @@ export default function XmlImportForm() {
           setIsLoading(false);
         });
     },
-    [acceptedFiles, isLoading, setIsLoading]
+    [acceptedFiles, isLoading, setIsLoading],
   );
 
   function importResult() {

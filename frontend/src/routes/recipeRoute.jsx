@@ -6,6 +6,7 @@ import { SaltAndPepper } from "../api/saltAndPepper";
 import { useProfile } from "../context/profileProvider";
 import Modal from "../components/modal";
 import "./recipeRoute.css";
+import Comments from "../components/comments.jsx";
 
 export default function RecipeRoute() {
   const { t } = useTranslation();
@@ -74,6 +75,25 @@ export default function RecipeRoute() {
           <h1>{recipe.title}</h1>
         </div>
         <div className="content centered">
+          {allowedToEdit() ? (
+            <div className="recipe-buttons">
+              <button
+                id="edit-recipe"
+                className="pure-button pure-button-primary"
+                onClick={editRecipe}
+              >
+                {t("recipe.edit")}
+              </button>
+              <button
+                id="delete-recipe"
+                className="pure-button"
+                onClick={() => askForDeleteConfirmation()}
+              >
+                {t("recipe.delete")}
+              </button>
+            </div>
+          ) : null}
+
           <ImageGallery images={recipe.images} />
 
           <div className="pure-g">
@@ -95,24 +115,8 @@ export default function RecipeRoute() {
           <h2>{t("recipe.modifications")}</h2>
           <p>{splitText(recipe.modifications)}</p>
 
-          {allowedToEdit() ? (
-            <div className="recipe-buttons">
-              <button
-                id="edit-recipe"
-                className="pure-button pure-button-primary"
-                onClick={editRecipe}
-              >
-                {t("recipe.edit")}
-              </button>
-              <button
-                id="delete-recipe"
-                className="pure-button"
-                onClick={() => askForDeleteConfirmation()}
-              >
-                {t("recipe.delete")}
-              </button>
-            </div>
-          ) : null}
+          <h2>{t("recipe.comments")}</h2>
+          <Comments recipeId={recipe.id} />
         </div>
       </>
     );

@@ -1,0 +1,13 @@
+.new-comment-form input {
+  width: 100%;
+}
+
+.new-comment-form button {
+  display: block;
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.new-comment-button-hidden {
+  display: none !important;
+}

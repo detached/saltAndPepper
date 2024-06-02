@@ -4,6 +4,7 @@ import { initReactI18next } from "react-i18next";
 const resources = {
   de: {
     translation: {
+      intlDateTime: "{{val, datetime}}",
       title: "Salz und Pfeffer",
       description: "Eine online Rezeptverwaltung",
       copyToClipboard: "Kopieren",
@@ -24,6 +25,7 @@ const resources = {
       "recipe.author": "Von",
       "recipe.category": "Kategorie",
       "recipe.cuisine": "Küche",
+      "recipe.comments": "Kommentare",
       "recipe.yields": "Ergibt",
       "recipe.instructions": "Anleitung",
       "recipe.modifications": "Notizen",
@@ -36,6 +38,12 @@ const resources = {
       "newRecipe.name": "Titel",
       "newRecipe.submit": "Speichern",
       "newRecipe.dropzone": "Bilder hinzufügen",
+      "comments.send": "Kommentieren",
+      "comments.input": "Kommentar hinzufügen...",
+      "deleteComment.title": "Kommentar löschen?",
+      "deleteComment.text": "Dein Kommentar wird für immer gelöscht...",
+      "deleteComment.yes": "Ja, wirklich löschen!",
+      "deleteComment.no": "Nein!",
       "deleteRecipe.title": "Rezept löschen?",
       "deleteRecipe.text": "Es ist dann wirklich für immer weg...",
       "deleteRecipe.yes": "Ja, wirklich löschen!",

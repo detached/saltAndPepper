@@ -39,7 +39,7 @@ export default function LoginRoute() {
       username,
       password,
       authentication,
-    ]
+    ],
   );
 
   function isWintertime() {

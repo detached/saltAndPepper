@@ -1,14 +1,15 @@
 import { useTranslation } from "react-i18next";
 import { useCallback, useState } from "react";
-import { ChangePasswordRequest, SaltAndPepper } from "../api/saltAndPepper";
+import { SaltAndPepper } from "../api/saltAndPepper";
 import { OperationState } from "../model/operationState";
+import { ChangePasswordRequest } from "../api/model";
 
 export default function ChangePasswordForm() {
   const { t } = useTranslation();
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [passwordChangeState, setPasswordChangeState] = useState(
-    OperationState.NONE
+    OperationState.NONE,
   );
   const [errorReason, setErrorReason] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -23,7 +24,7 @@ export default function ChangePasswordForm() {
       setPasswordChangeState(OperationState.NONE);
 
       SaltAndPepper.changePassword(
-        new ChangePasswordRequest(oldPassword, newPassword)
+        new ChangePasswordRequest({ oldPassword, newPassword }),
       )
         .then(() => {
           setPasswordChangeState(OperationState.SUCCESSFUL);
@@ -43,7 +44,7 @@ export default function ChangePasswordForm() {
       oldPassword,
       setPasswordChangeState,
       setErrorReason,
-    ]
+    ],
   );
 
   function passwordChangedResult() {
