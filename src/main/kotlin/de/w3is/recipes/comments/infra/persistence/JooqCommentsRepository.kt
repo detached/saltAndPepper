@@ -22,15 +22,16 @@ class JooqCommentsRepository(
     private val clock: Clock,
 ) : CommentsRepository {
     override fun store(comment: Comment) {
-        val entity = with(clock) {
-            CommentEntity(
-                id = comment.id.id,
-                userId = comment.userId.value,
-                recipeId = comment.recipeId.recipeId,
-                comment = comment.text,
-                createdAt = comment.createdAt.toOffsetDateTime(),
-            )
-        }
+        val entity =
+            with(clock) {
+                CommentEntity(
+                    id = comment.id.id,
+                    userId = comment.userId.value,
+                    recipeId = comment.recipeId.recipeId,
+                    comment = comment.text,
+                    createdAt = comment.createdAt.toOffsetDateTime(),
+                )
+            }
 
         commentsDao.insert(entity)
     }
@@ -48,19 +49,21 @@ class JooqCommentsRepository(
         commentsDao.deleteById(id.id)
     }
 
-    private fun CommentEntity.toModel() = Comment(
+    private fun CommentEntity.toModel() =
+        Comment(
+            id = CommentId(this.id!!),
+            userId = UserId(this.userId!!),
+            recipeId = RecipeId(this.recipeId!!),
+            text = this.comment!!,
+            createdAt = this.createdAt!!.toInstant(),
+        )
+}
+
+private fun CommentsRecord.toModel() =
+    Comment(
         id = CommentId(this.id!!),
         userId = UserId(this.userId!!),
         recipeId = RecipeId(this.recipeId!!),
         text = this.comment!!,
         createdAt = this.createdAt!!.toInstant(),
     )
-}
-
-private fun CommentsRecord.toModel() = Comment(
-    id = CommentId(this.id!!),
-    userId = UserId(this.userId!!),
-    recipeId = RecipeId(this.recipeId!!),
-    text = this.comment!!,
-    createdAt = this.createdAt!!.toInstant(),
-)

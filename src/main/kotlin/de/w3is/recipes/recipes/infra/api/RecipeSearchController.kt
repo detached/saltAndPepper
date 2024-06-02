@@ -19,19 +19,21 @@ class RecipeSearchController(
     private val recipeRepository: RecipeRepository,
     private val authorRepository: AuthorRepository,
 ) {
-
     @Post
-    fun search(@Body searchRequestViewModel: SearchRequestViewModel): SearchResponseViewModel {
+    fun search(
+        @Body searchRequestViewModel: SearchRequestViewModel,
+    ): SearchResponseViewModel {
         val searchResponse = recipeRepository.search(searchRequestViewModel.toSearchRequest())
         val possibleFilter = searchResponse.possibleFilter.toViewModel()
 
         return with(searchResponse) {
             SearchResponseViewModel(
-                page = PageViewModel(
-                    size = page.size,
-                    number = page.current,
-                    maxNumber = page.max,
-                ),
+                page =
+                    PageViewModel(
+                        size = page.size,
+                        number = page.current,
+                        maxNumber = page.max,
+                    ),
                 data = results.map { it.toViewModel() },
                 possibleFilter = possibleFilter,
             )
@@ -50,21 +52,23 @@ class RecipeSearchController(
     }
 
     private fun SearchRequestViewModel.toSearchRequest(): SearchRequest {
-        val limit = with(page.size) {
-            if (this in 1..99) {
-                this
-            } else {
-                20
+        val limit =
+            with(page.size) {
+                if (this in 1..99) {
+                    this
+                } else {
+                    20
+                }
             }
-        }
 
-        val page = with(page.number) {
-            if (this >= 0) {
-                this
-            } else {
-                0
+        val page =
+            with(page.number) {
+                if (this >= 0) {
+                    this
+                } else {
+                    0
+                }
             }
-        }
 
         return SearchRequest(
             query = this.searchQuery,

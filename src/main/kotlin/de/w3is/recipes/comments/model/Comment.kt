@@ -5,7 +5,7 @@ import de.w3is.recipes.users.model.UserId
 import java.time.Clock
 import java.time.Instant
 import java.time.temporal.ChronoUnit
-import java.util.*
+import java.util.UUID
 
 @JvmInline
 value class CommentId(
@@ -24,9 +24,12 @@ data class Comment(
     val createdAt: Instant,
 ) {
     companion object {
-
         context(Clock)
-        fun createNew(userId: UserId, recipeId: RecipeId, text: String) = Comment(
+        fun createNew(
+            userId: UserId,
+            recipeId: RecipeId,
+            text: String,
+        ) = Comment(
             id = CommentId.new(),
             userId = userId,
             recipeId = recipeId,

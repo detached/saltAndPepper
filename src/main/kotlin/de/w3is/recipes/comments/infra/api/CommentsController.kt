@@ -18,7 +18,7 @@ import io.micronaut.http.annotation.Post
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.authentication.Authentication
 import io.micronaut.security.rules.SecurityRule
-import java.util.*
+import java.util.UUID
 
 @Controller("/api/comments")
 @Secured(SecurityRule.IS_AUTHENTICATED)
@@ -26,7 +26,6 @@ class CommentsController(
     private val commentsService: CommentsService,
     private val userService: UserService,
 ) {
-
     @Get("/recipe/{recipeId}")
     fun getAllCommentsOfRecipe(
         @PathVariable("recipeId") recipeId: String,
@@ -37,9 +36,10 @@ class CommentsController(
 
         return CommentsViewModel(
             recipeId = recipeId,
-            comments = allComments.map { comment ->
-                comment.toVO(canDelete = comment.userId == userId)
-            },
+            comments =
+                allComments.map { comment ->
+                    comment.toVO(canDelete = comment.userId == userId)
+                },
         )
     }
 
@@ -50,13 +50,14 @@ class CommentsController(
         authentication: Authentication,
     ): CommentViewModel {
         val user = with(userService) { authentication.getUser() }
-        val comment = commentsService.createNewCommentForRecipe(
-            CreateNewCommentCommand(
-                userId = user.id,
-                recipeId = RecipeId(recipeId),
-                comment = createCommentViewModel.comment,
-            ),
-        )
+        val comment =
+            commentsService.createNewCommentForRecipe(
+                CreateNewCommentCommand(
+                    userId = user.id,
+                    recipeId = RecipeId(recipeId),
+                    comment = createCommentViewModel.comment,
+                ),
+            )
         return comment.toVO(canDelete = true)
     }
 
@@ -70,13 +71,14 @@ class CommentsController(
         commentsService.deleteComment(RecipeId(recipeId), CommentId(commentId), user.id)
     }
 
-    private fun Comment.toVO(canDelete: Boolean) = CommentViewModel(
-        id = id.id,
-        author = userId.toAuthorViewModel(),
-        comment = text,
-        createdAt = createdAt,
-        canDelete = canDelete,
-    )
+    private fun Comment.toVO(canDelete: Boolean) =
+        CommentViewModel(
+            id = id.id,
+            author = userId.toAuthorViewModel(),
+            comment = text,
+            createdAt = createdAt,
+            canDelete = canDelete,
+        )
 
     private fun UserId.toAuthorViewModel(): AuthorViewModel {
         val user = userService.getUser(this)

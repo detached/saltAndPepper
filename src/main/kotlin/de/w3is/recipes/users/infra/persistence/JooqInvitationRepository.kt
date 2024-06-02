@@ -15,7 +15,6 @@ class JooqInvitationRepository(
     private val clock: Clock,
     private val dslContext: DSLContext,
 ) : InvitationRepository {
-
     override fun store(invite: Invite) {
         dslContext.newRecord(INVITATIONS).apply {
             createdOn = invite.createdOn
@@ -44,9 +43,10 @@ class JooqInvitationRepository(
             .where(INVITATIONS.USER_ID.eq(id.value))
             .fetchOne { it.toInvite() }
 
-    private fun InvitationsRecord.toInvite() = Invite(
-        code = invitationCode!!,
-        createdOn = createdOn!!,
-        creator = UserId(userId!!),
-    )
+    private fun InvitationsRecord.toInvite() =
+        Invite(
+            code = invitationCode!!,
+            createdOn = createdOn!!,
+            creator = UserId(userId!!),
+        )
 }

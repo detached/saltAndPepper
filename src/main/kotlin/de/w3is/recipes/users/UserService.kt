@@ -14,13 +14,14 @@ class UserService(
     private val userRepository: UserRepository,
     private val passwordValidator: PasswordValidator,
 ) {
-
-    fun getUserFor(username: String): User =
-        userRepository.findUser(username) ?: throw UserNotFoundException(username)
+    fun getUserFor(username: String): User = userRepository.findUser(username) ?: throw UserNotFoundException(username)
 
     fun getUser(userId: UserId): User = userRepository.getUser(userId)
 
-    fun createNewUser(name: String, plainPassword: PlainPassword): User {
+    fun createNewUser(
+        name: String,
+        plainPassword: PlainPassword,
+    ): User {
         validateUsername(name)
         validatePassword(name, plainPassword)
 
@@ -29,7 +30,11 @@ class UserService(
         }
     }
 
-    fun changePassword(user: User, oldPassword: PlainPassword, newPassword: PlainPassword) {
+    fun changePassword(
+        user: User,
+        oldPassword: PlainPassword,
+        newPassword: PlainPassword,
+    ) {
         if (!user.authenticate(oldPassword)) {
             throw WrongPasswordException()
         }
@@ -41,7 +46,10 @@ class UserService(
         }
     }
 
-    private fun validatePassword(name: String, plainPassword: PlainPassword) {
+    private fun validatePassword(
+        name: String,
+        plainPassword: PlainPassword,
+    ) {
         if (!passwordValidator.isPasswordValid(name, plainPassword)) {
             throw PasswordTooWeekException()
         }
@@ -60,7 +68,11 @@ class UserService(
 }
 
 class UserNotFoundException(username: String) : RuntimeException("User $username not found")
+
 class UserAlreadyExistsException(username: String) : RuntimeException("User $username already exists")
+
 class UsernameInvalidException(username: String) : RuntimeException("The username $username is invalid")
+
 class PasswordTooWeekException : RuntimeException("The given password is to week")
+
 class WrongPasswordException : RuntimeException("The provided password is not correct")

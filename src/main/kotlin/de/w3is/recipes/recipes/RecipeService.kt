@@ -18,11 +18,13 @@ open class RecipeService(
     private val imageService: ImageService,
     private val clock: Clock,
 ) {
-
     fun get(recipeId: RecipeId) = recipeRepository.get(recipeId)
 
     @Transactional
-    open fun createNewRecipe(content: RecipeContent, user: User): Recipe {
+    open fun createNewRecipe(
+        content: RecipeContent,
+        user: User,
+    ): Recipe {
         val author = user.toAuthor()
         val recipe = content.toNewRecipe(author, createdAt = OffsetDateTime.now(clock))
         recipeRepository.store(recipe)
@@ -30,7 +32,11 @@ open class RecipeService(
     }
 
     @Transactional
-    open fun updateRecipe(id: RecipeId, content: RecipeContent, user: User): Recipe {
+    open fun updateRecipe(
+        id: RecipeId,
+        content: RecipeContent,
+        user: User,
+    ): Recipe {
         val author = user.toAuthor()
         val recipe = recipeRepository.get(id)
         val updatedRecipe = recipe.updateWith(content, author)
@@ -39,7 +45,11 @@ open class RecipeService(
     }
 
     @Transactional
-    open fun addImageToRecipe(recipeId: RecipeId, imageData: InputStream, user: User): ImageId {
+    open fun addImageToRecipe(
+        recipeId: RecipeId,
+        imageData: InputStream,
+        user: User,
+    ): ImageId {
         val recipe = recipeRepository.get(recipeId)
         val newImage = imageService.convertAndStoreImage(imageData)
         recipe.addImage(newImage, user.toAuthor())
@@ -48,7 +58,11 @@ open class RecipeService(
     }
 
     @Transactional
-    open fun deleteImageFromRecipe(recipeId: RecipeId, imageId: ImageId, user: User) {
+    open fun deleteImageFromRecipe(
+        recipeId: RecipeId,
+        imageId: ImageId,
+        user: User,
+    ) {
         val recipe = recipeRepository.get(recipeId)
         recipe.removeImage(imageId, user.toAuthor())
         recipeRepository.store(recipe)
@@ -56,7 +70,10 @@ open class RecipeService(
     }
 
     @Transactional
-    fun deleteRecipe(recipeId: RecipeId, user: User) {
+    fun deleteRecipe(
+        recipeId: RecipeId,
+        user: User,
+    ) {
         val author = user.toAuthor()
         val recipe = recipeRepository.get(recipeId)
         recipe.assertIsAuthoredBy(author)
@@ -79,7 +96,10 @@ data class RecipeContent(
     val modifications: String,
     val images: List<ImageId>,
 ) {
-    fun toNewRecipe(author: Author, createdAt: OffsetDateTime) = Recipe(
+    fun toNewRecipe(
+        author: Author,
+        createdAt: OffsetDateTime,
+    ) = Recipe(
         id = RecipeId.new(),
         title = title,
         category = category,

@@ -5,7 +5,10 @@ import io.micronaut.context.annotation.Property
 import jakarta.inject.Singleton
 
 interface PasswordValidator {
-    fun isPasswordValid(name: String, plainPassword: PlainPassword): Boolean
+    fun isPasswordValid(
+        name: String,
+        plainPassword: PlainPassword,
+    ): Boolean
 }
 
 // TODO: implement with passay
@@ -13,8 +16,10 @@ interface PasswordValidator {
 class SimplePasswordValidator(
     @Property(name = "application.minPasswordLength") private val minPasswordLength: Int,
 ) : PasswordValidator {
-
-    override fun isPasswordValid(name: String, plainPassword: PlainPassword): Boolean =
+    override fun isPasswordValid(
+        name: String,
+        plainPassword: PlainPassword,
+    ): Boolean =
         plainPassword.value.isNotBlank() &&
             plainPassword.value.length >= minPasswordLength &&
             plainPassword.value.trim() != name

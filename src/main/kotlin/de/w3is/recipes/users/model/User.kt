@@ -3,7 +3,7 @@ package de.w3is.recipes.users.model
 import de.w3is.recipes.recipes.model.Author
 import de.w3is.recipes.recipes.model.AuthorId
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import java.util.*
+import java.util.UUID
 
 data class UserId(val value: String) {
     companion object {
@@ -35,7 +35,11 @@ data class User(
     val role: Role,
 ) {
     companion object {
-        fun createNew(name: String, password: PlainPassword, role: Role = Role.USER): User {
+        fun createNew(
+            name: String,
+            password: PlainPassword,
+            role: Role = Role.USER,
+        ): User {
             return User(
                 id = UserId.new(),
                 name = name,
@@ -45,8 +49,7 @@ data class User(
         }
     }
 
-    fun authenticate(plainPassword: PlainPassword) =
-        BCryptPasswordEncoder().matches(plainPassword.value, password.value)
+    fun authenticate(plainPassword: PlainPassword) = BCryptPasswordEncoder().matches(plainPassword.value, password.value)
 
     override fun toString(): String {
         return "User(id=$id, name='$name')"

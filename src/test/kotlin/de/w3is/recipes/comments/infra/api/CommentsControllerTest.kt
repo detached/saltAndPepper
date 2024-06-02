@@ -35,7 +35,6 @@ class CommentsControllerTest(
     @Inject override val authenticationClient: AuthenticationClient,
     @Inject override val dslContext: DSLContext,
 ) : TestUserProvider, DBCleaner {
-
     private val userName = "testUser"
     private val password = "password"
 
@@ -49,33 +48,36 @@ class CommentsControllerTest(
         val (user, token) = setupUser(userName, password)
         val recipe = givenRecipe(user)
 
-        val beforeAddingComment = client.toBlocking().retrieveObject<CommentsViewModel>(
-            HttpRequest.GET<Any>("/comments/recipe/${recipe.id.recipeId}")
-                .bearerAuth(token.accessToken)
-                .accept("application/json"),
-        )
+        val beforeAddingComment =
+            client.toBlocking().retrieveObject<CommentsViewModel>(
+                HttpRequest.GET<Any>("/comments/recipe/${recipe.id.recipeId}")
+                    .bearerAuth(token.accessToken)
+                    .accept("application/json"),
+            )
 
         assertThat(beforeAddingComment.comments).isEmpty()
 
         val comment = "test comment"
-        val createdComment = client.toBlocking().retrieveObject<CommentViewModel>(
-            HttpRequest
-                .POST<Any>(
-                    "/comments/recipe/${recipe.id.recipeId}",
-                    CreateCommentViewModel(comment),
-                )
-                .bearerAuth(token.accessToken)
-                .accept("application/json")
-                .contentType("application/json"),
-        )
+        val createdComment =
+            client.toBlocking().retrieveObject<CommentViewModel>(
+                HttpRequest
+                    .POST<Any>(
+                        "/comments/recipe/${recipe.id.recipeId}",
+                        CreateCommentViewModel(comment),
+                    )
+                    .bearerAuth(token.accessToken)
+                    .accept("application/json")
+                    .contentType("application/json"),
+            )
 
         assertThat(createdComment.comment).isEqualTo(comment)
 
-        val afterAddingComment = client.toBlocking().retrieveObject<CommentsViewModel>(
-            HttpRequest.GET<Any>("/comments/recipe/${recipe.id.recipeId}")
-                .bearerAuth(token.accessToken)
-                .accept("application/json"),
-        )
+        val afterAddingComment =
+            client.toBlocking().retrieveObject<CommentsViewModel>(
+                HttpRequest.GET<Any>("/comments/recipe/${recipe.id.recipeId}")
+                    .bearerAuth(token.accessToken)
+                    .accept("application/json"),
+            )
 
         assertThat(afterAddingComment.comments).all {
             hasSize(1)
@@ -110,11 +112,12 @@ class CommentsControllerTest(
                 .contentType("application/json"),
         )
 
-        val comments = client.toBlocking().retrieveObject<CommentsViewModel>(
-            HttpRequest.GET<Any>("/comments/recipe/${recipe.id.recipeId}")
-                .bearerAuth(token.accessToken)
-                .accept("application/json"),
-        )
+        val comments =
+            client.toBlocking().retrieveObject<CommentsViewModel>(
+                HttpRequest.GET<Any>("/comments/recipe/${recipe.id.recipeId}")
+                    .bearerAuth(token.accessToken)
+                    .accept("application/json"),
+            )
 
         assertThat(comments.comments.map { it.comment }).containsExactly("second", "first")
     }
@@ -135,11 +138,12 @@ class CommentsControllerTest(
                 .contentType("application/json"),
         )
 
-        val beforeDeletion = client.toBlocking().retrieveObject<CommentsViewModel>(
-            HttpRequest.GET<Any>("/comments/recipe/${recipe.id.recipeId}")
-                .bearerAuth(token.accessToken)
-                .accept("application/json"),
-        )
+        val beforeDeletion =
+            client.toBlocking().retrieveObject<CommentsViewModel>(
+                HttpRequest.GET<Any>("/comments/recipe/${recipe.id.recipeId}")
+                    .bearerAuth(token.accessToken)
+                    .accept("application/json"),
+            )
 
         assertThat(beforeDeletion.comments).hasSize(1)
         val comment = beforeDeletion.comments.first()
@@ -149,11 +153,12 @@ class CommentsControllerTest(
                 .bearerAuth(token.accessToken),
         )
 
-        val afterDeletion = client.toBlocking().retrieveObject<CommentsViewModel>(
-            HttpRequest.GET<Any>("/comments/recipe/${recipe.id.recipeId}")
-                .bearerAuth(token.accessToken)
-                .accept("application/json"),
-        )
+        val afterDeletion =
+            client.toBlocking().retrieveObject<CommentsViewModel>(
+                HttpRequest.GET<Any>("/comments/recipe/${recipe.id.recipeId}")
+                    .bearerAuth(token.accessToken)
+                    .accept("application/json"),
+            )
 
         assertThat(afterDeletion.comments).isEmpty()
     }
@@ -174,11 +179,12 @@ class CommentsControllerTest(
                 .accept("application/json")
                 .contentType("application/json"),
         )
-        val comments = client.toBlocking().retrieveObject<CommentsViewModel>(
-            HttpRequest.GET<Any>("/comments/recipe/${recipe.id.recipeId}")
-                .bearerAuth(token.accessToken)
-                .accept("application/json"),
-        )
+        val comments =
+            client.toBlocking().retrieveObject<CommentsViewModel>(
+                HttpRequest.GET<Any>("/comments/recipe/${recipe.id.recipeId}")
+                    .bearerAuth(token.accessToken)
+                    .accept("application/json"),
+            )
 
         assertThat(comments.comments.first().canDelete).isTrue()
     }
@@ -200,11 +206,12 @@ class CommentsControllerTest(
                 .accept("application/json")
                 .contentType("application/json"),
         )
-        val comments = client.toBlocking().retrieveObject<CommentsViewModel>(
-            HttpRequest.GET<Any>("/comments/recipe/${recipe.id.recipeId}")
-                .bearerAuth(token.accessToken)
-                .accept("application/json"),
-        )
+        val comments =
+            client.toBlocking().retrieveObject<CommentsViewModel>(
+                HttpRequest.GET<Any>("/comments/recipe/${recipe.id.recipeId}")
+                    .bearerAuth(token.accessToken)
+                    .accept("application/json"),
+            )
 
         assertThat(comments.comments.first().canDelete).isFalse()
     }

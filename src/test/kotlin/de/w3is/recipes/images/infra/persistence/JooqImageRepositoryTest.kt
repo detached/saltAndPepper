@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test
 
 @MicronautTest
 class JooqImageRepositoryTest {
-
     @Inject
     private lateinit var imageRepository: ImageRepository
 

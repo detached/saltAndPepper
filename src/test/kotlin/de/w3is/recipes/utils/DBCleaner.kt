@@ -4,7 +4,6 @@ import de.w3is.recipes.infra.persistence.generated.DefaultSchema
 import org.jooq.DSLContext
 
 interface DBCleaner {
-
     val dslContext: DSLContext
 
     fun cleanDb() {

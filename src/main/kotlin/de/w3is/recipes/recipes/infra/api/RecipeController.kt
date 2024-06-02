@@ -34,34 +34,42 @@ class RecipeController(
     private val recipeService: RecipeService,
     private val authorRepository: AuthorRepository,
 ) {
-
     @Post("/")
-    fun storeRecipe(@Body request: NewRecipeRequest, authentication: Authentication): NewRecipeResponse {
+    fun storeRecipe(
+        @Body request: NewRecipeRequest,
+        authentication: Authentication,
+    ): NewRecipeResponse {
         val user = with(userService) { authentication.getUser() }
-        val recipe = recipeService.createNewRecipe(
-            RecipeContent(
-                title = request.title,
-                category = request.category,
-                cuisine = request.cuisine,
-                yields = request.yields,
-                ingredients = request.ingredients,
-                instructions = request.instructions,
-                modifications = request.modifications,
-                images = emptyList(),
-            ),
-            user,
-        )
+        val recipe =
+            recipeService.createNewRecipe(
+                RecipeContent(
+                    title = request.title,
+                    category = request.category,
+                    cuisine = request.cuisine,
+                    yields = request.yields,
+                    ingredients = request.ingredients,
+                    instructions = request.instructions,
+                    modifications = request.modifications,
+                    images = emptyList(),
+                ),
+                user,
+            )
 
         return NewRecipeResponse(recipe.id.recipeId)
     }
 
     @Get("/{id}")
-    fun getRecipe(@PathVariable("id") recipeId: String): RecipeViewModel {
+    fun getRecipe(
+        @PathVariable("id") recipeId: String,
+    ): RecipeViewModel {
         return recipeService.get(RecipeId(recipeId)).toModel()
     }
 
     @Delete("/{id}")
-    fun deleteRecipe(@PathVariable("id") recipeId: String, authentication: Authentication) {
+    fun deleteRecipe(
+        @PathVariable("id") recipeId: String,
+        authentication: Authentication,
+    ) {
         val user = with(userService) { authentication.getUser() }
         recipeService.deleteRecipe(RecipeId(recipeId), user)
     }
@@ -73,16 +81,17 @@ class RecipeController(
         authentication: Authentication,
     ): RecipeViewModel {
         val user = with(userService) { authentication.getUser() }
-        val content = RecipeContent(
-            title = request.title,
-            category = request.category,
-            cuisine = request.cuisine,
-            yields = request.yields,
-            ingredients = request.ingredients,
-            instructions = request.instructions,
-            modifications = request.modifications,
-            images = request.images.map { ImageId(it.id) },
-        )
+        val content =
+            RecipeContent(
+                title = request.title,
+                category = request.category,
+                cuisine = request.cuisine,
+                yields = request.yields,
+                ingredients = request.ingredients,
+                instructions = request.instructions,
+                modifications = request.modifications,
+                images = request.images.map { ImageId(it.id) },
+            )
         return recipeService.updateRecipe(RecipeId(recipeId), content, user).toModel()
     }
 
@@ -113,10 +122,11 @@ class RecipeController(
     private fun Recipe.toModel(): RecipeViewModel {
         return RecipeViewModel(
             id = this.id.recipeId,
-            author = AuthorViewModel(
-                id = this.authorId.value,
-                name = authorRepository.get(this.authorId).name,
-            ),
+            author =
+                AuthorViewModel(
+                    id = this.authorId.value,
+                    name = authorRepository.get(this.authorId).name,
+                ),
             title = this.title,
             category = this.category,
             cuisine = this.cuisine,
@@ -128,9 +138,10 @@ class RecipeController(
         )
     }
 
-    private fun ImageId.toImageViewModel() = ImageViewModel(
-        id = value,
-        url = toImageUrl(),
-        thumbnailUrl = toThumbnailUrl(),
-    )
+    private fun ImageId.toImageViewModel() =
+        ImageViewModel(
+            id = value,
+            url = toImageUrl(),
+            thumbnailUrl = toThumbnailUrl(),
+        )
 }

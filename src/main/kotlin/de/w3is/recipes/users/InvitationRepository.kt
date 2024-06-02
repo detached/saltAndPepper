@@ -6,8 +6,12 @@ import java.time.OffsetDateTime
 
 interface InvitationRepository {
     fun store(invite: Invite)
+
     fun deleteAllOlderThan(dateTime: OffsetDateTime)
+
     fun findByCode(code: String): Invite?
+
     fun invalidate(invite: Invite)
+
     fun findByCreator(id: UserId): Invite?
 }

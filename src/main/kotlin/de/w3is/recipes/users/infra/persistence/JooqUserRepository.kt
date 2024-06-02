@@ -15,7 +15,6 @@ import org.jooq.DSLContext
 
 @Singleton
 open class JooqUserRepository(private val dslContext: DSLContext) : UserRepository, AuthorRepository {
-
     override fun findUser(userName: String): User? =
         dslContext.selectFrom(USERS).where(USERS.USERNAME.equal(userName))
             .fetchOne { toUser(it) }
@@ -24,12 +23,13 @@ open class JooqUserRepository(private val dslContext: DSLContext) : UserReposito
         dslContext.selectFrom(USERS).where(USERS.USER_ID.equal(userId.value))
             .fetchOne { toUser(it) } ?: error("User for id $userId not found")
 
-    private fun toUser(it: UsersRecord) = User(
-        id = UserId(it.userId!!),
-        name = it.username!!,
-        password = EncryptedPassword(it.password!!),
-        role = Role.valueOf(it.role!!),
-    )
+    private fun toUser(it: UsersRecord) =
+        User(
+            id = UserId(it.userId!!),
+            name = it.username!!,
+            password = EncryptedPassword(it.password!!),
+            role = Role.valueOf(it.role!!),
+        )
 
     override fun store(user: User) {
         dslContext.newRecord(USERS).apply {
@@ -57,8 +57,9 @@ open class JooqUserRepository(private val dslContext: DSLContext) : UserReposito
         dslContext.selectFrom(USERS).where(USERS.USER_ID.`in`(authorIds.map { it.value }))
             .fetch { recordToAuthor(it) }.toSet()
 
-    private fun recordToAuthor(it: UsersRecord) = Author(
-        id = AuthorId(it.userId!!),
-        name = it.username!!,
-    )
+    private fun recordToAuthor(it: UsersRecord) =
+        Author(
+            id = AuthorId(it.userId!!),
+            name = it.username!!,
+        )
 }

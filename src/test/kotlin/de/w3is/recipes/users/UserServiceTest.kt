@@ -20,7 +20,6 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 class UserServiceTest {
-
     private val userRepository: UserRepository = mock()
     private val userService = UserService(userRepository, SimplePasswordValidator(5))
 
@@ -102,7 +101,10 @@ class UserServiceTest {
         }
     }
 
-    private fun givenUser(username: String, password: PlainPassword): User =
+    private fun givenUser(
+        username: String,
+        password: PlainPassword,
+    ): User =
         User.createNew(username, password, role = Role.USER).also {
             whenever(userRepository.findUser(it.name)).thenReturn(it)
         }

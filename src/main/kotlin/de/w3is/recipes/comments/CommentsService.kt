@@ -15,19 +15,19 @@ class CommentsService(
     private val commentsRepository: CommentsRepository,
     private val clock: Clock,
 ) {
-
     fun createNewCommentForRecipe(command: CreateNewCommentCommand): Comment {
         check(recipeService.exists(command.recipeId)) {
             "Recipe with id ${command.recipeId} has to exist to create comment for it"
         }
 
-        val comment = with(clock) {
-            Comment.createNew(
-                userId = command.userId,
-                recipeId = command.recipeId,
-                text = command.comment,
-            )
-        }
+        val comment =
+            with(clock) {
+                Comment.createNew(
+                    userId = command.userId,
+                    recipeId = command.recipeId,
+                    text = command.comment,
+                )
+            }
 
         commentsRepository.store(comment)
 
@@ -36,7 +36,11 @@ class CommentsService(
 
     fun getAllComments(recipeId: RecipeId): List<Comment> = commentsRepository.findAll(recipeId)
 
-    fun deleteComment(recipeId: RecipeId, commentId: CommentId, userId: UserId) {
+    fun deleteComment(
+        recipeId: RecipeId,
+        commentId: CommentId,
+        userId: UserId,
+    ) {
         val comment = commentsRepository.getById(commentId)
 
         check(comment.recipeId == recipeId) {

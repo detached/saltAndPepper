@@ -22,12 +22,9 @@ class InvitationController(
     private val userService: UserService,
     private val invitationService: InvitationService,
 ) {
-
     @Get
     @Secured(SecurityRule.IS_AUTHENTICATED)
-    fun getExistingInviteCode(
-        authentication: Authentication,
-    ): HttpResponse<InvitationCodeResponse> {
+    fun getExistingInviteCode(authentication: Authentication): HttpResponse<InvitationCodeResponse> {
         val user = with(userService) { authentication.getUser() }
         val invite = invitationService.findExistingInvite(user)
 
@@ -40,9 +37,7 @@ class InvitationController(
 
     @Post
     @Secured(SecurityRule.IS_AUTHENTICATED)
-    fun createInviteLink(
-        authentication: Authentication,
-    ): InvitationCodeResponse {
+    fun createInviteLink(authentication: Authentication): InvitationCodeResponse {
         val user = with(userService) { authentication.getUser() }
         val invite = invitationService.createInvite(user)
 
@@ -51,7 +46,9 @@ class InvitationController(
 
     @Get("/{code}")
     @Secured(SecurityRule.IS_ANONYMOUS)
-    fun getInvitationInfo(@PathVariable("code") inviteCode: String): InvitationInfoResponse {
+    fun getInvitationInfo(
+        @PathVariable("code") inviteCode: String,
+    ): InvitationInfoResponse {
         val invite = invitationService.getInviteByCode(inviteCode)
         val invitingUser = userService.getUser(invite.creator)
         return InvitationInfoResponse(

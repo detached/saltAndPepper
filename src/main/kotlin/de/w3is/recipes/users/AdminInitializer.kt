@@ -13,7 +13,6 @@ class AdminInitializer(
     private val userRepository: UserRepository,
     @Property(name = "application.initialAdminPassword") private val initialAdminPassword: String,
 ) {
-
     @EventListener
     @Suppress("UNUSED_PARAMETER")
     fun setupInitialAdmin(event: StartupEvent) {

@@ -10,7 +10,6 @@ import javax.imageio.ImageIO
 
 @Singleton
 class ImageService(private val imageRepository: ImageRepository) {
-
     fun convertAndStoreImage(data: InputStream): ImageId {
         val output = ByteArrayOutputStream()
         data.transferTo(output)

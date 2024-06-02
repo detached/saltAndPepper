@@ -20,27 +20,33 @@ class ImportService(
     private val imageService: ImageService,
     private val clock: Clock,
 ) {
-
     private val logger = LoggerFactory.getLogger(ImportService::class.java)
 
-    fun import(provider: ImportCommandProvider, user: User) {
+    fun import(
+        provider: ImportCommandProvider,
+        user: User,
+    ) {
         val author = user.toAuthor()
 
         provider.forEachRemaining {
             logger.info("Import ${it.title}")
 
-            val imageId = if (it.image != null) {
-                imageService.convertAndStoreImage(it.image)
-            } else {
-                null
-            }
+            val imageId =
+                if (it.image != null) {
+                    imageService.convertAndStoreImage(it.image)
+                } else {
+                    null
+                }
 
             val recipe = it.toNewRecipe(author, imageId)
             recipeRepository.store(recipe)
         }
     }
 
-    private fun ImportRecipe.toNewRecipe(author: Author, imageId: ImageId?): Recipe {
+    private fun ImportRecipe.toNewRecipe(
+        author: Author,
+        imageId: ImageId?,
+    ): Recipe {
         return Recipe(
             id = RecipeId.new(),
             title = title,
@@ -50,11 +56,12 @@ class ImportService(
             ingredients = ingredients,
             instructions = instructions,
             modifications = modifications,
-            images = if (imageId == null) {
-                mutableListOf()
-            } else {
-                mutableListOf(imageId)
-            },
+            images =
+                if (imageId == null) {
+                    mutableListOf()
+                } else {
+                    mutableListOf(imageId)
+                },
             authorId = author.id,
             createdAt = OffsetDateTime.now(clock),
         )

@@ -7,8 +7,12 @@ import de.w3is.recipes.recipes.model.SearchResponse
 
 interface RecipeRepository {
     fun store(recipe: Recipe)
+
     fun get(recipeId: RecipeId): Recipe
+
     fun search(searchRequest: SearchRequest): SearchResponse
+
     fun delete(recipe: Recipe)
+
     fun existsById(recipeId: RecipeId): Boolean
 }

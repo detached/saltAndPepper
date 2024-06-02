@@ -9,7 +9,6 @@ import assertk.assertions.isTrue
 import org.junit.jupiter.api.Test
 
 class GourmetSearchListRecipeSourceTest {
-
     @Test
     fun `importing single recipe`() {
         val singleXml = this.javaClass.classLoader.getResourceAsStream("gourmet/single.xml")!!
@@ -36,19 +35,21 @@ class GourmetSearchListRecipeSourceTest {
         )
     }
 
-    private fun givenSingleRecipe() = ImportRecipe(
-        title = "This is a title",
-        category = "A category",
-        cuisine = "german",
-        yields = "4 meals",
-        image = null,
-        ingredients = "A ingredient",
-        instructions = """
+    private fun givenSingleRecipe() =
+        ImportRecipe(
+            title = "This is a title",
+            category = "A category",
+            cuisine = "german",
+            yields = "4 meals",
+            image = null,
+            ingredients = "A ingredient",
+            instructions =
+                """
                 This is
                 a
                 multiline
                 instruction.
-        """.trimIndent(),
-        modifications = "Maybe do it different!",
-    )
+                """.trimIndent(),
+            modifications = "Maybe do it different!",
+        )
 }

@@ -31,33 +31,35 @@ class JooqRecipeRepository(
     private val objectMapper: ObjectMapper,
     private val clock: Clock,
 ) : RecipeRepository {
-
-    private val filterKeysToColumns = mapOf(
-        FilterKey.AUTHOR to RECIPES.AUTHOR_ID,
-        FilterKey.CUISINE to RECIPES.CUISINE,
-        FilterKey.CATEGORY to RECIPES.CATEGORY,
-    )
-
-    private val orderFieldToColumn = mapOf(
-        OrderField.TITLE to RECIPES.TITLE,
-        OrderField.CREATED_AT to RECIPES.CREATED_AT,
-    )
-
-    private val recordMapper = RecordMapper<RecipesRecord, Recipe> { record ->
-        Recipe(
-            id = RecipeId(record.recipeId!!),
-            title = record.title!!,
-            category = record.category!!,
-            cuisine = record.cuisine!!,
-            yields = record.yields!!,
-            ingredients = record.ingredients!!,
-            instructions = record.instructions!!,
-            modifications = record.modifications!!,
-            images = objectMapper.readValue(record.images, Array<ImageId>::class.java).toMutableList(),
-            authorId = AuthorId(record.authorId!!),
-            createdAt = record.createdAt!!,
+    private val filterKeysToColumns =
+        mapOf(
+            FilterKey.AUTHOR to RECIPES.AUTHOR_ID,
+            FilterKey.CUISINE to RECIPES.CUISINE,
+            FilterKey.CATEGORY to RECIPES.CATEGORY,
         )
-    }
+
+    private val orderFieldToColumn =
+        mapOf(
+            OrderField.TITLE to RECIPES.TITLE,
+            OrderField.CREATED_AT to RECIPES.CREATED_AT,
+        )
+
+    private val recordMapper =
+        RecordMapper<RecipesRecord, Recipe> { record ->
+            Recipe(
+                id = RecipeId(record.recipeId!!),
+                title = record.title!!,
+                category = record.category!!,
+                cuisine = record.cuisine!!,
+                yields = record.yields!!,
+                ingredients = record.ingredients!!,
+                instructions = record.instructions!!,
+                modifications = record.modifications!!,
+                images = objectMapper.readValue(record.images, Array<ImageId>::class.java).toMutableList(),
+                authorId = AuthorId(record.authorId!!),
+                createdAt = record.createdAt!!,
+            )
+        }
 
     override fun store(recipe: Recipe) {
         val existingRecord = queryRecipe(recipe.id).fetchOne()
@@ -92,30 +94,34 @@ class JooqRecipeRepository(
         }
     }
 
-    private fun queryRecipe(recipeId: RecipeId) = dslContext.selectFrom(RECIPES)
-        .where(RECIPES.RECIPE_ID.equal(recipeId.recipeId))
+    private fun queryRecipe(recipeId: RecipeId) =
+        dslContext.selectFrom(RECIPES)
+            .where(RECIPES.RECIPE_ID.equal(recipeId.recipeId))
 
-    override fun get(recipeId: RecipeId): Recipe = queryRecipe(recipeId).fetchOne(recordMapper)
-        ?: error("No Recipe found for $recipeId")
+    override fun get(recipeId: RecipeId): Recipe =
+        queryRecipe(recipeId).fetchOne(recordMapper)
+            ?: error("No Recipe found for $recipeId")
 
     override fun search(searchRequest: SearchRequest): SearchResponse =
         with(searchRequest) {
-            var searchConditions = if (query.isBlank()) {
-                DSL.trueCondition()
-            } else {
-                query.split(" ").map { queryPart ->
-                    RECIPES.TITLE.containsIgnoreCase(queryPart)
-                        .or(RECIPES.CATEGORY.containsIgnoreCase(queryPart))
-                        .or(RECIPES.CUISINE.containsIgnoreCase(queryPart))
-                }.reduce { acc, v -> acc.and(v) }
-            }
+            var searchConditions =
+                if (query.isBlank()) {
+                    DSL.trueCondition()
+                } else {
+                    query.split(" ").map { queryPart ->
+                        RECIPES.TITLE.containsIgnoreCase(queryPart)
+                            .or(RECIPES.CATEGORY.containsIgnoreCase(queryPart))
+                            .or(RECIPES.CUISINE.containsIgnoreCase(queryPart))
+                    }.reduce { acc, v -> acc.and(v) }
+                }
 
             if (filter.isNotEmpty()) {
-                val filterConditions = filter.mapNotNull { (key, values) ->
-                    values.map { value ->
-                        filterKeysToColumns[key]!!.contains(value)
-                    }.reduceOrNull { acc: Condition, v: Condition -> acc.or(v) }
-                }.reduceOrNull { acc: Condition, v: Condition -> acc.and(v) }
+                val filterConditions =
+                    filter.mapNotNull { (key, values) ->
+                        values.map { value ->
+                            filterKeysToColumns[key]!!.contains(value)
+                        }.reduceOrNull { acc: Condition, v: Condition -> acc.or(v) }
+                    }.reduceOrNull { acc: Condition, v: Condition -> acc.and(v) }
 
                 if (filterConditions != null) {
                     searchConditions = searchConditions.and(filterConditions)
@@ -124,32 +130,33 @@ class JooqRecipeRepository(
 
             val maxResults = dslContext.selectFrom(RECIPES).where(searchConditions).count()
             val possibleFilter = findPossibleFilterValues(searchConditions)
-            val results = dslContext.selectFrom(RECIPES).where(searchConditions)
-                .orderBy(order.field.toColumn().sort(order.direction.toSortOrder()))
-                .limit(limit)
-                .offset(page * limit)
-                .fetch(recordMapper)
+            val results =
+                dslContext.selectFrom(RECIPES).where(searchConditions)
+                    .orderBy(order.field.toColumn().sort(order.direction.toSortOrder()))
+                    .limit(limit)
+                    .offset(page * limit)
+                    .fetch(recordMapper)
 
             SearchResponse(
                 results = results,
-                page = Page(
-                    current = page,
-                    max = ceil(maxResults.toDouble() / limit).toInt() - 1,
-                    size = results.size,
-                ),
+                page =
+                    Page(
+                        current = page,
+                        max = ceil(maxResults.toDouble() / limit).toInt() - 1,
+                        size = results.size,
+                    ),
                 possibleFilter = possibleFilter,
             )
         }
 
-    private fun findPossibleFilterValues(
-        searchConditions: Condition,
-    ): Map<FilterKey, List<String>> {
-        val result = dslContext.select(
-            DSL.arrayAggDistinct(RECIPES.AUTHOR_ID).`as`(FilterKey.AUTHOR.name),
-            DSL.arrayAggDistinct(RECIPES.CATEGORY.cast(String::class.java)).`as`(FilterKey.CATEGORY.name),
-            DSL.arrayAggDistinct(RECIPES.CUISINE.cast(String::class.java)).`as`(FilterKey.CUISINE.name),
-        ).from(RECIPES).where(searchConditions)
-            .fetchOne() ?: return emptyMap()
+    private fun findPossibleFilterValues(searchConditions: Condition): Map<FilterKey, List<String>> {
+        val result =
+            dslContext.select(
+                DSL.arrayAggDistinct(RECIPES.AUTHOR_ID).`as`(FilterKey.AUTHOR.name),
+                DSL.arrayAggDistinct(RECIPES.CATEGORY.cast(String::class.java)).`as`(FilterKey.CATEGORY.name),
+                DSL.arrayAggDistinct(RECIPES.CUISINE.cast(String::class.java)).`as`(FilterKey.CUISINE.name),
+            ).from(RECIPES).where(searchConditions)
+                .fetchOne() ?: return emptyMap()
 
         return mapOf(
             FilterKey.AUTHOR to result.getList(FilterKey.AUTHOR),
@@ -160,17 +167,17 @@ class JooqRecipeRepository(
 
     private fun OrderField.toColumn() = orderFieldToColumn[this]!!
 
-    private fun SortDir.toSortOrder(): SortOrder = when (this) {
-        SortDir.ASC -> SortOrder.ASC
-        SortDir.DESC -> SortOrder.DESC
-    }
+    private fun SortDir.toSortOrder(): SortOrder =
+        when (this) {
+            SortDir.ASC -> SortOrder.ASC
+            SortDir.DESC -> SortOrder.DESC
+        }
 
     override fun delete(recipe: Recipe) {
         dslContext.deleteFrom(RECIPES).where(RECIPES.RECIPE_ID.eq(recipe.id.recipeId)).execute()
     }
 
-    override fun existsById(recipeId: RecipeId) =
-        dslContext.fetchExists(RECIPES.where(RECIPES.RECIPE_ID.eq(recipeId.recipeId)))
+    override fun existsById(recipeId: RecipeId) = dslContext.fetchExists(RECIPES.where(RECIPES.RECIPE_ID.eq(recipeId.recipeId)))
 }
 
 private fun Record3<Array<String?>, Array<String>, Array<String>>.getList(column: FilterKey) =

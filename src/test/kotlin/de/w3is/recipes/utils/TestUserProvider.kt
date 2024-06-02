@@ -10,11 +10,13 @@ import io.micronaut.security.authentication.UsernamePasswordCredentials
 import io.micronaut.security.token.render.BearerAccessRefreshToken
 
 interface TestUserProvider {
-
     val userService: UserService
     val authenticationClient: AuthenticationClient
 
-    fun setupUser(userName: String, password: String): Pair<User, BearerAccessRefreshToken> {
+    fun setupUser(
+        userName: String,
+        password: String,
+    ): Pair<User, BearerAccessRefreshToken> {
         val user = userService.createNewUser(userName, PlainPassword(password))
         val token = authenticationClient.login(UsernamePasswordCredentials(userName, password))
         return user to token
@@ -23,7 +25,8 @@ interface TestUserProvider {
 
 @Client("/api")
 interface AuthenticationClient {
-
     @Post("/login")
-    fun login(@Body credentials: UsernamePasswordCredentials): BearerAccessRefreshToken
+    fun login(
+        @Body credentials: UsernamePasswordCredentials,
+    ): BearerAccessRefreshToken
 }

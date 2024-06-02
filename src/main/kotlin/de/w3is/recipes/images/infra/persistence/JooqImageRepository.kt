@@ -9,8 +9,11 @@ import java.io.InputStream
 
 @Singleton
 class JooqImageRepository(private val dslContext: DSLContext) : ImageRepository {
-
-    override fun store(imageId: ImageId, data: InputStream, thumbnail: InputStream) {
+    override fun store(
+        imageId: ImageId,
+        data: InputStream,
+        thumbnail: InputStream,
+    ) {
         dslContext.newRecord(IMAGES).apply {
             this.imageId = imageId.value
             this.data = data.readAllBytes()

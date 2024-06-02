@@ -14,19 +14,22 @@ import io.micronaut.security.rules.SecurityRule
 @Controller("/api/images")
 @Secured(SecurityRule.IS_ANONYMOUS)
 class ImagesController(private val imageRepository: ImageRepository) {
-
     @Get("/{id}", produces = [MediaType.IMAGE_PNG])
-    fun getImage(@PathVariable id: String): HttpResponse<ByteArray> =
-        HttpResponse.ok(imageRepository.get(ImageId(id)).readAllBytes()).cacheControl(31536000)
+    fun getImage(
+        @PathVariable id: String,
+    ): HttpResponse<ByteArray> = HttpResponse.ok(imageRepository.get(ImageId(id)).readAllBytes()).cacheControl(31536000)
 
     @Get("/{id}/thumbnail", produces = [MediaType.IMAGE_PNG])
-    fun getThumbnail(@PathVariable id: String): HttpResponse<ByteArray> =
-        HttpResponse.ok(imageRepository.getThumbnail(ImageId(id)).readAllBytes()).cacheControl(31536000)
+    fun getThumbnail(
+        @PathVariable id: String,
+    ): HttpResponse<ByteArray> = HttpResponse.ok(imageRepository.getThumbnail(ImageId(id)).readAllBytes()).cacheControl(31536000)
 }
 
-private fun <B> MutableHttpResponse<B>.cacheControl(maxAge: Int) = apply {
-    header("Cache-Control", "max-age=$maxAge")
-}
+private fun <B> MutableHttpResponse<B>.cacheControl(maxAge: Int) =
+    apply {
+        header("Cache-Control", "max-age=$maxAge")
+    }
 
 fun ImageId.toImageUrl() = "/api/images/${this.value}"
+
 fun ImageId.toThumbnailUrl() = "/api/images/${this.value}/thumbnail"

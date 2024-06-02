@@ -19,7 +19,6 @@ open class InvitationService(
     private val allowInvitationForRole: List<String>,
     private val clock: Clock,
 ) {
-
     private val logger = LoggerFactory.getLogger(InvitationService::class.java)
 
     fun findExistingInvite(creator: User): Invite? {
@@ -56,11 +55,14 @@ open class InvitationService(
         return user.role.name in allowInvitationForRole
     }
 
-    fun getInviteByCode(code: String): Invite =
-        invitationRepository.findByCode(code) ?: throw InvitationNotFoundException()
+    fun getInviteByCode(code: String): Invite = invitationRepository.findByCode(code) ?: throw InvitationNotFoundException()
 
     @Transactional
-    open fun createUserByInvite(code: String, name: String, plainPassword: PlainPassword): User {
+    open fun createUserByInvite(
+        code: String,
+        name: String,
+        plainPassword: PlainPassword,
+    ): User {
         val invite = getInviteByCode(code)
         val user = userService.createNewUser(name, plainPassword)
         invitationRepository.invalidate(invite)
@@ -70,4 +72,5 @@ open class InvitationService(
 }
 
 class NotAllowedToInviteException : RuntimeException()
+
 class InvitationNotFoundException : RuntimeException()

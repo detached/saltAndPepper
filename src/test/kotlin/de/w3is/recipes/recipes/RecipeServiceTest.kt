@@ -23,7 +23,6 @@ import java.time.ZoneOffset
 
 @MicronautTest
 class RecipeServiceTest {
-
     @Inject
     private lateinit var dslContext: DSLContext
 
@@ -45,19 +44,20 @@ class RecipeServiceTest {
 
     @Test
     fun `when storing new recipe it can be fetched`() {
-        val newRecipe = recipeService.createNewRecipe(
-            RecipeContent(
-                title = "title",
-                category = "category",
-                cuisine = "cuisine",
-                yields = "yields",
-                ingredients = "ingredients",
-                instructions = "instructions",
-                modifications = "modifications",
-                images = emptyList(),
-            ),
-            user = testUser,
-        )
+        val newRecipe =
+            recipeService.createNewRecipe(
+                RecipeContent(
+                    title = "title",
+                    category = "category",
+                    cuisine = "cuisine",
+                    yields = "yields",
+                    ingredients = "ingredients",
+                    instructions = "instructions",
+                    modifications = "modifications",
+                    images = emptyList(),
+                ),
+                user = testUser,
+            )
 
         val fetchedRecipe = recipeService.get(newRecipe.id)
 
@@ -110,16 +110,17 @@ class RecipeServiceTest {
         assertFailure { imageRepository.get(imageId) }
     }
 
-    private fun newRecipeContent() = RecipeContent(
-        title = "title",
-        category = "category",
-        cuisine = "cuisine",
-        yields = "yields",
-        ingredients = "ingredients",
-        instructions = "instructions",
-        modifications = "modifications",
-        images = emptyList(),
-    )
+    private fun newRecipeContent() =
+        RecipeContent(
+            title = "title",
+            category = "category",
+            cuisine = "cuisine",
+            yields = "yields",
+            ingredients = "ingredients",
+            instructions = "instructions",
+            modifications = "modifications",
+            images = emptyList(),
+        )
 
     private fun givenImageData() = this.javaClass.getResourceAsStream("/images/cake.jpg")!!
 }

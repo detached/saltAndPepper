@@ -18,16 +18,16 @@ import java.time.Instant
 import java.time.ZoneId
 
 class CommentsServiceTest {
-
     private val recipeService = mock<RecipeService>()
     private val commentsRepository = mock<CommentsRepository>()
     private val clock = Clock.fixed(Instant.now(), ZoneId.systemDefault())
 
-    private val commentsService = CommentsService(
-        recipeService = recipeService,
-        commentsRepository = commentsRepository,
-        clock = clock,
-    )
+    private val commentsService =
+        CommentsService(
+            recipeService = recipeService,
+            commentsRepository = commentsRepository,
+            clock = clock,
+        )
 
     @Test
     fun `given no recipe when try to create comment then it fail`() {
@@ -56,13 +56,14 @@ class CommentsServiceTest {
 
         whenever(recipeService.exists(recipeId)).thenReturn(true)
 
-        val comment = commentsService.createNewCommentForRecipe(
-            CreateNewCommentCommand(
-                userId = userId,
-                recipeId = recipeId,
-                comment = "comment",
-            ),
-        )
+        val comment =
+            commentsService.createNewCommentForRecipe(
+                CreateNewCommentCommand(
+                    userId = userId,
+                    recipeId = recipeId,
+                    comment = "comment",
+                ),
+            )
 
         verify(commentsRepository).store(comment)
     }
@@ -110,11 +111,15 @@ class CommentsServiceTest {
         verify(commentsRepository).delete(comment.id)
     }
 
-    private fun givenComment(userId: UserId, recipeId: RecipeId): Comment = Comment(
-        id = CommentId.new(),
-        userId = userId,
-        recipeId = recipeId,
-        text = "",
-        createdAt = Instant.now(clock),
-    )
+    private fun givenComment(
+        userId: UserId,
+        recipeId: RecipeId,
+    ): Comment =
+        Comment(
+            id = CommentId.new(),
+            userId = userId,
+            recipeId = recipeId,
+            text = "",
+            createdAt = Instant.now(clock),
+        )
 }

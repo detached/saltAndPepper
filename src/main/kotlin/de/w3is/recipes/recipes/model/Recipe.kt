@@ -3,7 +3,7 @@ package de.w3is.recipes.recipes.model
 import de.w3is.recipes.images.model.ImageId
 import de.w3is.recipes.recipes.RecipeContent
 import java.time.OffsetDateTime
-import java.util.*
+import java.util.UUID
 
 class Recipe(
     val id: RecipeId,
@@ -21,17 +21,27 @@ class Recipe(
     private val mutableImages: MutableList<ImageId> = images.toMutableList()
 
     fun getImages(): List<ImageId> = mutableImages
-    fun addImage(imageId: ImageId, author: Author) {
+
+    fun addImage(
+        imageId: ImageId,
+        author: Author,
+    ) {
         assertIsAuthoredBy(author)
         mutableImages.add(imageId)
     }
 
-    fun removeImage(imageId: ImageId, author: Author) {
+    fun removeImage(
+        imageId: ImageId,
+        author: Author,
+    ) {
         assertIsAuthoredBy(author)
         mutableImages.remove(imageId)
     }
 
-    fun updateWith(content: RecipeContent, author: Author): Recipe {
+    fun updateWith(
+        content: RecipeContent,
+        author: Author,
+    ): Recipe {
         assertIsAuthoredBy(author)
 
         return Recipe(
@@ -80,7 +90,18 @@ class Recipe(
     }
 
     override fun toString(): String {
-        return "Recipe(id=$id, title='$title', category='$category', cuisine='$cuisine', yields='$yields', ingredients='$ingredients', instructions='$instructions', modifications='$modifications', authorId=$authorId)"
+        return "Recipe(" +
+            "id=$id, " +
+            "title='$title', " +
+            "category='$category', " +
+            "cuisine='$cuisine', " +
+            "yields='$yields', " +
+            "ingredients='$ingredients', " +
+            "instructions='$instructions', " +
+            "modifications='$modifications', " +
+            "authorId=$authorId, " +
+            "createdAt=$createdAt, " +
+            ")"
     }
 }
 

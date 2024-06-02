@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test
 @MicronautTest
 @Transactional
 open class InvitationServiceTest {
-
     @Inject
     private lateinit var invitationService: InvitationService
 

@@ -1,7 +1,7 @@
 package de.w3is.recipes.importer
 
 import java.io.InputStream
-import java.util.*
+import java.util.Base64
 import javax.xml.stream.XMLEventReader
 import javax.xml.stream.XMLInputFactory
 import javax.xml.stream.events.EndElement
@@ -9,7 +9,6 @@ import javax.xml.stream.events.StartElement
 import javax.xml.stream.events.XMLEvent
 
 class GourmetRecipeSource(inputStream: InputStream) : ImportCommandProvider {
-
     private val reader: XMLEventReader = XMLInputFactory.newInstance().createXMLEventReader(inputStream)
 
     override fun hasNext() = reader.findElement("recipe")
@@ -87,7 +86,10 @@ class GourmetRecipeSource(inputStream: InputStream) : ImportCommandProvider {
         return "$unit $item $amount".trim()
     }
 
-    private fun XMLEventReader.readUntil(condition: (XMLEvent) -> (Boolean), block: (XMLEvent) -> (Unit)) {
+    private fun XMLEventReader.readUntil(
+        condition: (XMLEvent) -> (Boolean),
+        block: (XMLEvent) -> (Unit),
+    ) {
         while (this.hasNext()) {
             val event = nextEvent()
             if (condition(event)) {
@@ -110,9 +112,13 @@ class GourmetRecipeSource(inputStream: InputStream) : ImportCommandProvider {
     }
 
     private fun XMLEvent.isStartElement(name: String) = isStartElement && asStartElement().name() == name
+
     private fun XMLEvent.isEndElement(name: String) = isEndElement && asEndElement().name() == name
+
     private fun XMLEventReader.nextAsString() = nextEvent().asCharacters().toString().trim()
+
     private fun StartElement.name() = name.localPart.lowercase()
+
     private fun EndElement.name() = name.localPart.lowercase()
 }
 
@@ -126,14 +132,15 @@ class ImportRecipeBuilder {
     var instructions: String? = null
     var modifications: String? = null
 
-    fun build() = ImportRecipe(
-        title = title!!,
-        category = category.orEmpty(),
-        cuisine = cuisine.orEmpty(),
-        yields = yields.orEmpty(),
-        image = image,
-        ingredients = ingredients.orEmpty(),
-        instructions = instructions.orEmpty(),
-        modifications = modifications.orEmpty(),
-    )
+    fun build() =
+        ImportRecipe(
+            title = title!!,
+            category = category.orEmpty(),
+            cuisine = cuisine.orEmpty(),
+            yields = yields.orEmpty(),
+            image = image,
+            ingredients = ingredients.orEmpty(),
+            instructions = instructions.orEmpty(),
+            modifications = modifications.orEmpty(),
+        )
 }

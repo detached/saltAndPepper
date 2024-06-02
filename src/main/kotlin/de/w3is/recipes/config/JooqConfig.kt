@@ -10,18 +10,19 @@ import org.jooq.conf.Settings
 
 @Factory
 class JooqConfig {
-
     @Singleton
     @Named("postgres")
-    fun postgresSettings() = Settings()
-        .withRenderNameCase(RenderNameCase.LOWER)
-        .withRenderSchema(false)
+    fun postgresSettings() =
+        Settings()
+            .withRenderNameCase(RenderNameCase.LOWER)
+            .withRenderSchema(false)
 
     @Singleton
     @Named("h2")
-    fun h2Settings() = Settings()
-        .withRenderNameCase(RenderNameCase.UPPER)
-        .withRenderSchema(false)
+    fun h2Settings() =
+        Settings()
+            .withRenderNameCase(RenderNameCase.UPPER)
+            .withRenderSchema(false)
 
     @Singleton
     fun commentsDao(configuration: Configuration) = CommentsDao(configuration)

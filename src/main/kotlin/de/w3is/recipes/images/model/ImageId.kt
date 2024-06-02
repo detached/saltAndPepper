@@ -1,7 +1,7 @@
 package de.w3is.recipes.images.model
 
 import io.micronaut.serde.annotation.Serdeable
-import java.util.*
+import java.util.UUID
 
 @Serdeable
 data class ImageId(val value: String) {
