@@ -23,6 +23,8 @@ import io.micronaut.http.multipart.StreamingFileUpload
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.authentication.Authentication
 import io.micronaut.security.rules.SecurityRule
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import reactor.core.publisher.Mono
 import reactor.core.scheduler.Schedulers
 import java.io.File
@@ -36,6 +38,8 @@ class RecipeController(
 ) {
 
     @Post("/")
+    @Operation(summary = "Store new recipe", operationId = "storeRecipe")
+    @Tag(name = "recipes")
     fun storeRecipe(@Body request: NewRecipeRequest, authentication: Authentication): NewRecipeResponse {
         val user = with(userService) { authentication.getUser() }
         val recipe = recipeService.createNewRecipe(
@@ -56,17 +60,23 @@ class RecipeController(
     }
 
     @Get("/{id}")
+    @Operation(summary = "Get recipe by id", operationId = "getRecipe")
+    @Tag(name = "recipes")
     fun getRecipe(@PathVariable("id") recipeId: String): RecipeViewModel {
         return recipeService.get(RecipeId(recipeId)).toModel()
     }
 
     @Delete("/{id}")
+    @Operation(summary = "Delete recipe by id", operationId = "deleteRecipe")
+    @Tag(name = "recipes")
     fun deleteRecipe(@PathVariable("id") recipeId: String, authentication: Authentication) {
         val user = with(userService) { authentication.getUser() }
         recipeService.deleteRecipe(RecipeId(recipeId), user)
     }
 
     @Put("/{id}")
+    @Operation(summary = "Update recipe", operationId = "updateRecipe")
+    @Tag(name = "recipes")
     fun updateRecipe(
         @PathVariable("id") recipeId: String,
         @Body request: RecipeViewModel,
@@ -87,6 +97,8 @@ class RecipeController(
     }
 
     @Post("/{id}/images", consumes = [MediaType.MULTIPART_FORM_DATA])
+    @Operation(summary = "Add image to recipe", operationId = "addImageToRecipe")
+    @Tag(name = "recipes")
     fun addImageToRecipe(
         @PathVariable("id") recipeId: String,
         file: StreamingFileUpload,

@@ -12,6 +12,8 @@ import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Post
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 
 @Controller("/api/recipe/search")
 @Secured(SecurityRule.IS_AUTHENTICATED)
@@ -21,6 +23,8 @@ class RecipeSearchController(
 ) {
 
     @Post
+    @Operation(summary = "Search recipes", operationId = "searchRecipes")
+    @Tag(name = "recipes")
     fun search(@Body searchRequestViewModel: SearchRequestViewModel): SearchResponseViewModel {
         val searchResponse = recipeRepository.search(searchRequestViewModel.toSearchRequest())
         val possibleFilter = searchResponse.possibleFilter.toViewModel()
