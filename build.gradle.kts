@@ -5,7 +5,7 @@ import org.jooq.meta.jaxb.Property
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.9.22"
     id("org.jetbrains.kotlin.plugin.allopen") version "1.9.22"
-    id("com.google.devtools.ksp") version "1.9.22-1.0.18"
+    id("com.google.devtools.ksp") version "2.0.0-1.0.22"
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("io.micronaut.application") version "4.4.0"
     id("io.micronaut.aot") version "4.4.0"
