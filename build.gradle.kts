@@ -19,7 +19,7 @@ group = "de.w3is"
 
 val kotlinVersion = "1.9.22"
 val micronautVersion = "4.4.3"
-val postgresqlJdbcVersion = "42.7.1"
+val postgresqlJdbcVersion = "42.7.3"
 val jooqVersion = "3.19.9"
 val nodeVersion = "21.2.0"
 val nodeNpmVersion = "10.2.3"
