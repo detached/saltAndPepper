@@ -13,7 +13,19 @@ updates:
     directory: "/frontend/"
     schedule:
       interval: "weekly"
+    groups:
+      react:
+        patterns:
+          - react*
+      dev-dependencies:
+        dependency-type: development
   - package-ecosystem: "gradle"
     directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      kotlin:
+        patterns:
+          - org.jetbrains.kotlin.*
+          - com.google.devtools.ksp
+          - kotlinVersion
