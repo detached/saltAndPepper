@@ -1,3 +1,7 @@
+micronaut:
+  server:
+    host: 127.0.0.1
+
 datasources:
   h2:
     url: jdbc:h2:mem:test;MODE=PostgreSQL;INIT=CREATE SCHEMA IF NOT EXISTS PUBLIC;
