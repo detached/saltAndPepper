@@ -7,8 +7,10 @@
 
 .newrecipes-card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  flex-shrink: 1;
+  flex-grow: 1;
   transition: 0.3s;
-  width: 12em;
+  max-width: 12em;
   margin: 0.5em;
   background-color: var(--contourColor);
 }
