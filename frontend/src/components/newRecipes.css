@@ -2,17 +2,35 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  align-items: flex-start;
+  column-gap: 0.5em;
+  row-gap: 0.5em;
+  margin-left: 0.5em;
+}
+
+@media (max-width: 29em) {
+  .newrecipes-box {
+    row-gap: 0.1em;
+    column-gap: 0.1em;
+    margin-left: 0;
+  }
 }
 
 .newrecipes-card {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  flex-shrink: 1;
-  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 0 1 14em;
   transition: 0.3s;
-  max-width: 12em;
-  margin: 0.5em;
   background-color: var(--contourColor);
+  height: 14em;
+  max-width: 14em;
+}
+
+@media (max-width: 32em) {
+  .newrecipes-card {
+    max-width: unset;
+    flex: 1 1 100%;
+  }
 }
 
 .newrecipes-card:hover {
@@ -21,18 +39,17 @@
 
 .newrecipes-card #image {
   align-content: center;
+  max-width: 100%;
+  max-height: 10em;
+  flex-shrink: 1;
+  flex-grow: 1;
 }
 
 .newrecipes-card #image img {
-  margin: auto;
-  display: block;
 }
 
 .newrecipes-card #content {
-  padding: 0.1em 0.8em;
-  height: 4em;
-  text-overflow: ellipsis;
-  overflow: hidden;
+  max-width: 100%;
 }
 
 .newrecipes-card #title {
@@ -41,6 +58,7 @@
   color: var(--textHeaderColor);
   font-weight: bold;
   text-overflow: ellipsis;
+  text-align: center;
   white-space: nowrap;
   overflow: hidden;
 }
@@ -48,7 +66,7 @@
 .newrecipes-card #subtitle {
   padding: 0.3em;
   font-size: smaller;
-  text-align: right;
+  text-align: center;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
