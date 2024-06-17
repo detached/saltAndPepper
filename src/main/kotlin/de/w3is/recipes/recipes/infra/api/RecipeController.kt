@@ -103,6 +103,10 @@ class RecipeController(
     ): Mono<HttpResponse<*>> {
         val user = with(userService) { authentication.getUser() }
 
+        if (file.definedSize > MAX_UPLOAD_SIZE) {
+            return Mono.fromCallable { HttpResponse.badRequest<Unit>() }
+        }
+
         return Mono.fromCallable { File.createTempFile("upload", "temp") }
             .subscribeOn(Schedulers.boundedElastic())
             .flatMap { tempFile ->
@@ -112,6 +116,7 @@ class RecipeController(
             }.map { (tempFile, success) ->
                 if (success) {
                     val imageId = recipeService.addImageToRecipe(RecipeId(recipeId), tempFile.inputStream(), user)
+                    tempFile.delete()
                     HttpResponse.ok(imageId.toImageViewModel())
                 } else {
                     HttpResponse.serverError("Could not store image")
@@ -144,4 +149,8 @@ class RecipeController(
             url = toImageUrl(),
             thumbnailUrl = toThumbnailUrl(),
         )
+
+    companion object {
+        const val MAX_UPLOAD_SIZE = 4 * 1024 * 1024
+    }
 }
