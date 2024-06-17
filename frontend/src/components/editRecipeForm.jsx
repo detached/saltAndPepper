@@ -1,9 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { useCallback, useEffect, useReducer, useState } from "react";
-import { useDropzone } from "react-dropzone";
-import { FaTrashAlt } from "react-icons/fa";
+import { useCallback, useReducer, useState } from "react";
 import Spinner from "./spinner.jsx";
+import ImageDropzone from "./imageDropzone.jsx";
 import { storeRecipe } from "../service/storeRecipeService.js";
 import "./editRecipeForm.css";
 import "./dropzone.css";
@@ -98,94 +97,44 @@ export default function EditRecipeForm({ titleKey, initRecipe }) {
     recipeReducer,
   );
 
-  const [images, setImages] = useState(
-    initRecipe.images ? initRecipe.images : [],
-  );
+  const handleImagesDropped = (acceptedFiles) => {
+    recipeDispatcher({
+      type: EditRecipeActions.ADD_NEW_IMAGES,
+      value: acceptedFiles,
+    });
+  };
 
-  const { getRootProps, getInputProps } = useDropzone({
-    accept: {
-      "image/jpeg": [".jpg", ".jpeg"],
-      "image/png": [".png"],
-    },
-    onDrop: (acceptedFiles) => {
-      let newImages = acceptedFiles.map((file) =>
-        Object.assign(file, {
-          isNew: true,
-          thumbnailUrl: URL.createObjectURL(file),
-        }),
-      );
-      setImages(images.concat(newImages));
-      recipeDispatcher({
-        type: EditRecipeActions.ADD_NEW_IMAGES,
-        value: acceptedFiles,
-      });
-    },
-  });
-
-  function removeImage(imageToRemove) {
-    if (imageToRemove.isNew) {
+  const handleImageRemoved = (removedImage, wasNew) => {
+    if (wasNew) {
       recipeDispatcher({
         type: EditRecipeActions.REMOVE_NEW_IMAGE,
-        value: imageToRemove,
+        value: removedImage,
       });
     } else {
       recipeDispatcher({
         type: EditRecipeActions.REMOVE_EXISTING_IMAGE,
-        value: imageToRemove,
+        value: removedImage,
       });
     }
-    setImages(images.filter((image) => image !== imageToRemove));
-  }
-
-  const thumbs = images.map((file) => (
-    <div
-      className="edit-recipe-images-thumb"
-      key={file.name ? file.name : file.id}
-    >
-      <div onClick={() => removeImage(file)}>
-        <img
-          id="image"
-          src={file.thumbnailUrl}
-          onLoad={() => {
-            if (file.isNew) {
-              URL.revokeObjectURL(file.thumbnailUrl);
-            }
-          }}
-          alt="thumbnail"
-        />
-        <div id="overlay">
-          <FaTrashAlt />
-        </div>
-      </div>
-    </div>
-  ));
-  useEffect(() => {
-    // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
-    return () =>
-      images.forEach((file) => {
-        if (file.isNew) {
-          URL.revokeObjectURL(file.preview);
-        }
-      });
-  }, [images]);
+  };
 
   const handleStoreRecipe = useCallback(
-    (e) => {
-      e.preventDefault();
-      if (isLoading) {
-        return;
-      }
-      setIsLoading(true);
+      (e) => {
+        e.preventDefault();
+        if (isLoading) {
+          return;
+        }
+        setIsLoading(true);
 
-      storeRecipe(recipe)
-        .then((result) => {
-          navigateTo("/recipe/" + result.id);
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    },
-    [recipe, isLoading, navigateTo],
+        storeRecipe(recipe)
+            .then((result) => {
+              navigateTo("/recipe/" + result.id);
+            })
+            .finally(() => {
+              setIsLoading(false);
+            });
+      },
+      [recipe, isLoading, navigateTo],
   );
 
   return (
@@ -197,15 +146,7 @@ export default function EditRecipeForm({ titleKey, initRecipe }) {
       <div className="content pure-g">
         <form className="pure-form pure-form-stacked">
           <div className="pure-u-1 pure-u-md-1-2">
-            <section className="edit-recipe-images-container">
-              <div {...getRootProps({ className: "dropzone" })}>
-                <input {...getInputProps()} />
-                <p>{t("newRecipe.dropzone")}</p>
-              </div>
-              <aside className="edit-recipe-images-thumbs-container">
-                {thumbs}
-              </aside>
-            </section>
+            <ImageDropzone initImages={initRecipe.images} onImagesDropped={handleImagesDropped} onImageRemoved={handleImageRemoved}/>
           </div>
           <div className="pure-u-1 pure-u-md-1-2">
             <fieldset>
