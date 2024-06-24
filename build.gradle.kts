@@ -26,7 +26,7 @@ val nodeNpmVersion = "10.2.3"
 val assertKVersion = "0.28.1"
 val thumbnailatorVersion = "0.4.20"
 val commonsTextVersion = "1.12.0"
-val springSecurityVersion = "6.3.0"
+val springSecurityVersion = "6.3.1"
 val mockitoVersion = "5.3.1"
 val h2Version = "2.2.224"
 
