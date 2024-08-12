@@ -3,9 +3,9 @@ import nu.studer.gradle.jooq.JooqGenerate
 import org.jooq.meta.jaxb.Property
 
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "2.0.0"
-    id("org.jetbrains.kotlin.plugin.allopen") version "2.0.0"
-    id("com.google.devtools.ksp") version "2.0.0-1.0.22"
+    id("org.jetbrains.kotlin.jvm") version "2.0.10"
+    id("org.jetbrains.kotlin.plugin.allopen") version "2.0.10"
+    id("com.google.devtools.ksp") version "2.0.10-1.0.24"
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("io.micronaut.application") version "4.4.0"
     id("io.micronaut.aot") version "4.4.0"
@@ -17,7 +17,7 @@ plugins {
 version = "1.0"
 group = "de.w3is"
 
-val kotlinVersion = "2.0.0"
+val kotlinVersion = "2.0.10"
 val micronautVersion = "4.4.3"
 val postgresqlJdbcVersion = "42.7.3"
 val jooqVersion = "3.19.9"
