@@ -85,14 +85,14 @@ application {
 
 tasks {
     compileKotlin {
-        kotlinOptions {
-            freeCompilerArgs = listOf("-Xcontext-receivers")
+        compilerOptions {
+            freeCompilerArgs.add("-Xcontext-receivers")
         }
     }
 
     compileTestKotlin {
-        kotlinOptions {
-            freeCompilerArgs = listOf("-Xcontext-receivers")
+        compilerOptions {
+            freeCompilerArgs.add("-Xcontext-receivers")
         }
     }
 }
