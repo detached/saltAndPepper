@@ -22,9 +22,6 @@ updates:
           - react*
       dev-dependencies:
         dependency-type: development
-    allow:
-      - dependency-type: "development"
-    automerge: true
   - package-ecosystem: "gradle"
     directory: "/"
     schedule:
