@@ -28,7 +28,7 @@ val thumbnailatorVersion = "0.4.20"
 val commonsTextVersion = "1.12.0"
 val springSecurityVersion = "6.3.3"
 val mockitoVersion = "5.3.1"
-val h2Version = "2.2.224"
+val h2Version = "2.3.232"
 
 repositories {
     mavenCentral()
