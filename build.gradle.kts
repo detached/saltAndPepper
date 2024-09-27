@@ -10,7 +10,7 @@ plugins {
     id("io.micronaut.application") version "4.4.0"
     id("io.micronaut.aot") version "4.4.2"
     id("nu.studer.jooq") version "9.0"
-    id("com.github.node-gradle.node") version "7.0.2"
+    id("com.github.node-gradle.node") version "7.1.0"
     id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
 }
 
