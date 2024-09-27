@@ -5,7 +5,7 @@
   "type": "module",
   "dependencies": {
     "axios": "^1.7.7",
-    "i18next": "^23.6.0",
+    "i18next": "^23.15.1",
     "objectmodel": "^4.4.5",
     "prop-types": "^15.8.1",
     "purecss": "^3.0.0",
