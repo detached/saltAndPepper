@@ -21,7 +21,7 @@ jobs:
         distribution: 'adopt'
 
     - name: Setup Grade
-      uses: gradle/actions/setup-gradle@v3
+      uses: gradle/actions/setup-gradle@v4
 
     - name: Build
       run: ./gradlew clean build
