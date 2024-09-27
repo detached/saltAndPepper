@@ -9,6 +9,9 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    allow:
+      - dependency-type: "direct"
+    automerge: true
   - package-ecosystem: "npm"
     directory: "/frontend/"
     schedule:
