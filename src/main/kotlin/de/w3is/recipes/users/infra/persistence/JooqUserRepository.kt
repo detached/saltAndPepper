@@ -1,6 +1,11 @@
 package de.w3is.recipes.users.infra.persistence
 
+import de.w3is.recipes.common.model.Page
+import de.w3is.recipes.common.model.PageRequest
+import de.w3is.recipes.common.model.PageResponse
 import de.w3is.recipes.infra.persistence.generated.tables.Users.Companion.USERS
+import de.w3is.recipes.infra.persistence.generated.tables.daos.UsersDao
+import de.w3is.recipes.infra.persistence.generated.tables.pojos.Users
 import de.w3is.recipes.infra.persistence.generated.tables.records.UsersRecord
 import de.w3is.recipes.recipes.AuthorRepository
 import de.w3is.recipes.recipes.model.Author
@@ -12,32 +17,53 @@ import de.w3is.recipes.users.model.User
 import de.w3is.recipes.users.model.UserId
 import jakarta.inject.Singleton
 import org.jooq.DSLContext
+import kotlin.math.ceil
 
 @Singleton
-open class JooqUserRepository(private val dslContext: DSLContext) : UserRepository, AuthorRepository {
-    override fun findUser(userName: String): User? =
-        dslContext.selectFrom(USERS).where(USERS.USERNAME.equal(userName))
-            .fetchOne { toUser(it) }
+open class JooqUserRepository(
+    private val usersDao: UsersDao,
+    private val dslContext: DSLContext,
+) : UserRepository, AuthorRepository {
+    override fun findUser(userName: String): User? = usersDao.fetchOneByUsername(userName)?.toUser()
 
-    override fun getUser(userId: UserId): User =
-        dslContext.selectFrom(USERS).where(USERS.USER_ID.equal(userId.value))
-            .fetchOne { toUser(it) } ?: error("User for id $userId not found")
+    override fun getUser(userId: UserId): User = usersDao.fetchOneByUserId(userId.value)?.toUser() ?: error("User for id $userId not found")
 
-    private fun toUser(it: UsersRecord) =
-        User(
-            id = UserId(it.userId!!),
-            name = it.username!!,
-            password = EncryptedPassword(it.password!!),
-            role = Role.valueOf(it.role!!),
-        )
+    override fun get(authorId: AuthorId): Author {
+        usersDao.fetchByUserId(authorId.value)
+        return dslContext.selectFrom(USERS).where(USERS.USER_ID.equal(authorId.value))
+            .fetchOne { recordToAuthor(it) }
+            ?: error("Author with id $authorId")
+    }
+
+    override fun get(authorIds: Set<AuthorId>): Set<Author> =
+        dslContext.selectFrom(USERS).where(USERS.USER_ID.`in`(authorIds.map { it.value }))
+            .fetch { recordToAuthor(it) }.toSet()
+
+    override fun getAllUsers(request: PageRequest): PageResponse<User> =
+        dslContext.selectFrom(USERS)
+            .limit(request.limit)
+            .offset(request.page * request.limit)
+            .fetch { it.toUser() }.let { users ->
+                PageResponse(
+                    results = users,
+                    page =
+                        Page(
+                            current = request.page,
+                            max = ceil(usersDao.count().toDouble() / request.limit).toInt() - 1,
+                            size = users.size,
+                        ),
+                )
+            }
 
     override fun store(user: User) {
-        dslContext.newRecord(USERS).apply {
-            userId = user.id.value
-            username = user.name
-            password = user.password.value
-            role = user.role.name
-        }.store()
+        usersDao.insert(
+            Users(
+                userId = user.id.value,
+                username = user.name,
+                password = user.password.value,
+                role = user.role.name,
+            ),
+        )
     }
 
     override fun update(user: User) {
@@ -48,18 +74,25 @@ open class JooqUserRepository(private val dslContext: DSLContext) : UserReposito
             .execute()
     }
 
-    override fun get(authorId: AuthorId): Author =
-        dslContext.selectFrom(USERS).where(USERS.USER_ID.equal(authorId.value))
-            .fetchOne { recordToAuthor(it) }
-            ?: error("Author with id $authorId")
-
-    override fun get(authorIds: Set<AuthorId>): Set<Author> =
-        dslContext.selectFrom(USERS).where(USERS.USER_ID.`in`(authorIds.map { it.value }))
-            .fetch { recordToAuthor(it) }.toSet()
-
     private fun recordToAuthor(it: UsersRecord) =
         Author(
             id = AuthorId(it.userId!!),
             name = it.username!!,
+        )
+
+    private fun Users.toUser() =
+        User(
+            id = UserId(userId!!),
+            name = username!!,
+            password = EncryptedPassword(password!!),
+            role = Role.valueOf(role!!),
+        )
+
+    private fun UsersRecord.toUser() =
+        User(
+            id = UserId(userId!!),
+            name = username!!,
+            password = EncryptedPassword(password!!),
+            role = Role.valueOf(role!!),
         )
 }

@@ -1,5 +1,6 @@
 package de.w3is.recipes.recipes.infra.api
 
+import de.w3is.recipes.common.api.toPageViewModel
 import de.w3is.recipes.images.infra.api.toThumbnailUrl
 import de.w3is.recipes.recipes.AuthorRepository
 import de.w3is.recipes.recipes.RecipeRepository
@@ -28,20 +29,15 @@ class RecipeSearchController(
 
         return with(searchResponse) {
             SearchResponseViewModel(
-                page =
-                    PageViewModel(
-                        size = page.size,
-                        number = page.current,
-                        maxNumber = page.max,
-                    ),
+                page = page.toPageViewModel(),
                 data = results.map { it.toViewModel() },
                 possibleFilter = possibleFilter,
             )
         }
     }
 
-    private fun Recipe.toViewModel(): SearchResponseData {
-        return SearchResponseData(
+    private fun Recipe.toViewModel() =
+        SearchResponseData(
             id = this.id.recipeId,
             imageUrl = this.getImages().firstOrNull()?.toThumbnailUrl() ?: "",
             title = this.title,
@@ -49,7 +45,6 @@ class RecipeSearchController(
             cuisine = this.cuisine,
             author = authorRepository.get(this.authorId).name,
         )
-    }
 
     private fun SearchRequestViewModel.toSearchRequest(): SearchRequest {
         val limit =

@@ -1,6 +1,7 @@
 package de.w3is.recipes.config
 
 import de.w3is.recipes.infra.persistence.generated.tables.daos.CommentsDao
+import de.w3is.recipes.infra.persistence.generated.tables.daos.UsersDao
 import io.micronaut.context.annotation.Factory
 import jakarta.inject.Named
 import jakarta.inject.Singleton
@@ -26,4 +27,7 @@ class JooqConfig {
 
     @Singleton
     fun commentsDao(configuration: Configuration) = CommentsDao(configuration)
+
+    @Singleton
+    fun usersDao(configuration: Configuration) = UsersDao(configuration)
 }

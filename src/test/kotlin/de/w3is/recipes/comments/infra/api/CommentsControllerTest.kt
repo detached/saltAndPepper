@@ -45,7 +45,7 @@ class CommentsControllerTest(
 
     @Test
     fun `given no comment when create new comment then list of comment contains new comment`() {
-        val (user, token) = setupUser(userName, password)
+        val (user, token) = givenAuthenticatedUser(userName, password)
         val recipe = givenRecipe(user)
 
         val beforeAddingComment =
@@ -87,7 +87,7 @@ class CommentsControllerTest(
 
     @Test
     fun `given comment when creating new comment then new comment should be sorted first`() {
-        val (user, token) = setupUser(userName, password)
+        val (user, token) = givenAuthenticatedUser(userName, password)
         val recipe = givenRecipe(user)
 
         client.toBlocking().retrieveObject<CommentViewModel>(
@@ -124,7 +124,7 @@ class CommentsControllerTest(
 
     @Test
     fun `given a comment when deleting the comment the recipe should not have a comment`() {
-        val (user, token) = setupUser(userName, password)
+        val (user, token) = givenAuthenticatedUser(userName, password)
         val recipe = givenRecipe(user)
 
         client.toBlocking().retrieveObject<CommentViewModel>(
@@ -165,7 +165,7 @@ class CommentsControllerTest(
 
     @Test
     fun `when the comment is created by user then it can be deleted`() {
-        val (user, token) = setupUser(userName, password)
+        val (user, token) = givenAuthenticatedUser(userName, password)
         val recipe = givenRecipe(user)
 
         val comment = "test comment"
@@ -191,8 +191,8 @@ class CommentsControllerTest(
 
     @Test
     fun `when the comment is created by other user then it can't be deleted`() {
-        val (user, token) = setupUser(userName, password)
-        val (_, token2) = setupUser("${userName}2", password)
+        val (user, token) = givenAuthenticatedUser(userName, password)
+        val (_, token2) = givenAuthenticatedUser("${userName}2", password)
         val recipe = givenRecipe(user)
 
         val comment = "test comment"

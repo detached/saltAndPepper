@@ -1,6 +1,7 @@
 package de.w3is.recipes.recipes.infra.persistence
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import de.w3is.recipes.common.model.Page
 import de.w3is.recipes.images.model.ImageId
 import de.w3is.recipes.infra.persistence.generated.tables.Recipes.Companion.RECIPES
 import de.w3is.recipes.infra.persistence.generated.tables.records.RecipesRecord
@@ -8,7 +9,6 @@ import de.w3is.recipes.recipes.RecipeRepository
 import de.w3is.recipes.recipes.model.AuthorId
 import de.w3is.recipes.recipes.model.FilterKey
 import de.w3is.recipes.recipes.model.OrderField
-import de.w3is.recipes.recipes.model.Page
 import de.w3is.recipes.recipes.model.Recipe
 import de.w3is.recipes.recipes.model.RecipeId
 import de.w3is.recipes.recipes.model.SearchRequest

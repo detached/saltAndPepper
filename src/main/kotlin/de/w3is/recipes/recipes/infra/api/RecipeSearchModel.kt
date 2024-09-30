@@ -1,5 +1,6 @@
 package de.w3is.recipes.recipes.infra.api
 
+import de.w3is.recipes.common.api.PageViewModel
 import de.w3is.recipes.recipes.model.FilterKey
 import de.w3is.recipes.recipes.model.Order
 import io.micronaut.serde.annotation.Serdeable
@@ -27,13 +28,6 @@ data class SearchResponseData(
     val category: String,
     val cuisine: String,
     val author: String,
-)
-
-@Serdeable
-data class PageViewModel(
-    val size: Int,
-    val number: Int,
-    val maxNumber: Int?,
 )
 
 @Serdeable

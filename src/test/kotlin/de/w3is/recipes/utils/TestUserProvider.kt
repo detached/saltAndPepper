@@ -13,7 +13,7 @@ interface TestUserProvider {
     val userService: UserService
     val authenticationClient: AuthenticationClient
 
-    fun setupUser(
+    fun givenAuthenticatedUser(
         userName: String,
         password: String,
     ): Pair<User, BearerAccessRefreshToken> {
@@ -21,6 +21,8 @@ interface TestUserProvider {
         val token = authenticationClient.login(UsernamePasswordCredentials(userName, password))
         return user to token
     }
+
+    fun givenUser(username: String): User = userService.createNewUser(username, PlainPassword("password"))
 }
 
 @Client("/api")

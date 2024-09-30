@@ -1,27 +1,23 @@
 package de.w3is.recipes.recipes.model
 
+import de.w3is.recipes.common.model.Page
+import de.w3is.recipes.common.model.PageRequest
+import de.w3is.recipes.common.model.PageResponse
 import io.micronaut.serde.annotation.Serdeable
 
-data class SearchRequest(
+class SearchRequest(
     val query: String,
-    val limit: Int,
-    val page: Int,
     val filter: Map<FilterKey, List<String>>,
     val order: Order,
-)
+    limit: Int,
+    page: Int,
+) : PageRequest(limit, page)
 
-data class SearchResponse(
-    val results: List<Recipe>,
-    val page: Page,
+class SearchResponse(
     val possibleFilter: Map<FilterKey, List<String>>,
-)
-
-@Serdeable
-data class Page(
-    val current: Int,
-    val max: Int,
-    val size: Int,
-)
+    results: List<Recipe>,
+    page: Page,
+) : PageResponse<Recipe>(results, page)
 
 @Serdeable
 enum class FilterKey {
