@@ -169,7 +169,9 @@ tasks.register<NpmTask>("testFrontend") {
 }
 
 tasks.withType<Test> {
-    dependsOn("testFrontend")
+    if(project.hasProperty("withFrontend")) {
+        dependsOn("testFrontend")
+    }
 }
 
 tasks.register<NpmTask>("buildFrontend") {
@@ -189,7 +191,9 @@ tasks.register<Copy>("copyFrontendBundle") {
 }
 
 tasks.named("processResources") {
-    dependsOn("copyFrontendBundle")
+    if(project.hasProperty("withFrontend")) {
+        dependsOn("copyFrontendBundle")
+    }
 }
 
 tasks.named<JooqGenerate>("generateJooq") {
