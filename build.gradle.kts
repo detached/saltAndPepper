@@ -7,7 +7,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.allopen") version "2.0.21"
     id("com.google.devtools.ksp") version "2.0.21-1.0.26"
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("io.micronaut.application") version "4.4.3"
+    id("io.micronaut.application") version "4.4.4"
     id("io.micronaut.aot") version "4.4.4"
     id("nu.studer.jooq") version "9.0"
     id("com.github.node-gradle.node") version "7.1.0"
