@@ -11,7 +11,7 @@ plugins {
     id("io.micronaut.aot") version "4.4.4"
     id("nu.studer.jooq") version "9.0"
     id("com.github.node-gradle.node") version "7.1.0"
-    id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
+    id("org.jlleitschuh.gradle.ktlint") version "12.1.2"
 }
 
 version = "1.0"
