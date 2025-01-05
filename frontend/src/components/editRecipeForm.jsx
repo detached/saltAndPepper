@@ -119,22 +119,22 @@ export default function EditRecipeForm({ titleKey, initRecipe }) {
   };
 
   const handleStoreRecipe = useCallback(
-      (e) => {
-        e.preventDefault();
-        if (isLoading) {
-          return;
-        }
-        setIsLoading(true);
+    (e) => {
+      e.preventDefault();
+      if (isLoading) {
+        return;
+      }
+      setIsLoading(true);
 
-        storeRecipe(recipe)
-            .then((result) => {
-              navigateTo("/recipe/" + result.id);
-            })
-            .finally(() => {
-              setIsLoading(false);
-            });
-      },
-      [recipe, isLoading, navigateTo],
+      storeRecipe(recipe)
+        .then((result) => {
+          navigateTo("/recipe/" + result.id);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    },
+    [recipe, isLoading, navigateTo],
   );
 
   return (
@@ -146,7 +146,11 @@ export default function EditRecipeForm({ titleKey, initRecipe }) {
       <div className="content pure-g">
         <form className="pure-form pure-form-stacked">
           <div className="pure-u-1 pure-u-md-1-2">
-            <ImageDropzone initImages={initRecipe.images} onImagesDropped={handleImagesDropped} onImageRemoved={handleImageRemoved}/>
+            <ImageDropzone
+              initImages={initRecipe.images}
+              onImagesDropped={handleImagesDropped}
+              onImageRemoved={handleImageRemoved}
+            />
           </div>
           <div className="pure-u-1 pure-u-md-1-2">
             <fieldset>

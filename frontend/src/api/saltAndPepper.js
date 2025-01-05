@@ -16,6 +16,8 @@ import {
   SearchFilter,
   SearchResponse,
   SearchResponseData,
+  User,
+  UsersResponse,
 } from "./model.js";
 
 function doRequest(method, url, data, headers) {
@@ -533,6 +535,42 @@ export const SaltAndPepper = {
     } else {
       return (await doRequest("GET", "/comments/recipe/" + recipeId)).data
         .comments;
+    }
+  },
+
+  /**
+   * @param page {number}
+   * @param limit {number}
+   * @returns {Promise<UsersResponse>}
+   */
+  getAllUsers: async function (page, limit) {
+    if (mockConfig.enabled) {
+      console.log("getAllUsers");
+      return new UsersResponse({
+        users: [
+          new User({
+            id: "1",
+            name: "User1",
+            role: "Role1",
+          }),
+          new User({
+            id: "2",
+            name: "User2",
+            role: "Role2",
+          }),
+        ],
+        page: new Page({
+          size: limit,
+          number: page,
+          maxNumber: 10,
+        }),
+      });
+    } else {
+      const response = await doRequest(
+        "GET",
+        "/api/users?page=" + page + "&limit=" + limit,
+      );
+      return response.data;
     }
   },
 };

@@ -41,11 +41,12 @@ class UserControllerTest(
         val (user, token) = givenAuthenticatedUser(userName, password)
 
         // Act
-        val response = client.toBlocking().retrieveObject<UsersResponseViewModel>(
-            HttpRequest.GET<Any>("/users")
-                .bearerAuth(token.accessToken)
-                .accept("application/json"),
-        )
+        val response =
+            client.toBlocking().retrieveObject<UsersResponseViewModel>(
+                HttpRequest.GET<Any>("/users")
+                    .bearerAuth(token.accessToken)
+                    .accept("application/json"),
+            )
 
         // Assert
         assertThat(response.users).hasSize(1)
@@ -70,16 +71,18 @@ class UserControllerTest(
         val user4 = givenUser("user4")
 
         // Act
-        val firstPage = client.toBlocking().retrieveObject<UsersResponseViewModel>(
-            HttpRequest.GET<Any>("/users?page=0&limit=2")
-                .bearerAuth(token.accessToken)
-                .accept("application/json"),
-        )
-        val secondPage = client.toBlocking().retrieveObject<UsersResponseViewModel>(
-            HttpRequest.GET<Any>("/users?page=1&limit=2")
-                .bearerAuth(token.accessToken)
-                .accept("application/json"),
-        )
+        val firstPage =
+            client.toBlocking().retrieveObject<UsersResponseViewModel>(
+                HttpRequest.GET<Any>("/users?page=0&limit=2")
+                    .bearerAuth(token.accessToken)
+                    .accept("application/json"),
+            )
+        val secondPage =
+            client.toBlocking().retrieveObject<UsersResponseViewModel>(
+                HttpRequest.GET<Any>("/users?page=1&limit=2")
+                    .bearerAuth(token.accessToken)
+                    .accept("application/json"),
+            )
 
         // Assert
         assertThat(firstPage.users).hasSize(2)
@@ -105,14 +108,15 @@ class UserControllerTest(
     fun `test huge page limit is sanitized into a smaller page size`() {
         // Arrange
         val (_, token) = givenAuthenticatedUser(userName, password)
-        (0 .. 50).forEach { givenUser("user$it") }
+        (0..50).forEach { givenUser("user$it") }
 
         // Act
-        val response = client.toBlocking().retrieveObject<UsersResponseViewModel>(
-            HttpRequest.GET<Any>("/users?page=0&limit=1000")
-                .bearerAuth(token.accessToken)
-                .accept("application/json"),
-        )
+        val response =
+            client.toBlocking().retrieveObject<UsersResponseViewModel>(
+                HttpRequest.GET<Any>("/users?page=0&limit=1000")
+                    .bearerAuth(token.accessToken)
+                    .accept("application/json"),
+            )
 
         // Assert
         assertThat(response.users).hasSize(50)
@@ -129,11 +133,12 @@ class UserControllerTest(
         val (_, token) = givenAuthenticatedUser(userName, password)
 
         // Act
-        val response = client.toBlocking().retrieveObject<UsersResponseViewModel>(
-            HttpRequest.GET<Any>("/users?page=-1&limit=10")
-                .bearerAuth(token.accessToken)
-                .accept("application/json"),
-        )
+        val response =
+            client.toBlocking().retrieveObject<UsersResponseViewModel>(
+                HttpRequest.GET<Any>("/users?page=-1&limit=10")
+                    .bearerAuth(token.accessToken)
+                    .accept("application/json"),
+            )
 
         // Assert
         assertThat(response.users).hasSize(1)
@@ -150,11 +155,12 @@ class UserControllerTest(
         val (_, token) = givenAuthenticatedUser(userName, password)
 
         // Act
-        val response = client.toBlocking().retrieveObject<UsersResponseViewModel>(
-            HttpRequest.GET<Any>("/users?page=0&limit=-1")
-                .bearerAuth(token.accessToken)
-                .accept("application/json"),
-        )
+        val response =
+            client.toBlocking().retrieveObject<UsersResponseViewModel>(
+                HttpRequest.GET<Any>("/users?page=0&limit=-1")
+                    .bearerAuth(token.accessToken)
+                    .accept("application/json"),
+            )
 
         // Assert
         assertThat(response.users).hasSize(1)

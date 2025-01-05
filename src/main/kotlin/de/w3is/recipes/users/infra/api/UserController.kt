@@ -23,12 +23,18 @@ class UserController(
         @QueryValue(defaultValue = "50") limit: Int,
     ): UsersResponseViewModel {
         val sanitizedPage = maxOf(page, 0)
-        val sanitizedLimit = if(limit < 0 || limit > 50) { 50 } else { limit }
+        val sanitizedLimit =
+            if (limit < 0 || limit > 50) {
+                50
+            } else {
+                limit
+            }
 
-        val request = PageRequest(
-            limit = sanitizedLimit,
-            page = sanitizedPage
-        )
+        val request =
+            PageRequest(
+                limit = sanitizedLimit,
+                page = sanitizedPage,
+            )
         return userRepository.getAllUsers(request).toViewModel()
     }
 }

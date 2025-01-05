@@ -169,7 +169,7 @@ tasks.register<NpmTask>("testFrontend") {
 }
 
 tasks.withType<Test> {
-    if(project.hasProperty("withFrontend")) {
+    if (project.hasProperty("withFrontend")) {
         dependsOn("testFrontend")
     }
 }
@@ -191,7 +191,7 @@ tasks.register<Copy>("copyFrontendBundle") {
 }
 
 tasks.named("processResources") {
-    if(project.hasProperty("withFrontend")) {
+    if (project.hasProperty("withFrontend")) {
         dependsOn("copyFrontendBundle")
     }
 }

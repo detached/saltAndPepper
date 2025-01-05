@@ -121,3 +121,14 @@ export class AuthResponse extends Model({
   accessToken: String,
   refreshToken: String,
 }) {}
+
+export class User extends Model({
+  id: String,
+  name: String,
+  role: String,
+}) {}
+
+export class UsersResponse extends Model({
+  users: ArrayModel(User),
+  page: Page,
+}) {}
